@@ -1,0 +1,21 @@
+.home-page {
+    min-height: 100vh;
+    background: var(--bg-app);
+    overflow-x: hidden;
+}
+
+.home-spacer {
+    height: 30px;
+}
+
+.home-new-arrivals-container {
+    margin-top: 40px;
+}
+
+.home-all-products-container {
+    margin-top: 0px;
+}
+
+.home-bottom-spacer {
+    height: 80px;
+}

@@ -1,0 +1,101 @@
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 70px;
+    background: rgba(var(--bg-card-rgb), 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding-bottom: env(safe-area-inset-bottom);
+    border-top: 1px solid var(--border-subtle);
+    z-index: 1000;
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.05);
+}
+
+/* Hide on desktop */
+@media (min-width: 768px) {
+    .bottom-nav {
+        display: none;
+    }
+}
+
+.bottom-nav-link,
+.bottom-nav-link-btn {
+    text-decoration: none;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    flex: 1;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bottom-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    color: var(--text-gray);
+    position: relative;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    transition: color 0.3s ease;
+}
+
+.bottom-nav-item.active {
+    color: var(--primary);
+}
+
+.bottom-nav-icon-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bottom-nav-badge {
+    position: absolute;
+    top: -4px;
+    right: -8px;
+    background: var(--primary);
+    color: white;
+    font-size: 10px;
+    font-weight: 800;
+    min-width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    border: 2px solid var(--bg-card);
+}
+
+.bottom-nav-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.bottom-nav-indicator {
+    position: absolute;
+    top: 0;
+    width: 30px;
+    height: 3px;
+    background: var(--primary);
+    border-radius: 0 0 4px 4px;
+}
+
+[data-theme='dark'] .bottom-nav {
+    background: rgba(20, 20, 21, 0.8);
+    border-top-color: #262626;
+}

@@ -1,0 +1,26 @@
+@keyframes shimmer {
+    0% {
+        background-position: -468px 0;
+    }
+
+    100% {
+        background-position: 468px 0;
+    }
+}
+
+.skeleton-base {
+    background: linear-gradient(to right,
+            var(--bg-card) 8%,
+            var(--border-subtle) 18%,
+            var(--bg-card) 33%);
+    background-size: 800px 104px;
+    animation: shimmer 1.5s linear infinite;
+    display: block;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Dark mode adjustment if needed, although CSS variables should handle it */
+[data-theme='dark'] .skeleton-base {
+    background-color: #1e1e1e;
+}

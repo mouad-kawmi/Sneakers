@@ -1,0 +1,52 @@
+.category-page {
+    padding-top: 80px;
+    min-height: 100vh;
+}
+
+.category-header {
+    margin-bottom: 60px;
+}
+
+.category-header-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.category-header-line {
+    width: 40px;
+    height: 4px;
+    background: var(--primary);
+    border-radius: 2px;
+}
+
+.category-header-badge {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.category-title {
+    font-size: clamp(40px, 8vw, 64px);
+    font-weight: 900;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+    letter-spacing: -2px;
+    line-height: 0.9;
+    color: var(--text-main);
+}
+
+.category-description {
+    color: var(--text-gray);
+    font-size: clamp(16px, 2vw, 18px);
+    max-width: 600px;
+    line-height: 1.6;
+    font-weight: 500;
+}
+
+.category-products-wrapper {
+    margin-top: 0px;
+}

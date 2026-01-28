@@ -1,0 +1,60 @@
+{
+    "tech_stack": [
+        "HTML",
+        "Vanilla CSS",
+        "JavaScript",
+        "React",
+        "Redux Toolkit",
+        "Framer Motion",
+        "Lucide React"
+    ],
+    "features": [
+        {
+            "name": "Shopping Cart",
+            "description": "Redux-powered cart with multi-size support and sidebar toggle.",
+            "files": [
+                "src/store/slices/cartSlice.js",
+                "src/hooks/useCart.js",
+                "src/components/layout/CartSidebar/CartSidebar.js"
+            ]
+        },
+        {
+            "name": "Toast Notifications",
+            "description": "Animated toast system with 5-second display duration and data-testid for automated testing.",
+            "files": [
+                "src/context/ToastContext.js"
+            ]
+        },
+        {
+            "name": "Hero Section",
+            "description": "Interactive slideshow for featured products with direct purchase buttons.",
+            "files": [
+                "src/components/HeroSection/HeroSection.js"
+            ]
+        },
+        {
+            "name": "Product Spotlight",
+            "description": "Featured product display with countdown and direct purchase.",
+            "files": [
+                "src/components/ProductSpotlight/ProductSpotlight.js",
+                "src/components/PromoBanner/PromoBanner.js"
+            ]
+        },
+        {
+            "name": "User Authentication",
+            "description": "Login and registration system via modal with form validation and accessibility improvements.",
+            "files": [
+                "src/components/auth/LoginModal/LoginModal.js",
+                "src/store/slices/authSlice.js"
+            ]
+        },
+        {
+            "name": "Contact Management",
+            "description": "Support form with messaging system and notification feedback.",
+            "files": [
+                "src/pages/Contact/Contact.js",
+                "src/store/slices/messageSlice.js"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,104 @@
+.checkout-progress-wrapper {
+    margin-bottom: 40px;
+    padding: 20px 0;
+}
+
+.checkout-progress-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.progress-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+    z-index: 2;
+}
+
+.step-icon-box {
+    width: 48px;
+    height: 48px;
+    background: var(--bg-card);
+    border: 2px solid var(--border-subtle);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-gray);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.step-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-gray);
+    transition: all 0.4s;
+}
+
+.progress-step.active .step-icon-box {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: rgba(147, 51, 234, 0.05);
+    box-shadow: 0 0 20px rgba(147, 51, 234, 0.15);
+}
+
+.progress-step.active .step-label {
+    color: var(--primary);
+}
+
+.progress-step.completed .step-icon-box {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+
+.progress-step.completed .step-label {
+    color: var(--text-main);
+}
+
+.step-check {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+}
+
+.progress-connector {
+    flex: 1;
+    height: 2px;
+    background: var(--border-subtle);
+    margin: -25px 10px 0 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.connector-line {
+    width: 0%;
+    height: 100%;
+    background: var(--primary);
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.progress-connector.filled .connector-line {
+    width: 100%;
+}
+
+@media (max-width: 480px) {
+    .step-label {
+        display: none;
+    }
+
+    .step-icon-box {
+        width: 40px;
+        height: 40px;
+    }
+
+    .progress-connector {
+        margin-top: -15px;
+    }
+}

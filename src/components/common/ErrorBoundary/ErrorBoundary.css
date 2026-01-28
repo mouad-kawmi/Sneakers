@@ -1,0 +1,125 @@
+.error-boundary-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--bg-app);
+    text-align: center;
+}
+
+.error-boundary-content {
+    max-width: 550px;
+    margin: 0 auto;
+    padding: 40px;
+}
+
+.error-boundary-icon-box {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.error-boundary-icon {
+    color: var(--primary);
+    z-index: 2;
+    animation: rotate 10s linear infinite;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.error-boundary-pulse {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: var(--primary);
+    border-radius: 50%;
+    filter: blur(40px);
+    opacity: 0.2;
+    animation: error-pulse 2s ease-in-out infinite;
+}
+
+@keyframes error-pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 0.15;
+    }
+
+    50% {
+        transform: scale(1.2);
+        opacity: 0.3;
+    }
+}
+
+.error-boundary-title {
+    font-size: 32px;
+    font-weight: 900;
+    margin-bottom: 16px;
+    color: var(--text-main);
+}
+
+.error-boundary-text {
+    font-size: 16px;
+    color: var(--text-gray);
+    line-height: 1.6;
+    margin-bottom: 40px;
+}
+
+.error-boundary-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+}
+
+.error-boundary-btn {
+    padding: 14px 24px;
+    border-radius: 12px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: none;
+}
+
+.error-boundary-btn.primary {
+    background: var(--primary);
+    color: white;
+    box-shadow: var(--shadow-glow);
+}
+
+.error-boundary-btn.secondary {
+    background: var(--bg-card);
+    color: var(--text-main);
+    border: 1px solid var(--border-subtle);
+}
+
+.error-boundary-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 600px) {
+    .error-boundary-actions {
+        flex-direction: column;
+    }
+
+    .error-boundary-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}

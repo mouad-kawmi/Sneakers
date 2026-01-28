@@ -1,0 +1,236 @@
+.reviews-container {
+    margin-top: 60px;
+    padding: 30px;
+    background: var(--bg-card);
+    border-radius: 24px;
+    box-shadow: var(--shadow-clean);
+    border: 1px solid var(--border-subtle);
+}
+
+.reviews-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.reviews-header-left {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.reviews-title {
+    font-size: 24px;
+    font-weight: 900;
+    margin: 0;
+}
+
+.reviews-score-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.reviews-average {
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--secondary);
+}
+
+.reviews-stars {
+    display: flex;
+    gap: 2px;
+}
+
+.reviews-count {
+    font-size: 14px;
+    color: var(--text-gray);
+    font-weight: 600;
+}
+
+.reviews-write-btn {
+    padding: 12px 24px;
+    border-radius: 12px;
+    border: 1px solid var(--primary);
+    background: transparent;
+    color: var(--primary);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.reviews-form-wrapper {
+    overflow: hidden;
+    margin-bottom: 40px;
+}
+
+.reviews-form {
+    background: var(--bg-app);
+    padding: 30px;
+    border-radius: 20px;
+    border: 1px solid var(--border-subtle);
+}
+
+.reviews-form-title {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 20px;
+}
+
+.reviews-rating-selector {
+    margin-bottom: 20px;
+}
+
+.reviews-star-rack {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.reviews-input-group {
+    margin-bottom: 15px;
+}
+
+.reviews-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--secondary);
+}
+
+.reviews-input {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 1px solid var(--border-subtle);
+    background: var(--bg-card);
+    color: var(--text-main);
+    font-size: 15px;
+}
+
+.reviews-textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 1px solid var(--border-subtle);
+    background: var(--bg-card);
+    color: var(--text-main);
+    font-size: 15px;
+    min-height: 100px;
+    resize: vertical;
+}
+
+.reviews-submit-btn {
+    padding: 12px 24px;
+    border-radius: 10px;
+    border: none;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.reviews-cancel-btn {
+    padding: 12px 24px;
+    border-radius: 10px;
+    border: 1px solid var(--border-subtle);
+    background: transparent;
+    color: var(--text-gray);
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.reviews-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.reviews-card {
+    padding: 20px;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.reviews-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.reviews-user-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--bg-app);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-gray);
+}
+
+.reviews-meta {
+    flex: 1;
+}
+
+.reviews-user-name {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.reviews-date {
+    font-size: 12px;
+    color: var(--text-gray);
+}
+
+.reviews-card-rating {
+    display: flex;
+    gap: 2px;
+}
+
+.reviews-comment-text {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text-main);
+}
+
+.reviews-empty {
+    text-align: center;
+    padding: 40px 0;
+    color: var(--text-gray);
+    font-style: italic;
+}
+
+.reviews-view-all-btn {
+    display: block;
+    text-align: center;
+    padding: 16px;
+    margin-top: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border-subtle);
+    color: var(--primary);
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    background: var(--bg-app);
+}
+
+@media (max-width: 600px) {
+    .reviews-container {
+        padding: 20px;
+    }
+
+    .reviews-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

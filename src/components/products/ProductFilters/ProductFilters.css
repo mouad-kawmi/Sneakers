@@ -1,0 +1,232 @@
+.product-filters {
+    width: 240px;
+    flex-shrink: 0;
+    background: var(--bg-card);
+    border-radius: 24px;
+    border: 1px solid var(--border-subtle);
+    padding: 30px 20px;
+    height: fit-content;
+    position: sticky;
+    top: 100px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.02);
+}
+
+.filters-header-mobile {
+    display: none;
+}
+
+.filter-section {
+    margin-bottom: 35px;
+}
+
+.section-title {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--text-main);
+    letter-spacing: 1.5px;
+    margin: 0 0 18px 0;
+    text-transform: uppercase;
+}
+
+/* Brands Styling (Radio dots) */
+.category-options,
+.brand-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.brand-radio {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-gray);
+    cursor: pointer;
+    position: relative;
+    padding-left: 28px;
+    transition: color 0.2s;
+}
+
+.brand-radio:hover {
+    color: var(--text-main);
+}
+
+.brand-radio input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.radio-dot {
+    position: absolute;
+    left: 0;
+    height: 18px;
+    width: 18px;
+    background-color: transparent;
+    border: 2px solid var(--border-subtle);
+    border-radius: 50%;
+    transition: all 0.2s;
+}
+
+.brand-radio input:checked~.radio-dot {
+    border-color: var(--primary);
+}
+
+.radio-dot:after {
+    content: "";
+    position: absolute;
+    display: none;
+    top: 4px;
+    left: 4px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--primary);
+}
+
+.brand-radio input:checked~.radio-dot:after {
+    display: block;
+}
+
+/* Price Section */
+.price-inputs-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.price-inputs-row input {
+    width: 45%;
+    background: var(--bg-app);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-main);
+    text-align: center;
+    outline: none;
+}
+
+.price-separator {
+    color: var(--text-gray);
+    font-weight: bold;
+}
+
+.apply-price-btn {
+    width: 100%;
+    background: rgba(147, 51, 234, 0.08);
+    /* Soft primary as per mockup */
+    color: var(--primary);
+    border: 1px solid rgba(147, 51, 234, 0.3);
+    padding: 12px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.apply-price-btn:hover {
+    background: rgba(147, 51, 234, 0.12);
+}
+
+/* Size Grid Refined */
+.size-grid-refined {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+
+.size-btn-refined {
+    aspect-ratio: 1;
+    background: var(--bg-app);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-main);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.size-btn-refined:hover {
+    border-color: var(--primary);
+}
+
+.size-btn-refined.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+    box-shadow: var(--shadow-glow);
+}
+
+/* Reset Button Style */
+.reset-all-btn {
+    width: 100%;
+    background: transparent;
+    border: 1px dashed var(--border-subtle);
+    padding: 14px;
+    border-radius: 14px;
+    color: var(--text-gray);
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: all 0.2s;
+}
+
+.reset-all-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+/* Mobile Responsive */
+@media (max-width: 991px) {
+    .product-filters {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        z-index: 2000;
+        border-radius: 0;
+        transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s;
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 80px;
+        overflow-y: auto;
+        visibility: hidden;
+    }
+
+    .product-filters.open {
+        left: 0;
+        visibility: visible;
+    }
+
+    .filters-header-mobile {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 30px;
+    }
+
+    .filters-header-mobile h3 {
+        margin: 0;
+        font-size: 20px;
+        font-weight: 800;
+    }
+
+    .close-filters-btn {
+        background: none;
+        border: none;
+        color: var(--text-main);
+        cursor: pointer;
+    }
+}
