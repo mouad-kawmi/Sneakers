@@ -4,7 +4,7 @@ import { mockProducts } from '../../data/Product';
 const productSlice = createSlice({
     name: 'products',
     initialState: {
-        items: mockProducts,
+        items: mockProducts || [],
         filters: {
             brand: 'All',
             category: 'All',

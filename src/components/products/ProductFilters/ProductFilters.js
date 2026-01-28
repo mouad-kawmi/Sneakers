@@ -6,11 +6,11 @@ import './ProductFilters.css';
 
 const ProductFilters = ({ isOpen, onClose }) => {
     const dispatch = useDispatch();
-    const filters = useSelector((state) => state.products.filters);
-    const products = useSelector((state) => state.products.items);
+    const filters = useSelector((state) => state.products?.filters || { minPrice: 0, maxPrice: 10000, sizes: [], brand: 'All', category: 'All' });
+    const products = useSelector((state) => state.products?.items || []);
 
-    const [minPrice, setMinPrice] = useState(filters.minPrice);
-    const [maxPrice, setMaxPrice] = useState(filters.maxPrice);
+    const [minPrice, setMinPrice] = useState(filters?.minPrice || 0);
+    const [maxPrice, setMaxPrice] = useState(filters?.maxPrice || 10000);
 
     useEffect(() => {
         setMinPrice(filters.minPrice);
@@ -18,17 +18,18 @@ const ProductFilters = ({ isOpen, onClose }) => {
     }, [filters.minPrice, filters.maxPrice]);
 
     // Extract unique brands and sizes
-    const allBrands = Array.from(new Set(products.map(p => p.brand))).sort();
-    const allSizes = Array.from(new Set(products.flatMap(p => p.sizes?.map(s => s.size) || []))).sort((a, b) => a - b);
+    const allBrands = Array.from(new Set((products || []).map(p => p?.brand).filter(Boolean))).sort();
+    const allSizes = Array.from(new Set((products || []).flatMap(p => p?.sizes?.map(s => s.size) || []))).sort((a, b) => a - b);
 
     const handleApplyPrice = () => {
         dispatch(setFilters({ minPrice, maxPrice }));
     };
 
     const handleSizeToggle = (size) => {
-        const newSizes = filters.sizes.includes(size)
-            ? filters.sizes.filter(s => s !== size)
-            : [...filters.sizes, size];
+        const currentSizes = filters?.sizes || [];
+        const newSizes = currentSizes.includes(size)
+            ? currentSizes.filter(s => s !== size)
+            : [...currentSizes, size];
         dispatch(setFilters({ sizes: newSizes }));
     };
 
@@ -116,7 +117,7 @@ const ProductFilters = ({ isOpen, onClose }) => {
                         {allSizes.map(size => (
                             <button
                                 key={size}
-                                className={`size-btn-refined ${filters.sizes.includes(size) ? 'active' : ''} btn-animate`}
+                                className={`size-btn-refined ${(filters?.sizes || []).includes(size) ? 'active' : ''} btn-animate`}
                                 onClick={() => handleSizeToggle(size)}
                             >
                                 {size}

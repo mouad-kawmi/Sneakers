@@ -11,7 +11,7 @@ const ProductCard = lazy(() => import('../ProductCard/ProductCard'));
 const ProductCardSkeleton = lazy(() => import('../ProductCard/ProductCardSkeleton'));
 
 const AllProducts = () => {
-    const { items: products, filters, sorting = 'newest' } = useSelector((state) => state.products || { items: [], filters: { brand: 'All', category: 'All', search: '', minPrice: 0, maxPrice: 10000, sizes: [] }, sorting: 'newest' });
+    const { items: products = [], filters = { brand: 'All', category: 'All', search: '', minPrice: 0, maxPrice: 10000, sizes: [] }, sorting = 'newest' } = useSelector((state) => state.products || {});
     const dispatch = useDispatch();
 
     const [currentPage, setCurrentPage] = useState(1);
@@ -37,7 +37,7 @@ const AllProducts = () => {
         const finalPrice = item.price * (1 - (item.discount || 0) / 100);
         const matchesPrice = finalPrice >= filters.minPrice && finalPrice <= filters.maxPrice;
 
-        const matchesSizes = filters.sizes.length === 0 ||
+        const matchesSizes = (filters.sizes?.length || 0) === 0 ||
             item.sizes?.some(s => filters.sizes.includes(s.size) && s.stock > 0);
 
         return matchesCategory && matchesBrand && matchesSearch && matchesPrice && matchesSizes;
