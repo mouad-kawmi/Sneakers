@@ -14,7 +14,32 @@ const LoginModal = ({ isOpen, onClose }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
+    const [fieldErrors, setFieldErrors] = useState({});
     const [error, setError] = useState('');
+
+    const validateField = (name, value) => {
+        let err = null;
+        if (mode === 'register') {
+            if (name === 'name' && !value) err = "Nom requis";
+            if (name === 'email') {
+                if (!value) err = "Email requis";
+                else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) err = "Email invalide";
+            }
+            if (name === 'password') {
+                if (!value) err = "Mot de passe requis";
+                else if (value.length < 6) err = "Min. 6 caractères";
+            }
+        }
+        return err;
+    };
+
+    const handleInputChange = (field, value, setter) => {
+        setter(value);
+        if (mode === 'register') {
+            const err = validateField(field, value);
+            setFieldErrors(prev => ({ ...prev, [field]: err }));
+        }
+    };
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -38,28 +63,20 @@ const LoginModal = ({ isOpen, onClose }) => {
             }
         } else {
             // Register Mode
-            if (!name || !email || !password) {
-                setError('Tous les champs sont requis.');
-                showToast('Tous les champs sont requis', "error");
-                return;
-            }
+            const newFieldErrors = {
+                name: validateField('name', name),
+                email: validateField('email', email),
+                password: validateField('password', password)
+            };
 
-            // Email format validation
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(email) && mode === 'register') {
-                setError('Format d\'email invalide.');
-                showToast('Format d\'email invalide', "error");
-                return;
-            }
-
-            if (password.length < 6) {
-                setError('Le mot de passe doit faire au moins 6 caractères.');
-                showToast('Mot de passe trop court', "error");
+            if (Object.values(newFieldErrors).some(err => err)) {
+                setFieldErrors(newFieldErrors);
+                showToast("Veuillez corriger les erreurs", "error");
                 return;
             }
 
             if (users.find(u => u.email === email)) {
-                setError('Cet email est déjà utilisé.');
+                setFieldErrors(prev => ({ ...prev, email: 'Cet email est déjà utilisé' }));
                 showToast('Email déjà utilisé', "error");
                 return;
             }
@@ -68,6 +85,7 @@ const LoginModal = ({ isOpen, onClose }) => {
             showToast("Compte créé avec succès ! Connectez-vous maintenant.", "success");
             setMode('login');
             setPassword('');
+            setFieldErrors({});
             setError('');
         }
     };
@@ -97,11 +115,12 @@ const LoginModal = ({ isOpen, onClose }) => {
                                         type="text"
                                         placeholder="Nom complet"
                                         value={name}
-                                        onChange={(e) => setName(e.target.value)}
-                                        className="login-modal-input"
+                                        onChange={(e) => handleInputChange('name', e.target.value, setName)}
+                                        className={`login-modal-input ${fieldErrors.name ? 'error' : ''}`}
                                         aria-label="Nom complet"
                                         required
                                     />
+                                    {fieldErrors.name && <span className="error-text">{fieldErrors.name}</span>}
                                 </div>
                             )}
                             <div className="login-modal-input-group">
@@ -111,11 +130,12 @@ const LoginModal = ({ isOpen, onClose }) => {
                                     type={mode === 'login' ? 'text' : 'email'}
                                     placeholder={mode === 'login' ? "Email ou Nom d'utilisateur" : "Email"}
                                     value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    className="login-modal-input"
+                                    onChange={(e) => handleInputChange('email', e.target.value, setEmail)}
+                                    className={`login-modal-input ${fieldErrors.email ? 'error' : ''}`}
                                     aria-label={mode === 'login' ? "Email ou Nom d'utilisateur" : "Email"}
                                     required
                                 />
+                                {fieldErrors.email && <span className="error-text">{fieldErrors.email}</span>}
                             </div>
                             <div className="login-modal-input-group">
                                 <Lock size={20} className="login-modal-input-icon" />
@@ -124,11 +144,12 @@ const LoginModal = ({ isOpen, onClose }) => {
                                     type="password"
                                     placeholder="Mot de passe"
                                     value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    className="login-modal-input"
+                                    onChange={(e) => handleInputChange('password', e.target.value, setPassword)}
+                                    className={`login-modal-input ${fieldErrors.password ? 'error' : ''}`}
                                     aria-label="Mot de passe"
                                     required
                                 />
+                                {fieldErrors.password && <span className="error-text">{fieldErrors.password}</span>}
                             </div>
                             {error && <span className="login-modal-error">{error}</span>}
                             <button type="submit" className="btn-primary login-modal-submit-btn">

@@ -6,6 +6,7 @@ import { setProducts, addProduct, deleteProduct, updateProduct, restoreStock } f
 import { markAllAsRead, initializeDemoMessages } from '../../store/slices/messageSlice';
 import { ShoppingBag, Star, Truck, BarChart2, Package, Settings, MessageSquare, Plus } from 'lucide-react';
 import { Navigate } from 'react-router-dom';
+import { ROUTES } from '../../constants/routes';
 import useAuth from '../../hooks/useAuth';
 
 // Components
@@ -41,7 +42,7 @@ const Admin = () => {
         dispatch(initializeDemoMessages());
     }, [dispatch]);
 
-    if (!isAuthenticated || user?.role !== 'admin') return <Navigate to="/" />;
+    if (!isAuthenticated || user?.role !== 'admin') return <Navigate to={ROUTES.HOME} />;
 
     const handleOpenProductModal = (product = null) => {
         setEditingProduct(product);

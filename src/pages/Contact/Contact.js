@@ -15,15 +15,59 @@ const Contact = () => {
         subject: '',
         message: ''
     });
+    const [errors, setErrors] = useState({});
     const [isSubmitted, setIsSubmitted] = useState(false);
+
+    const validateField = (name, value) => {
+        let error = null;
+        switch (name) {
+            case 'name':
+                if (!value) error = "Le nom est requis";
+                break;
+            case 'email':
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) error = "Email invalide";
+                break;
+            case 'subject':
+                if (!value) error = "Le sujet est requis";
+                break;
+            case 'message':
+                if (value.length < 10) error = "Le message doit faire au moins 10 caractères";
+                break;
+            default:
+                break;
+        }
+        return error;
+    };
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormState(prev => ({ ...prev, [name]: value }));
+        const fieldError = validateField(name, value);
+        setErrors(prev => ({ ...prev, [name]: fieldError }));
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        // Final validation
+        const newErrors = {};
+        Object.keys(formState).forEach(key => {
+            const err = validateField(key, formState[key]);
+            if (err) newErrors[key] = err;
+        });
+
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            showToast("Veuillez corriger les erreurs", "error");
+            return;
+        }
+
         dispatch(addMessage(formState));
         setIsSubmitted(true);
         showToast("Message envoyé avec succès !", "success");
         setTimeout(() => setIsSubmitted(false), 3000);
         setFormState({ name: '', email: '', subject: '', message: '' });
+        setErrors({});
     };
 
     const contactInfo = [
@@ -130,25 +174,29 @@ const Contact = () => {
                                             <label htmlFor="contact-name" className="contact-label">Nom complet</label>
                                             <input
                                                 id="contact-name"
+                                                name="name"
                                                 type="text"
                                                 placeholder="Votre nom"
                                                 required
-                                                className="contact-input"
+                                                className={`contact-input ${errors.name ? 'error' : ''}`}
                                                 value={formState.name}
-                                                onChange={(e) => setFormState({ ...formState, name: e.target.value })}
+                                                onChange={handleInputChange}
                                             />
+                                            {errors.name && <span className="error-text">{errors.name}</span>}
                                         </div>
                                         <div className="contact-input-group">
                                             <label htmlFor="contact-email" className="contact-label">Email</label>
                                             <input
                                                 id="contact-email"
+                                                name="email"
                                                 type="email"
                                                 placeholder="votre@email.com"
                                                 required
-                                                className="contact-input"
+                                                className={`contact-input ${errors.email ? 'error' : ''}`}
                                                 value={formState.email}
-                                                onChange={(e) => setFormState({ ...formState, email: e.target.value })}
+                                                onChange={handleInputChange}
                                             />
+                                            {errors.email && <span className="error-text">{errors.email}</span>}
                                         </div>
                                     </div>
 
@@ -156,27 +204,31 @@ const Contact = () => {
                                         <label htmlFor="contact-subject" className="contact-label">Sujet</label>
                                         <input
                                             id="contact-subject"
+                                            name="subject"
                                             type="text"
                                             placeholder="Comment pouvons-nous vous aider ?"
                                             required
-                                            className="contact-input"
+                                            className={`contact-input ${errors.subject ? 'error' : ''}`}
                                             value={formState.subject}
-                                            onChange={(e) => setFormState({ ...formState, subject: e.target.value })}
+                                            onChange={handleInputChange}
                                         />
+                                        {errors.subject && <span className="error-text">{errors.subject}</span>}
                                     </div>
 
                                     <div className="contact-input-group">
                                         <label htmlFor="contact-message" className="contact-label">Message</label>
                                         <textarea
                                             id="contact-message"
+                                            name="message"
                                             rows="5"
                                             placeholder="Votre message ici..."
                                             required
-                                            className="contact-input"
+                                            className={`contact-input ${errors.message ? 'error' : ''}`}
                                             style={{ resize: 'none' }}
                                             value={formState.message}
-                                            onChange={(e) => setFormState({ ...formState, message: e.target.value })}
+                                            onChange={handleInputChange}
                                         ></textarea>
+                                        {errors.message && <span className="error-text">{errors.message}</span>}
                                     </div>
 
                                     <button

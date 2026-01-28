@@ -14,6 +14,7 @@ import ScrollToTop from './components/layout/ScrollToTop/ScrollToTop';
 import { ToastProvider } from './context/ToastContext';
 import ErrorBoundary from './components/common/ErrorBoundary/ErrorBoundary';
 import { openCart, closeCart } from './store/slices/uiSlice';
+import { ROUTES } from './constants/routes';
 
 // Initialize GA4 - Replace with your measurement ID
 ReactGA.initialize('G-XXXXXXXXXX');
@@ -78,22 +79,22 @@ const AppContent = () => {
             <Breadcrumbs />
             <Suspense fallback={<GlobalLoader />}>
               <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/admin" element={<Admin />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/category/:name" element={<Category />} />
-                <Route path="/product/:id" element={<ProductDetails />} />
-                <Route path="/product/:id/reviews" element={<ProductReviewsPage />} />
-                <Route path="/help" element={<HelpCenter />} />
-                <Route path="/checkout" element={<Checkout />} />
-                <Route path="/track-order" element={<OrderTracking />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/wishlist" element={<Wishlist />} />
-                <Route path="/search" element={<SearchPage />} />
-                <Route path="/about" element={<AboutUs />} />
-                <Route path="/faq" element={<FAQ />} />
-                <Route path="/privacy" element={<PrivacyPolicy />} />
-                <Route path="/terms" element={<TermsOfService />} />
+                <Route path={ROUTES.HOME} element={<Home />} />
+                <Route path={ROUTES.ADMIN} element={<Admin />} />
+                <Route path={ROUTES.CONTACT} element={<Contact />} />
+                <Route path={ROUTES.CATEGORY} element={<Category />} />
+                <Route path={ROUTES.PRODUCT_DETAILS} element={<ProductDetails />} />
+                <Route path={ROUTES.PRODUCT_REVIEWS} element={<ProductReviewsPage />} />
+                <Route path={ROUTES.HELP} element={<HelpCenter />} />
+                <Route path={ROUTES.CHECKOUT} element={<Checkout />} />
+                <Route path={ROUTES.TRACK_ORDER} element={<OrderTracking />} />
+                <Route path={ROUTES.PROFILE} element={<Profile />} />
+                <Route path={ROUTES.WISHLIST} element={<Wishlist />} />
+                <Route path={ROUTES.SEARCH} element={<SearchPage />} />
+                <Route path={ROUTES.ABOUT} element={<AboutUs />} />
+                <Route path={ROUTES.FAQ} element={<FAQ />} />
+                <Route path={ROUTES.PRIVACY} element={<PrivacyPolicy />} />
+                <Route path={ROUTES.TERMS} element={<TermsOfService />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Suspense>

@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { addToCart, removeFromCart, removeItemCompletely } from '../../../store/slices/cartSlice';
 import { useNavigate } from 'react-router-dom';
 import EmptyState from '../EmptyState/EmptyState';
+import SmartImage from '../SmartImage/SmartImage';
 import './CartSidebar.css';
 
 const CartSidebar = ({ isOpen, onClose }) => {
@@ -57,7 +58,7 @@ const CartSidebar = ({ isOpen, onClose }) => {
                                     <AnimatePresence mode='popLayout'>
                                         {cartItems.map((item, index) => (
                                             <motion.div layout key={`${item.id}-${item.size}`} initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -50, opacity: 0 }} transition={{ delay: index * 0.05 }} className="cart-sidebar-item">
-                                                <div className="cart-sidebar-item-img-wrapper"><img src={item.image} alt={item.name} className="cart-sidebar-item-image" /></div>
+                                                <div className="cart-sidebar-item-img-wrapper"><SmartImage src={item.image} alt={item.name} className="cart-sidebar-item-image" /></div>
                                                 <div className="cart-sidebar-item-info">
                                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                                                         <div><h4 className="cart-sidebar-item-name">{item.name}</h4><span className="cart-sidebar-item-size-badge">Taille: {item.size}</span></div>

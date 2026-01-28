@@ -31,7 +31,6 @@ const renderWithProviders = (
         ...renderOptions
     } = {}
 ) => {
-    // console.log('Initial State:', store.getState()); 
     const Wrapper = ({ children }) => (
         <Provider store={store}>
             <BrowserRouter>

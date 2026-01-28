@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Home, Search, ShoppingBag, Heart, User } from 'lucide-react';
 import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
+import { ROUTES } from '../../../constants/routes';
 import './BottomNav.css';
 
 const BottomNav = ({ onCartOpen }) => {
@@ -11,11 +12,11 @@ const BottomNav = ({ onCartOpen }) => {
     const wishlistItems = useSelector((state) => state.wishlist.items);
 
     const navItems = [
-        { icon: Home, label: 'Accueil', path: '/', id: 'home' },
-        { icon: Search, label: 'Chercher', path: '/search', id: 'search' },
+        { icon: Home, label: 'Accueil', path: ROUTES.HOME, id: 'home' },
+        { icon: Search, label: 'Chercher', path: ROUTES.SEARCH, id: 'search' },
         { icon: ShoppingBag, label: 'Panier', onClick: onCartOpen, id: 'cart', badge: totalQuantity },
-        { icon: Heart, label: 'Favoris', path: '/wishlist', id: 'wishlist', badge: wishlistItems.length },
-        { icon: User, label: 'Profil', path: '/profile', id: 'profile' },
+        { icon: Heart, label: 'Favoris', path: ROUTES.WISHLIST, id: 'wishlist', badge: wishlistItems.length },
+        { icon: User, label: 'Profil', path: ROUTES.PROFILE, id: 'profile' },
     ];
 
     return (

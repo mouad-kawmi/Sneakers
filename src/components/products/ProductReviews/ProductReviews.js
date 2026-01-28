@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Star, Send, User } from 'lucide-react';
 import { addReview } from '../../../store/slices/reviewSlice';
+import { getProductReviewsPath } from '../../../constants/routes';
 import './ProductReviews.css';
 
 const ProductReviews = ({ productId }) => {
@@ -187,7 +188,7 @@ const ProductReviews = ({ productId }) => {
 
                         {productReviews.length > 10 && (
                             <Link
-                                to={`/product/${productId}/reviews`}
+                                to={getProductReviewsPath(productId)}
                                 className="reviews-view-all-btn"
                             >
                                 Voir tous les avis ({productReviews.length})

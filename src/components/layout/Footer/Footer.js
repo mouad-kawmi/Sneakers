@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import { ROUTES, getCategoryPath } from '../../../constants/routes';
 import {
     Facebook,
     Instagram,
@@ -57,26 +58,26 @@ const Footer = () => {
                 <div className="footer-links-section">
                     <div className="footer-link-column">
                         <h4 className="footer-column-title">Collections</h4>
-                        <Link to="/category/All" className="footer-link">Nouveautés</Link>
-                        <Link to="/category/Nike" className="footer-link">Nike Air</Link>
-                        <Link to="/category/Adidas" className="footer-link">Adidas Boost</Link>
-                        <Link to="/category/New Balance" className="footer-link">New Balance</Link>
+                        <Link to={getCategoryPath('All')} className="footer-link">Nouveautés</Link>
+                        <Link to={getCategoryPath('Nike')} className="footer-link">Nike Air</Link>
+                        <Link to={getCategoryPath('Adidas')} className="footer-link">Adidas Boost</Link>
+                        <Link to={getCategoryPath('New Balance')} className="footer-link">New Balance</Link>
                     </div>
 
                     <div className="footer-link-column">
                         <h4 className="footer-column-title">Aide & Support</h4>
-                        <Link to="/about" className="footer-link">À Propos</Link>
-                        <Link to="/contact" className="footer-link">Nous contacter</Link>
-                        <Link to="/help?tab=delivery" className="footer-link">Livraison & Retours</Link>
-                        <Link to="/help?tab=size-guide" className="footer-link">Guide des tailles</Link>
-                        <Link to="/track-order" className="footer-link">Suivre ma commande</Link>
-                        <Link to="/faq" className="footer-link">FAQ</Link>
+                        <Link to={ROUTES.ABOUT} className="footer-link">À Propos</Link>
+                        <Link to={ROUTES.CONTACT} className="footer-link">Nous contacter</Link>
+                        <Link to={`${ROUTES.HELP}?tab=delivery`} className="footer-link">Livraison & Retours</Link>
+                        <Link to={`${ROUTES.HELP}?tab=size-guide`} className="footer-link">Guide des tailles</Link>
+                        <Link to={ROUTES.TRACK_ORDER} className="footer-link">Suivre ma commande</Link>
+                        <Link to={ROUTES.FAQ} className="footer-link">FAQ</Link>
                     </div>
 
                     <div className="footer-link-column">
                         <h4 className="footer-column-title">Légal</h4>
-                        <Link to="/privacy" className="footer-link">Confidentialité</Link>
-                        <Link to="/terms" className="footer-link">Conditions de vente</Link>
+                        <Link to={ROUTES.PRIVACY} className="footer-link">Confidentialité</Link>
+                        <Link to={ROUTES.TERMS} className="footer-link">Conditions de vente</Link>
                     </div>
 
                     <div className="footer-link-column">

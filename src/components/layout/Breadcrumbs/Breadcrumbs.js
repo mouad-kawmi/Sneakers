@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ChevronRight, Home } from 'lucide-react';
+import { ROUTES } from '../../../constants/routes';
 import './Breadcrumbs.css';
 
 const Breadcrumbs = ({ customLinks = [] }) => {
@@ -12,7 +13,7 @@ const Breadcrumbs = ({ customLinks = [] }) => {
 
     return (
         <nav className="breadcrumbs container">
-            <Link to="/" className="breadcrumb-item home">
+            <Link to={ROUTES.HOME} className="breadcrumb-item home">
                 <Home size={16} />
                 <span>Accueil</span>
             </Link>

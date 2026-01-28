@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { addToCart, removeFromCart, clearCart } from '../store/slices/cartSlice';
+import { addToCart, removeFromCart, clearCart, updateQuantity } from '../store/slices/cartSlice';
 import { toggleCart } from '../store/slices/uiSlice';
 
 const useCart = () => {
@@ -17,8 +17,7 @@ const useCart = () => {
     };
 
     const updateItemQuantity = (id, size, quantity) => {
-        // Since updateQuantity is missing in cartSlice, we use fallback or log
-        console.warn('updateQuantity not implemented in cartSlice');
+        dispatch(updateQuantity({ id, size, quantity }));
     };
 
     const clear = () => {

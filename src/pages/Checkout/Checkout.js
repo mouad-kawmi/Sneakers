@@ -18,6 +18,7 @@ import { addOrder } from '../../store/slices/ordersSlice';
 import { generateOrderPdf } from '../../services/PdfService';
 import { useToast } from '../../context/ToastContext';
 import CheckoutProgress from './components/CheckoutProgress';
+import SmartImage from '../../components/layout/SmartImage/SmartImage';
 import './Checkout.css';
 
 const Checkout = () => {
@@ -37,24 +38,60 @@ const Checkout = () => {
 
     const validateForm = () => {
         let newErrors = {};
-        if (!formData.fullName) newErrors.fullName = "Requis";
-        if (!formData.email.includes('@')) newErrors.email = "Email invalide";
-        if (formData.phone.length < 10) newErrors.phone = "Numéro invalide";
-        if (!formData.address) newErrors.address = "Requis";
+        if (!formData?.fullName) newErrors.fullName = "Requis";
+        if (!formData?.email?.includes('@')) newErrors.email = "Email invalide";
+        if ((formData?.phone || '').length < 10) newErrors.phone = "Numéro invalide";
+        if (!formData?.address) newErrors.address = "Requis";
+
         if (paymentMethod === 'card') {
-            if (formData.cardNumber.replace(/\s/g, '').length !== 16) newErrors.cardNumber = "16 chiffres requis";
-            if (!formData.expiry.includes('/')) newErrors.expiry = "MM/YY requis";
-            if (formData.cvv.length !== 3) newErrors.cvv = "3 chiffres";
+            const cardNumber = formData?.cardNumber || '';
+            const expiry = formData?.expiry || '';
+            const cvv = formData?.cvv || '';
+
+            if (cardNumber.replace(/\s/g, '').length !== 16) newErrors.cardNumber = "16 chiffres requis";
+            if (!expiry.includes('/')) newErrors.expiry = "MM/YY requis";
+            if (cvv.length !== 3) newErrors.cvv = "3 chiffres";
         }
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
 
-    const handleInputChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-        if (errors[e.target.name]) {
-            setErrors({ ...errors, [e.target.name]: null });
+    const validateField = (name, value) => {
+        let error = null;
+        switch (name) {
+            case 'fullName':
+                if (!value) error = "Requis";
+                break;
+            case 'email':
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) error = "Email invalide";
+                break;
+            case 'phone':
+                if (value.length < 10) error = "Numéro invalide";
+                break;
+            case 'address':
+                if (!value) error = "Requis";
+                break;
+            case 'cardNumber':
+                if (paymentMethod === 'card' && value.replace(/\s/g, '').length !== 16) error = "16 chiffres requis";
+                break;
+            case 'expiry':
+                if (paymentMethod === 'card' && !/^\d{2}\/\d{2}$/.test(value)) error = "Date invalide (MM/YY)";
+                break;
+            case 'cvv':
+                if (paymentMethod === 'card' && value.length !== 3) error = "3 chiffres requis";
+                break;
+            default:
+                break;
         }
+        return error;
+    };
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+
+        const fieldError = validateField(name, value);
+        setErrors(prev => ({ ...prev, [name]: fieldError }));
     };
 
     useEffect(() => {
@@ -366,9 +403,9 @@ const Checkout = () => {
                         <div className="checkout-item-list">
                             {cart.items.map(item => (
                                 <div key={item.id} className="checkout-summary-item">
-                                    <div className="checkout-item-img-box"><img src={item.image} alt={item.name} className="checkout-item-img" /><span className="checkout-item-qty">{item.quantity}</span></div>
-                                    <div style={{ flex: 1 }}><h4 className="checkout-item-name">{item.name}</h4><span className="checkout-item-details">Taille: {item.size}</span></div>
-                                    <span className="checkout-item-price">{item.price * item.quantity} DH</span>
+                                    <div className="checkout-item-img-box"><SmartImage src={item.image} alt={item.name || 'Product'} className="checkout-item-img" /><span className="checkout-item-qty">{item.quantity}</span></div>
+                                    <div style={{ flex: 1 }}><h4 className="checkout-item-name">{item.name || 'Product'}</h4><span className="checkout-item-details">Taille: {item.size || 'N/A'}</span></div>
+                                    <span className="checkout-item-price">{(item.price || 0) * (item.quantity || 1)} DH</span>
                                 </div>
                             ))}
                         </div>

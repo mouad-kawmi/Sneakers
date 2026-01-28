@@ -8,6 +8,8 @@ import { setFilters, clearFilters } from '../../../store/slices/productSlice';
 import { toggleWishlist } from '../../../store/slices/wishlistSlice';
 import { motion, AnimatePresence } from 'framer-motion';
 import LoginModal from '../../auth/LoginModal/LoginModal';
+import SmartImage from '../SmartImage/SmartImage';
+import { ROUTES, getCategoryPath, getProductPath } from '../../../constants/routes';
 import './Navbar.css';
 
 const Navbar = ({ onCartOpen }) => {
@@ -46,18 +48,18 @@ const Navbar = ({ onCartOpen }) => {
     };
 
     const navLinks = [
-        { id: 'home', name: 'Accueil', path: '/' },
-        { id: 'Men', name: 'Hommes', path: '/category/Men' },
-        { id: 'Women', name: 'Femmes', path: '/category/Women' },
-        { id: 'Kids', name: 'Enfants', path: '/category/Kids' },
-        { id: 'contact', name: 'Contact', path: '/contact' },
+        { id: 'home', name: 'Accueil', path: ROUTES.HOME },
+        { id: 'Men', name: 'Hommes', path: getCategoryPath('Men') },
+        { id: 'Women', name: 'Femmes', path: getCategoryPath('Women') },
+        { id: 'Kids', name: 'Enfants', path: getCategoryPath('Kids') },
+        { id: 'contact', name: 'Contact', path: ROUTES.CONTACT },
     ];
 
     return (
         <nav className="navbar">
             <div className="navbar-container">
                 <Link
-                    to="/"
+                    to={ROUTES.HOME}
                     onClick={() => dispatch(clearFilters())}
                     className="navbar-logo"
                 >
@@ -84,7 +86,7 @@ const Navbar = ({ onCartOpen }) => {
                     ))}
                     {user?.role === 'admin' && (
                         <Link
-                            to="/admin"
+                            to={ROUTES.ADMIN}
                             className="navbar-link"
                             style={{
                                 color: location.pathname === '/admin' ? 'var(--primary)' : 'var(--text-main)',
@@ -158,13 +160,13 @@ const Navbar = ({ onCartOpen }) => {
                                                             key={p.id}
                                                             whileHover={{ x: 5, backgroundColor: 'rgba(255,255,255,0.03)' }}
                                                             onClick={() => {
-                                                                navigate(`/product/${p.id}`);
+                                                                navigate(getProductPath(p.id));
                                                                 setIsSearchOpen(false);
                                                                 setSearchQuery('');
                                                             }}
                                                             className="navbar-result-item"
                                                         >
-                                                            <img src={p.image} alt={p.name} className="navbar-result-img" />
+                                                            <SmartImage src={p.image} alt={p.name} className="navbar-result-img" />
                                                             <div style={{ flex: 1 }}>
                                                                 <h4 className="navbar-result-name">{p.name}</h4>
                                                                 <span className="navbar-result-price">{p.price} DH</span>
@@ -223,13 +225,13 @@ const Navbar = ({ onCartOpen }) => {
                                                 <div
                                                     key={p.id}
                                                     onClick={() => {
-                                                        navigate(`/product/${p.id}`);
+                                                        navigate(getProductPath(p.id));
                                                         setIsSearchOpen(false);
                                                         setSearchQuery('');
                                                     }}
                                                     className="navbar-mobile-result-item"
                                                 >
-                                                    <img src={p.image} alt={p.name} className="navbar-mobile-result-img" />
+                                                    <SmartImage src={p.image} alt={p.name} className="navbar-mobile-result-img" />
                                                     <div style={{ flex: 1 }}>
                                                         <h4 className="navbar-result-name">{p.name}</h4>
                                                         <span className="navbar-result-price">{p.price} DH</span>
@@ -276,8 +278,8 @@ const Navbar = ({ onCartOpen }) => {
                                         <div className="navbar-dropdown-list">
                                             {wishlistItems.map(item => (
                                                 <div key={item.id} className="navbar-dropdown-item">
-                                                    <img src={item.image} alt={item.name} className="navbar-dropdown-img" onClick={() => { navigate(`/product/${item.id}`); setIsWishlistOpen(false); }} />
-                                                    <div style={{ flex: 1 }} onClick={() => { navigate(`/product/${item.id}`); setIsWishlistOpen(false); }}>
+                                                    <SmartImage src={item.image} alt={item.name} className="navbar-dropdown-img" onClick={() => { navigate(getProductPath(item.id)); setIsWishlistOpen(false); }} />
+                                                    <div style={{ flex: 1 }} onClick={() => { navigate(getProductPath(item.id)); setIsWishlistOpen(false); }}>
                                                         <h4 className="navbar-dropdown-item-name">{item.name}</h4>
                                                         <span className="navbar-dropdown-item-price">{item.price} DH</span>
                                                     </div>
@@ -292,7 +294,7 @@ const Navbar = ({ onCartOpen }) => {
                                             ))}
                                             <button
                                                 className="navbar-dropdown-footer-btn"
-                                                onClick={() => { navigate('/wishlist'); setIsWishlistOpen(false); }}
+                                                onClick={() => { navigate(ROUTES.WISHLIST); setIsWishlistOpen(false); }}
                                             >
                                                 Voir tout mes favoris
                                             </button>
@@ -307,12 +309,12 @@ const Navbar = ({ onCartOpen }) => {
                         <div className="navbar-user-profile">
                             <span
                                 className="navbar-user-name"
-                                onClick={() => navigate('/profile')}
+                                onClick={() => navigate(ROUTES.PROFILE)}
                                 style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}
                                 title="Voir mon profil"
                             >
                                 <User size={18} />
-                                Salut, {user?.name.split(' ')[0]}
+                                Salut, {user?.name?.split(' ')[0] || 'Utilisateur'}
                             </span>
                             <button
                                 onClick={() => dispatch(logout())}
@@ -406,7 +408,7 @@ const Navbar = ({ onCartOpen }) => {
                                     <h4 className="navbar-drawer-label">Mon Compte</h4>
                                     {isAuthenticated ? (
                                         <>
-                                            <Link to="/profile" className="navbar-drawer-link" onClick={() => setIsMobileMenuOpen(false)}>
+                                            <Link to={ROUTES.PROFILE} className="navbar-drawer-link" onClick={() => setIsMobileMenuOpen(false)}>
                                                 <User size={18} /> Mon Profil
                                             </Link>
                                             <button onClick={() => { dispatch(logout()); setIsMobileMenuOpen(false); }} className="navbar-drawer-link logout">
