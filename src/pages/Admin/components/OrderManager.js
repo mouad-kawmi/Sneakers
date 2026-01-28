@@ -19,10 +19,13 @@ const OrderStatusDropdown = ({ currentStatus, onStatusChange }) => {
         }
     };
 
+    const isFinalState = currentStatus === 'Delivered' || currentStatus === 'Cancelled';
+
     return (
         <select
             value={currentStatus}
             onChange={(e) => onStatusChange(e.target.value)}
+            disabled={isFinalState}
             style={{
                 padding: '6px 10px',
                 borderRadius: '6px',
@@ -30,7 +33,8 @@ const OrderStatusDropdown = ({ currentStatus, onStatusChange }) => {
                 color: getStatusColor(currentStatus),
                 fontWeight: '600',
                 background: 'var(--bg-card)',
-                cursor: 'pointer'
+                cursor: isFinalState ? 'not-allowed' : 'pointer',
+                opacity: isFinalState ? 0.7 : 1
             }}
         >
             {statuses.map(s => <option key={s} value={s}>{s}</option>)}

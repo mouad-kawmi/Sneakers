@@ -100,7 +100,10 @@ const Checkout = () => {
             status: 'Processing',
             total: cart.totalAmount,
             items: cart.items,
-            customer: formData,
+            customer: {
+                ...formData,
+                email: (user?.email || formData.email || '').trim().toLowerCase()
+            },
             paymentMethod,
             history: [{ status: 'Processing', date: new Date().toISOString() }]
         };

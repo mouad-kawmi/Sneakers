@@ -11,19 +11,23 @@ const OrderHistory = ({ user }) => {
     const [sortOrder, setSortOrder] = useState('newest'); // 'newest' or 'oldest'
 
     const myOrders = orders.filter(o => {
-        if (!o.customer) return false;
+        if (!o.customer || !user) return false;
 
-        // Check email (case-insensitive)
-        const emailMatch = user.email && o.customer.email &&
-            o.customer.email.toLowerCase() === user.email.toLowerCase();
+        const userEmail = (user.email || '').trim().toLowerCase();
+        const userName = (user.name || '').trim().toLowerCase();
 
-        // Check name fields: fullName, name, nom (case-insensitive, partial match)
-        const fullNameMatch = user.name && o.customer.fullName &&
-            o.customer.fullName.toLowerCase().includes(user.name.toLowerCase());
-        const nameMatch = user.name && o.customer.name &&
-            o.customer.name.toLowerCase().includes(user.name.toLowerCase());
-        const nomMatch = user.name && o.customer.nom &&
-            o.customer.nom.toLowerCase().includes(user.name.toLowerCase());
+        const customerEmail = (o.customer.email || '').trim().toLowerCase();
+        const customerFullName = (o.customer.fullName || '').trim().toLowerCase();
+        const customerName = (o.customer.name || '').trim().toLowerCase();
+        const customerNom = (o.customer.nom || '').trim().toLowerCase();
+
+        // 1. Primary Match: Email (Most reliable)
+        const emailMatch = userEmail && customerEmail && customerEmail === userEmail;
+
+        // 2. Secondary Match: Name (Fallback or enrichment)
+        const fullNameMatch = userName && customerFullName && customerFullName.includes(userName);
+        const nameMatch = userName && customerName && customerName.includes(userName);
+        const nomMatch = userName && customerNom && customerNom.includes(userName);
 
         return emailMatch || fullNameMatch || nameMatch || nomMatch;
     });
