@@ -330,31 +330,31 @@ const Checkout = () => {
                             <div className="checkout-form-grid">
                                 <div className="checkout-input-group">
                                     <label className="checkout-label">{t('profile.full_name')}</label>
-                                    <input required name="fullName" value={formData.fullName} onChange={handleInputChange} className={`checkout-input ${errors.fullName ? 'error' : ''}`} placeholder="Mbarek SBERDILA" />
+                                    <input required name="fullName" value={formData.fullName} onChange={handleInputChange} className={`checkout-input ${errors.fullName ? 'error' : ''}`} placeholder="" />
                                     {errors.fullName && <span className="error-text">{errors.fullName}</span>}
                                 </div>
                                 <div className="checkout-input-group">
                                     <label className="checkout-label">{t('profile.email')}</label>
-                                    <input required type="email" name="email" value={formData.email} onChange={handleInputChange} className={`checkout-input ${errors.email ? 'error' : ''}`} placeholder="contact@sberdila.com" />
+                                    <input required type="email" name="email" value={formData.email} onChange={handleInputChange} className={`checkout-input ${errors.email ? 'error' : ''}`} placeholder="" />
                                     {errors.email && <span className="error-text">{errors.email}</span>}
                                 </div>
                                 <div className="checkout-input-group">
                                     <label className="checkout-label">{t('profile.phone')}</label>
-                                    <input required name="phone" value={formData.phone} onChange={handleInputChange} className={`checkout-input ${errors.phone ? 'error' : ''}`} placeholder="+212 600 000 000" />
+                                    <input required name="phone" value={formData.phone} onChange={handleInputChange} className={`checkout-input ${errors.phone ? 'error' : ''}`} placeholder="" />
                                     {errors.phone && <span className="error-text">{errors.phone}</span>}
                                 </div>
                                 <div className="checkout-input-group" style={{ gridColumn: 'span 2' }}>
                                     <label className="checkout-label">{t('profile.address')}</label>
-                                    <input required name="address" value={formData.address} onChange={handleInputChange} className={`checkout-input ${errors.address ? 'error' : ''}`} placeholder="123 Boulevard Mohammed V" />
+                                    <input required name="address" value={formData.address} onChange={handleInputChange} className={`checkout-input ${errors.address ? 'error' : ''}`} placeholder="" />
                                     {errors.address && <span className="error-text">{errors.address}</span>}
                                 </div>
                                 <div className="checkout-input-group">
                                     <label className="checkout-label">{t('profile.city')}</label>
-                                    <input required name="city" value={formData.city} onChange={handleInputChange} className="checkout-input" placeholder="Casablanca" />
+                                    <input required name="city" value={formData.city} onChange={handleInputChange} className="checkout-input" placeholder="" />
                                 </div>
                                 <div className="checkout-input-group">
                                     <label className="checkout-label">{t('profile.postal_code')}</label>
-                                    <input required name="postalCode" value={formData.postalCode} onChange={handleInputChange} className="checkout-input" placeholder="20000" />
+                                    <input required name="postalCode" value={formData.postalCode} onChange={handleInputChange} className="checkout-input" placeholder="" />
                                 </div>
                             </div>
                         </section>

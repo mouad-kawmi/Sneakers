@@ -182,7 +182,7 @@ const MessageManager = ({ messages, unreadMessagesCount }) => {
                                                 )}
                                                 <span style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text-main)' }}>{msg.subject}</span>
                                             </div>
-                                            <div style={{ fontSize: '13px', color: 'var(--text-main)', margin: '0', lineHeight: '1.6', background: 'var(--bg-app)', padding: '12px', borderRadius: '12px', border: '1px solid var(--border-subtle)' }}>
+                                            <div style={{ fontSize: '13px', color: 'var(--text-main)', margin: '0', lineHeight: '1.6', background: 'var(--bg-app)', padding: '12px', borderRadius: '12px', border: '1px solid var(--border-subtle)', wordBreak: 'break-word' }}>
                                                 {msg.message}
                                             </div>
                                         </div>

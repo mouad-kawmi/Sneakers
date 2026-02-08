@@ -266,4 +266,8 @@
     .brand-categories-title {
         font-size: 22px;
     }
+
+    .brand-nav-btn {
+        display: none !important;
+    }
 }

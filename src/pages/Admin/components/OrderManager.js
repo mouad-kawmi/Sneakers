@@ -265,8 +265,8 @@ const OrderManager = ({ orders }) => {
                             </div>
                             <div style={{ marginBottom: '12px' }}>
                                 <div style={{ fontWeight: 700, fontSize: '15px' }}>{o.customer?.fullName || o.customer?.name || t('admin.unknown_client')}</div>
-                                <div style={{ fontSize: '13px', color: 'var(--text-gray)' }}>{o.customer?.phone}</div>
-                                <div style={{ fontSize: '13px', color: 'var(--text-gray)', marginTop: '4px' }}>{o.customer?.city}</div>
+                                <div style={{ fontSize: '13px', color: 'var(--text-gray)', wordBreak: 'break-all' }}>{o.customer?.phone}</div>
+                                <div style={{ fontSize: '13px', color: 'var(--text-gray)', marginTop: '4px', wordBreak: 'break-word' }}>{o.customer?.city}</div>
                             </div>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '12px', borderTop: '1px solid var(--border-subtle)' }}>
                                 <div style={{ fontWeight: 800, fontSize: '16px' }}>{o.total} DH</div>

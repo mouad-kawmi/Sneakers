@@ -178,7 +178,7 @@ const ReviewManager = ({ reviews, products }) => {
                                             <Star key={i} size={14} fill={i < review.rating ? "#FFC107" : "none"} color="#FFC107" />
                                         ))}
                                     </div>
-                                    <p style={{ fontSize: '13px', color: 'var(--text-main)', margin: '0', lineHeight: '1.4' }}>
+                                    <p style={{ fontSize: '13px', color: 'var(--text-main)', margin: '0', lineHeight: '1.4', wordBreak: 'break-word' }}>
                                         {review.comment}
                                     </p>
                                 </div>

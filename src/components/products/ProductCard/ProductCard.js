@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Plus, Heart, Eye } from 'lucide-react';
+import { Plus, Heart, Eye, ShoppingBag } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -86,9 +86,9 @@ export const ProductCard = ({ product }) => {
                         }}
                         className={`product-action-btn btn-animate ${isTotalOutOfStock ? 'out-stock' : 'in-stock'}`}
                         disabled={isTotalOutOfStock}
-                        aria-label={isTotalOutOfStock ? t('product.out_stock') : t('product.choose_size')}
+                        aria-label={isTotalOutOfStock ? t('product.out_stock') : t('common.buy')}
                     >
-                        {isTotalOutOfStock ? t('product.out_stock') : <><Plus size={20} /> {t('product.size')}</>}
+                        {isTotalOutOfStock ? t('product.out_stock') : <><ShoppingBag size={18} /> {t('common.buy')}</>}
                     </button>
                 </div>
             </div>

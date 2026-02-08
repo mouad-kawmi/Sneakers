@@ -54,7 +54,7 @@ const SettingsManager = ({ products, content, reviews, orders }) => {
     return (
         <div className="admin-section">
             <h2 className="admin-section-title">{t('profile.settings')}</h2>
-            <div style={{ display: 'flex', gap: '20px' }}>
+            <div className="settings-actions">
                 <button onClick={handleExportData} className="btn-primary" style={{ background: '#1976d2' }}><Download size={18} /> {t('admin.export_data')}</button>
                 <label className="btn-primary" style={{ background: '#2e7d32', cursor: 'pointer' }}>
                     <Upload size={18} /> {t('admin.import_data')}
