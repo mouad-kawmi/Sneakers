@@ -2,7 +2,14 @@ import React, { useState, useEffect } from 'react';
 import Skeleton from '../Skeleton/Skeleton';
 import './SmartImage.css';
 
-const SmartImage = ({ src, alt = "Sneaker Sberdila", className = '', fallbackSrc = 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=1000&auto=format&fit=crop', ...props }) => {
+const SmartImage = ({
+    src,
+    alt = "Sneaker Sberdila",
+    className = '',
+    priority = false,
+    fallbackSrc = 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=1000&auto=format&fit=crop',
+    ...props
+}) => {
     const [isLoaded, setIsLoaded] = useState(false);
     const [imgSrc, setImgSrc] = useState(src);
     const [hasError, setHasError] = useState(false);
@@ -31,8 +38,9 @@ const SmartImage = ({ src, alt = "Sneaker Sberdila", className = '', fallbackSrc
                 alt={alt}
                 onLoad={() => setIsLoaded(true)}
                 onError={handleError}
-                loading="lazy"
-                decoding="async"
+                loading={priority ? "eager" : "lazy"}
+                fetchpriority={priority ? "high" : "low"}
+                decoding={priority ? "sync" : "async"}
                 className={`smart-image-img ${isLoaded ? 'visible' : 'hidden'}`}
                 {...props}
             />

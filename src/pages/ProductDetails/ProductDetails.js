@@ -136,7 +136,12 @@ const ProductDetails = () => {
             <div className="product-details-grid">
                 <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="product-details-image-section">
                     <div className="product-details-main-img-container">
-                        <SmartImage src={selectedImage || product.image} alt={product.name} className="product-details-main-img" />
+                        <SmartImage
+                            src={selectedImage || product.image}
+                            alt={product.name}
+                            className="product-details-main-img"
+                            priority={true}
+                        />
                     </div>
                     {/* Gallery Thumbnails */}
                     {(product.images && product.images.length > 0) && (
