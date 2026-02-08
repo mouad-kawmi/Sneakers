@@ -80,9 +80,9 @@ export const ProductCard = ({ product }) => {
                         }}
                         className={`product-action-btn btn-animate ${isTotalOutOfStock ? 'out-stock' : 'in-stock'}`}
                         disabled={isTotalOutOfStock}
-                        aria-label={isTotalOutOfStock ? t('product.out_stock') : t('common.buy')}
+                        aria-label={isTotalOutOfStock ? t('product.out_stock') : t('product.view_details')}
                     >
-                        {isTotalOutOfStock ? t('product.out_stock') : <><ShoppingBag size={18} /> {t('common.buy')}</>}
+                        {isTotalOutOfStock ? t('product.out_stock') : <><Eye size={18} /> {t('product.view_details')}</>}
                     </button>
                 </div>
             </div>
