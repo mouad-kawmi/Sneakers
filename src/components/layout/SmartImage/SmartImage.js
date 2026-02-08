@@ -15,6 +15,7 @@ const SmartImage = ({
     const [hasError, setHasError] = useState(false);
 
     useEffect(() => {
+        // Reset state when src changes
         setImgSrc(src);
         setHasError(false);
         setIsLoaded(false);
@@ -24,6 +25,9 @@ const SmartImage = ({
         if (!hasError) {
             setImgSrc(fallbackSrc);
             setHasError(true);
+            // We set isLoaded to true here to remove the skeleton 
+            // so the user can see the fallback or alt text
+            setIsLoaded(true);
         }
     };
 
