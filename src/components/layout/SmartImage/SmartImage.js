@@ -39,7 +39,7 @@ const SmartImage = ({
                 onLoad={() => setIsLoaded(true)}
                 onError={handleError}
                 loading={priority ? "eager" : "lazy"}
-                fetchpriority={priority ? "high" : "low"}
+                fetchPriority={priority ? "high" : "low"}
                 decoding={priority ? "sync" : "async"}
                 className={`smart-image-img ${isLoaded ? 'visible' : 'hidden'}`}
                 {...props}
