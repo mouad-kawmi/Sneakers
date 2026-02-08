@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Skeleton from '../Skeleton/Skeleton';
 import './SmartImage.css';
 
@@ -13,20 +13,32 @@ const SmartImage = ({
     const [isLoaded, setIsLoaded] = useState(false);
     const [imgSrc, setImgSrc] = useState(src);
     const [hasError, setHasError] = useState(false);
+    const imgRef = useRef(null);
 
+    // Initial check and reset when src changes
     useEffect(() => {
-        // Reset state when src changes
         setImgSrc(src);
         setHasError(false);
         setIsLoaded(false);
+
+        // If the image is already complete (e.g. from cache), trigger loaded state
+        if (imgRef.current && imgRef.current.complete) {
+            setIsLoaded(true);
+        }
     }, [src]);
+
+    const handleLoad = () => {
+        setIsLoaded(true);
+    };
 
     const handleError = () => {
         if (!hasError) {
             setImgSrc(fallbackSrc);
             setHasError(true);
-            // We set isLoaded to true here to remove the skeleton 
-            // so the user can see the fallback or alt text
+            // Don't set isLoaded to true yet, wait for fallback to load
+            // But if fallback or original is completely broken, we might want a timeout
+        } else {
+            // Even fallback failed
             setIsLoaded(true);
         }
     };
@@ -38,9 +50,10 @@ const SmartImage = ({
             aria-label={alt}
         >
             <img
+                ref={imgRef}
                 src={imgSrc || fallbackSrc}
                 alt={alt}
-                onLoad={() => setIsLoaded(true)}
+                onLoad={handleLoad}
                 onError={handleError}
                 loading={priority ? "eager" : "lazy"}
                 fetchPriority={priority ? "high" : "low"}
