@@ -1,14 +1,16 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { ShoppingCart, Truck, CreditCard, CheckCircle2 } from 'lucide-react';
 import './CheckoutProgress.css';
 
 const CheckoutProgress = ({ currentStep }) => {
+    const { t } = useTranslation();
     const steps = [
-        { id: 'cart', label: 'Panier', icon: ShoppingCart },
-        { id: 'shipping', label: 'Livraison', icon: Truck },
-        { id: 'payment', label: 'Paiement', icon: CreditCard },
-        { id: 'success', label: 'Confirmation', icon: CheckCircle2 }
+        { id: 'cart', label: t('checkout_progress.cart'), icon: ShoppingCart },
+        { id: 'shipping', label: t('checkout_progress.shipping'), icon: Truck },
+        { id: 'payment', label: t('checkout_progress.payment'), icon: CreditCard },
+        { id: 'success', label: t('checkout_progress.confirmation'), icon: CheckCircle2 }
     ];
 
     const getCurrentStepIndex = () => {

@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setFilters, clearFilters } from '../../../store/slices/productSlice';
+import { useTranslation } from 'react-i18next';
 import { X, ChevronDown, ChevronUp } from 'lucide-react';
 import './ProductFilters.css';
 
 const ProductFilters = ({ isOpen, onClose }) => {
+    const { t } = useTranslation();
     const dispatch = useDispatch();
     const filters = useSelector((state) => state.products?.filters || { minPrice: 0, maxPrice: 10000, sizes: [], brand: 'All', category: 'All' });
     const products = useSelector((state) => state.products?.items || []);
@@ -18,7 +20,8 @@ const ProductFilters = ({ isOpen, onClose }) => {
     }, [filters.minPrice, filters.maxPrice]);
 
     // Extract unique brands and sizes
-    const allBrands = Array.from(new Set((products || []).map(p => p?.brand).filter(Boolean))).sort();
+    const allBrandsList = useSelector((state) => state.content?.brands || []);
+    const allBrands = allBrandsList.map(b => b.name);
     const allSizes = Array.from(new Set((products || []).flatMap(p => p?.sizes?.map(s => s.size) || []))).sort((a, b) => a - b);
 
     const handleApplyPrice = () => {
@@ -36,14 +39,14 @@ const ProductFilters = ({ isOpen, onClose }) => {
     return (
         <aside className={`product-filters ${isOpen ? 'open' : ''}`}>
             <div className="filters-header-mobile">
-                <h3>Filtres</h3>
+                <h3>{t('filters.title')}</h3>
                 <button onClick={onClose} className="close-filters-btn"><X size={24} /></button>
             </div>
 
             <div className="filters-content">
                 {/* Category Section */}
                 <div className="filter-section">
-                    <h4 className="section-title">CATÉGORIES</h4>
+                    <h4 className="section-title">{t('filters.categories')}</h4>
                     <div className="category-options">
                         {['All', 'Men', 'Women', 'Kids'].map(cat => (
                             <label key={cat} className="brand-radio">
@@ -54,7 +57,7 @@ const ProductFilters = ({ isOpen, onClose }) => {
                                     onChange={() => dispatch(setFilters({ category: cat }))}
                                 />
                                 <span className="radio-dot"></span>
-                                {cat === 'All' ? 'Tout' : cat === 'Men' ? 'Hommes' : cat === 'Women' ? 'Femmes' : 'Enfants'}
+                                {cat === 'All' ? t('orders.all') : cat === 'Men' ? t('nav.men') : cat === 'Women' ? t('nav.women') : t('nav.kids')}
                             </label>
                         ))}
                     </div>
@@ -62,7 +65,7 @@ const ProductFilters = ({ isOpen, onClose }) => {
 
                 {/* Brand Section - Radio style as per mockup */}
                 <div className="filter-section">
-                    <h4 className="section-title">MARQUES</h4>
+                    <h4 className="section-title">{t('filters.brands')}</h4>
                     <div className="brand-options">
                         <label className="brand-radio">
                             <input
@@ -72,7 +75,7 @@ const ProductFilters = ({ isOpen, onClose }) => {
                                 onChange={() => dispatch(setFilters({ brand: 'All' }))}
                             />
                             <span className="radio-dot"></span>
-                            All
+                            {t('orders.all')}
                         </label>
                         {allBrands.map(brand => (
                             <label key={brand} className="brand-radio">
@@ -91,7 +94,7 @@ const ProductFilters = ({ isOpen, onClose }) => {
 
                 {/* Price Section */}
                 <div className="filter-section">
-                    <h4 className="section-title">PRIX (DH)</h4>
+                    <h4 className="section-title">{t('filters.price')}</h4>
                     <div className="price-inputs-row">
                         <input
                             type="number"
@@ -106,13 +109,13 @@ const ProductFilters = ({ isOpen, onClose }) => {
                         />
                     </div>
                     <button className="apply-price-btn btn-animate" onClick={handleApplyPrice}>
-                        Appliquer
+                        {t('filters.apply')}
                     </button>
                 </div>
 
                 {/* Size Section */}
                 <div className="filter-section">
-                    <h4 className="section-title">TAILLES</h4>
+                    <h4 className="section-title">{t('filters.sizes')}</h4>
                     <div className="size-grid-refined">
                         {allSizes.map(size => (
                             <button
@@ -127,7 +130,7 @@ const ProductFilters = ({ isOpen, onClose }) => {
                 </div>
 
                 <button className="reset-all-btn btn-animate" onClick={() => dispatch(clearFilters())}>
-                    Réinitialiser tout
+                    {t('filters.reset_all')}
                 </button>
             </div>
         </aside>

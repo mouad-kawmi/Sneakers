@@ -2,10 +2,22 @@
     height: 80px;
     background-color: var(--bg-card);
     border-bottom: 1px solid var(--border-subtle);
-    position: sticky;
+    position: fixed;
     top: 0;
-    z-index: 50;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 90;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.navbar.scrolled {
+    height: 65px;
+    background-color: rgba(var(--bg-card-rgb), 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border-bottom-color: rgba(var(--primary), 0.2);
 }
 
 .navbar-container {
@@ -21,6 +33,41 @@
 @media (max-width: 768px) {
     .navbar-container {
         padding: 0 12px;
+    }
+
+    .navbar-logo {
+        font-size: 18px !important;
+    }
+
+    .navbar-actions {
+        gap: 8px;
+        /* Slightly more space for touch targets */
+    }
+
+    .navbar-icon-btn {
+        padding: 8px;
+    }
+
+    /* Hide non-essential items on mobile */
+    .nav-btn-lang,
+    .nav-btn-theme,
+    .nav-btn-wishlist,
+    .navbar-user-profile {
+        display: none !important;
+    }
+
+    /* Ensure essential items are visible */
+    .nav-btn-search,
+    .nav-btn-cart,
+    .navbar-mobile-toggle,
+    .nav-btn-auth {
+        display: flex;
+    }
+
+    /* Hide auth button if user profile is hidden (logic in JS handles this but just in case) */
+    .nav-btn-auth {
+        display: none !important;
+        /* Move auth to drawer entirely on mobile */
     }
 
     .navbar-logo {
@@ -119,15 +166,23 @@
     color: var(--primary);
 }
 
-.navbar-admin-notif-dot {
+.navbar-admin-notif-badge {
     position: absolute;
-    top: -4px;
-    right: -8px;
-    width: 8px;
-    height: 8px;
-    background: #FF4757;
-    border-radius: 50%;
+    top: -6px;
+    right: -12px;
+    background-color: #FF4757;
+    color: white;
+    font-size: 10px;
+    font-weight: 800;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border: 2px solid var(--bg-card);
+    box-shadow: 0 2px 5px rgba(255, 71, 87, 0.4);
 }
 
 .navbar-icon-btn:hover {

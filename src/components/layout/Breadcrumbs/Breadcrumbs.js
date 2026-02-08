@@ -1,10 +1,12 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 import { ChevronRight, Home } from 'lucide-react';
 import { ROUTES } from '../../../constants/routes';
 import './Breadcrumbs.css';
 
 const Breadcrumbs = ({ customLinks = [] }) => {
+    const { t } = useTranslation();
     const location = useLocation();
     const pathnames = location.pathname.split('/').filter((x) => x);
 
@@ -15,7 +17,7 @@ const Breadcrumbs = ({ customLinks = [] }) => {
         <nav className="breadcrumbs container">
             <Link to={ROUTES.HOME} className="breadcrumb-item home">
                 <Home size={16} />
-                <span>Accueil</span>
+                <span>{t('nav.home')}</span>
             </Link>
 
             {pathnames.map((name, index) => {
@@ -29,13 +31,13 @@ const Breadcrumbs = ({ customLinks = [] }) => {
 
                 // Map known categories
                 const categoryNames = {
-                    'Men': 'Hommes',
-                    'Women': 'Femmes',
-                    'Kids': 'Enfants',
-                    'contact': 'Contact',
-                    'search': 'Recherche',
-                    'profile': 'Mon Profil',
-                    'checkout': 'Paiement'
+                    'Men': t('nav.men'),
+                    'Women': t('nav.women'),
+                    'Kids': t('nav.kids'),
+                    'contact': t('nav.contact'),
+                    'search': t('nav.search'),
+                    'profile': t('nav.user_profile'),
+                    'checkout': t('nav.checkout')
                 };
                 displayName = categoryNames[name] || name;
 

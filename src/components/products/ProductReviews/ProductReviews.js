@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Star, Send, User } from 'lucide-react';
@@ -8,9 +9,10 @@ import { getProductReviewsPath } from '../../../constants/routes';
 import './ProductReviews.css';
 
 const ProductReviews = ({ productId }) => {
+    const { t } = useTranslation();
     const dispatch = useDispatch();
-    const allReviews = useSelector(state => state.reviews.items);
-    const productReviews = allReviews.filter(r => r.productId === productId);
+    const allReviews = useSelector(state => state.reviews?.items || []);
+    const productReviews = Array.isArray(allReviews) ? allReviews.filter(r => r.productId === productId) : [];
 
     const [rating, setRating] = useState(5);
     const [hoverRating, setHoverRating] = useState(0);
@@ -49,7 +51,7 @@ const ProductReviews = ({ productId }) => {
         <div className="reviews-container">
             <div className="reviews-header">
                 <div className="reviews-header-left">
-                    <h2 className="reviews-title">Avis Clients</h2>
+                    <h2 className="reviews-title">{t('reviews.title')}</h2>
                     <div className="reviews-score-box">
                         <span className="reviews-average">{averageRating}</span>
                         <div className="reviews-stars">
@@ -62,7 +64,7 @@ const ProductReviews = ({ productId }) => {
                                 />
                             ))}
                         </div>
-                        <span className="reviews-count">({productReviews.length} avis)</span>
+                        <span className="reviews-count">({productReviews.length} {t('product.reviews').toLowerCase()})</span>
                     </div>
                 </div>
                 {!showForm && (
@@ -70,7 +72,7 @@ const ProductReviews = ({ productId }) => {
                         onClick={() => setShowForm(true)}
                         className="reviews-write-btn"
                     >
-                        Donner mon avis
+                        {t('reviews.write_review')}
                     </button>
                 )}
             </div>
@@ -84,10 +86,10 @@ const ProductReviews = ({ productId }) => {
                         className="reviews-form-wrapper"
                     >
                         <form onSubmit={handleSubmit} className="reviews-form">
-                            <h3 className="reviews-form-title">Laissez un avis</h3>
+                            <h3 className="reviews-form-title">{t('reviews.leave_review')}</h3>
 
                             <div className="reviews-rating-selector">
-                                <label className="reviews-label">Votre note :</label>
+                                <label className="reviews-label">{t('reviews.your_rating')}</label>
                                 <div className="reviews-star-rack">
                                     {[1, 2, 3, 4, 5].map((num) => (
                                         <Star
@@ -105,10 +107,10 @@ const ProductReviews = ({ productId }) => {
                             </div>
 
                             <div className="reviews-input-group">
-                                <label className="reviews-label">Nom complet</label>
+                                <label className="reviews-label">{t('profile.full_name')}</label>
                                 <input
                                     type="text"
-                                    placeholder="Votre nom"
+                                    placeholder={t('reviews.placeholder_name')}
                                     value={userName}
                                     onChange={(e) => setUserName(e.target.value)}
                                     className="reviews-input"
@@ -117,9 +119,9 @@ const ProductReviews = ({ productId }) => {
                             </div>
 
                             <div className="reviews-input-group">
-                                <label className="reviews-label">Commentaire</label>
+                                <label className="reviews-label">{t('product.description')}</label>
                                 <textarea
-                                    placeholder="Partagez votre expérience avec ce produit..."
+                                    placeholder={t('reviews.placeholder_comment')}
                                     value={comment}
                                     onChange={(e) => setComment(e.target.value)}
                                     className="reviews-textarea"
@@ -134,14 +136,14 @@ const ProductReviews = ({ productId }) => {
                                     className="reviews-submit-btn"
                                     style={{ background: isSubmitted ? '#2ED573' : 'var(--primary)' }}
                                 >
-                                    {isSubmitted ? "Envoyé !" : <><Send size={18} /> Publier l'avis</>}
+                                    {isSubmitted ? t('reviews.sent') : <><Send size={18} /> {t('reviews.publish')}</>}
                                 </button>
                                 <button
                                     type="button"
                                     onClick={() => setShowForm(false)}
                                     className="reviews-cancel-btn"
                                 >
-                                    Annuler
+                                    {t('common.cancel')}
                                 </button>
                             </div>
                         </form>
@@ -152,7 +154,7 @@ const ProductReviews = ({ productId }) => {
             <div className="reviews-list">
                 {productReviews.length === 0 ? (
                     <div className="reviews-empty">
-                        Aucun avis pour le moment. Soyez le premier à partager votre expérience !
+                        {t('reviews.empty')}
                     </div>
                 ) : (
                     <>
@@ -191,7 +193,7 @@ const ProductReviews = ({ productId }) => {
                                 to={getProductReviewsPath(productId)}
                                 className="reviews-view-all-btn"
                             >
-                                Voir tous les avis ({productReviews.length})
+                                {t('reviews.view_all', { count: productReviews.length })}
                             </Link>
                         )}
                     </>

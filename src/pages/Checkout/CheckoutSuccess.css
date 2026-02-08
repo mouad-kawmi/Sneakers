@@ -1,0 +1,130 @@
+/* Success Page Mobile Optimization */
+@media (max-width: 768px) {
+    .checkout-success-page {
+        padding: 20px;
+        min-height: 60vh;
+        align-items: flex-start;
+        /* Align to top on mobile so it doesn't feel centered in a potentially tall scroll view */
+        padding-top: 40px;
+    }
+
+    .checkout-success-card {
+        padding: 32px 20px !important;
+        border-radius: 24px !important;
+        margin-bottom: 100px;
+        /* Space for bottom nav */
+    }
+
+    .checkout-success-title {
+        font-size: 24px;
+        margin-bottom: 12px;
+    }
+
+    .checkout-success-msg {
+        font-size: 15px;
+        margin-bottom: 24px;
+    }
+
+    .checkout-pdf-section {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 16px;
+        padding: 16px;
+        text-align: center;
+    }
+
+    .checkout-pdf-info {
+        flex-direction: column;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .checkout-download-btn {
+        width: 100%;
+        justify-content: center;
+        height: 48px;
+    }
+
+    .checkout-primary-btn {
+        height: 56px;
+        font-size: 16px;
+    }
+
+    .checkout-email-confirmation {
+        padding: 16px !important;
+        margin: 16px 0 !important;
+    }
+
+    .checkout-email-info-flex {
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+    }
+
+    .checkout-email-icon-box {
+        margin-bottom: 8px;
+    }
+}
+
+/* Base Success styles (for components without existing classes) */
+.checkout-email-confirmation {
+    background: rgba(var(--bg-card-rgb), 0.4);
+    padding: 24px;
+    border-radius: 20px;
+    margin: 24px 0;
+    border: 1px solid var(--border-subtle);
+    text-align: left;
+}
+
+.checkout-email-info-flex {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.checkout-email-icon-box {
+    background: var(--primary);
+    border-radius: 50%;
+    padding: 10px;
+    display: flex;
+    flex-shrink: 0;
+}
+
+.checkout-email-title {
+    margin: 0 0 8px 0;
+    color: var(--primary);
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.checkout-email-text {
+    margin: 0 0 16px 0;
+    font-size: 14px;
+    color: var(--text-main);
+    line-height: 1.6;
+}
+
+.checkout-order-details-box {
+    background: var(--bg-app);
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 13px;
+    color: var(--text-gray);
+}
+
+.checkout-pdf-text-box {
+    text-align: left;
+}
+
+.checkout-pdf-title {
+    font-weight: 800;
+    margin: 0;
+    font-size: 14px;
+    color: var(--text-main);
+}
+
+.checkout-pdf-format {
+    font-size: 12px;
+    color: var(--text-gray);
+    margin: 0;
+}

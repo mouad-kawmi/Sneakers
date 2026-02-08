@@ -1,10 +1,12 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useTranslation } from 'react-i18next';
 
 const SEO = ({ title, description, image, url, type = 'website', schema }) => {
+    const { t } = useTranslation();
     const siteName = 'Sberdila';
     const fullTitle = title ? `${title} | ${siteName}` : siteName;
-    const defaultDescription = 'Découvrez la meilleure sélection de sneakers au Maroc chez Sberdila. Qualité premium, livraison rapide.';
+    const defaultDescription = t('seo.default_description');
     const metaDescription = description || defaultDescription;
     const siteUrl = 'https://sberdila.com'; // Adjust when deployed
     const fullUrl = url ? `${siteUrl}${url}` : siteUrl;

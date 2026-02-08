@@ -1,0 +1,1153 @@
+.profile-page-container {
+    margin-top: 120px;
+    margin-bottom: 80px;
+    padding-bottom: 20px;
+}
+
+.profile-grid {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 40px;
+    align-items: start;
+}
+
+
+.profile-sidebar {
+    background: var(--bg-card);
+    border-radius: 24px;
+    padding: 24px;
+    height: fit-content;
+    box-shadow: var(--shadow-clean);
+    border: 1px solid var(--border-subtle);
+}
+
+.profile-avatar-container {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.profile-avatar-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary) 0%, #7E22CE 100%);
+    margin: 0 auto 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    box-shadow: var(--shadow-glow);
+}
+
+.profile-user-name {
+    font-size: 20px;
+    font-weight: 800;
+    margin: 0 0 4px;
+    color: var(--text-main);
+}
+
+.profile-user-email {
+    font-size: 14px;
+    color: var(--text-gray);
+    margin: 0;
+}
+
+.profile-nav-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 32px;
+}
+
+.profile-nav-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    background: transparent;
+    color: var(--text-gray);
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+    text-align: left;
+    font-family: inherit;
+    font-size: 15px;
+}
+
+.profile-nav-btn:hover {
+    background: rgba(var(--primary-rgb, 147, 51, 234), 0.05);
+    color: var(--primary);
+}
+
+.profile-nav-btn.active {
+    background: rgba(var(--primary-rgb, 147, 51, 234), 0.1);
+    color: var(--primary);
+}
+
+.profile-nav-btn.logout {
+    color: #ff4757;
+    margin-top: 12px;
+}
+
+.profile-nav-btn.logout:hover {
+    background: rgba(255, 71, 87, 0.05);
+}
+
+.profile-content-area {
+    min-height: 500px;
+}
+
+.order-history-title {
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 24px;
+    color: var(--text-main);
+}
+
+.order-filter-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    padding-left: 2px;
+    padding-right: 2px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+}
+
+.order-filter-tabs::-webkit-scrollbar {
+    display: none;
+}
+
+.order-filter-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    border-radius: 20px;
+    background: var(--bg-card);
+    color: var(--text-gray);
+    border: 1px solid var(--border-subtle);
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 13px;
+    transition: all 0.2s;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.order-filter-btn svg {
+    flex-shrink: 0;
+}
+
+.order-filter-btn.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+    box-shadow: 0 2px 8px rgba(var(--primary-rgb, 147, 51, 234), 0.3);
+}
+
+.orders-list {
+    display: grid;
+    gap: 20px;
+}
+
+.order-card {
+    background: var(--bg-card);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: var(--shadow-clean);
+    border: 1px solid var(--border-subtle);
+    transition: transform 0.2s ease;
+}
+
+.order-card:hover {
+    transform: translateY(-2px);
+}
+
+.order-card-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-subtle);
+    gap: 12px;
+}
+
+.order-info {
+    min-width: 0;
+}
+
+.order-id {
+    font-weight: 800;
+    color: var(--text-main);
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.order-date {
+    font-size: 12px;
+    color: var(--text-gray);
+}
+
+.order-status-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    height: fit-content;
+    white-space: nowrap;
+}
+
+.order-items-preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.order-item-thumbnail {
+    position: relative;
+    width: 50px;
+    height: 50px;
+}
+
+.order-item-thumbnail img {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    object-fit: cover;
+    background: var(--bg-app);
+}
+
+.order-item-qty {
+    position: absolute;
+    bottom: -5px;
+    right: -5px;
+    background: var(--primary);
+    color: white;
+    font-size: 9px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    border: 2px solid var(--bg-card);
+}
+
+.order-items-more {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    background: var(--bg-app);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-gray);
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.order-card-footer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.order-total-box {
+    text-align: right;
+}
+
+.order-total-label {
+    display: block;
+    font-size: 12px;
+    color: var(--text-gray);
+}
+
+.order-total-amount {
+    font-weight: 800;
+    font-size: 18px;
+    color: var(--primary);
+}
+
+.order-load-more-btn {
+    width: 100%;
+    padding: 16px;
+    border-radius: 16px;
+    background: var(--bg-card);
+    color: var(--text-main);
+    border: 2px dashed var(--border-subtle);
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.order-sorting-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+
+.sort-label {
+    font-size: 13px;
+    color: var(--text-gray);
+    font-weight: 600;
+}
+
+.sort-options {
+    display: flex;
+    gap: 8px;
+}
+
+.sort-badge-btn {
+    padding: 6px 14px;
+    border-radius: 20px;
+    background: transparent;
+    color: var(--text-gray);
+    border: 1px solid var(--border-subtle);
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.sort-badge-btn.active {
+    background: var(--text-main);
+    color: var(--bg-card);
+    border-color: var(--text-main);
+}
+
+.profile-card {
+    background: var(--bg-card);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: var(--shadow-clean);
+    border: 1px solid var(--border-subtle);
+}
+
+.profile-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.profile-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.profile-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-gray);
+}
+
+.profile-input {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border-subtle);
+    font-size: 14px;
+    background: var(--bg-app);
+    color: var(--text-main);
+    transition: all 0.2s;
+    font-family: inherit;
+}
+
+.profile-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: var(--bg-card);
+}
+
+.profile-input:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.profile-address-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.profile-address-card {
+    padding: 16px;
+    border-radius: 12px;
+    border: 1px solid var(--border-subtle);
+    background: var(--bg-card);
+    position: relative;
+    transition: all 0.2s;
+}
+
+.profile-address-card.default {
+    border: 2px solid var(--primary);
+    background: rgba(var(--primary-rgb), 0.05);
+}
+
+.profile-address-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: var(--primary);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.profile-setting-toast {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    color: white;
+    padding: 16px 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    font-weight: 600;
+}
+
+.profile-settings-grid {
+    display: grid;
+    gap: 24px;
+}
+
+/* Auth Card Styles */
+.profile-auth-card {
+    background: var(--bg-card);
+    padding: 60px;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-subtle);
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.profile-auth-icon {
+    color: var(--text-gray);
+    margin-bottom: 24px;
+    opacity: 0.3;
+}
+
+.profile-auth-title {
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 16px;
+}
+
+.profile-auth-text {
+    color: var(--text-gray);
+    margin-bottom: 32px;
+}
+
+/* Responsive Breakpoints */
+/* Large Tablet Breakpoint (992px - 1200px) */
+@media (max-width: 1200px) and (min-width: 993px) {
+    .profile-page-container {
+        padding-left: 24px;
+        padding-right: 24px;
+    }
+
+    .profile-grid {
+        grid-template-columns: 260px 1fr;
+        gap: 32px;
+    }
+
+    .profile-sidebar {
+        padding: 20px;
+    }
+}
+
+/* Tablet Breakpoint (768px - 992px) */
+@media (max-width: 992px) {
+    .profile-page-container {
+        margin-top: 100px;
+        margin-bottom: 60px;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    .profile-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .profile-sidebar {
+        position: sticky;
+        top: 80px;
+        z-index: 80;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 16px;
+        border-radius: 16px;
+        gap: 12px;
+        background: var(--bg-card);
+        border: 1px solid var(--border-subtle);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        margin-bottom: 8px;
+    }
+
+    .profile-avatar-container {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 0;
+        text-align: left;
+        flex-shrink: 0;
+    }
+
+    .profile-avatar-circle {
+        width: 44px;
+        height: 44px;
+        margin: 0;
+    }
+
+    .profile-avatar-circle svg {
+        width: 22px;
+        height: 22px;
+    }
+
+    .profile-user-name {
+        font-size: 15px;
+        font-weight: 700;
+        white-space: nowrap;
+        max-width: 140px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .profile-user-email {
+        display: none;
+    }
+
+    .profile-nav-list {
+        margin-top: 0;
+        flex-direction: row;
+        overflow-x: auto;
+        gap: 8px;
+        scrollbar-width: none;
+        flex: 1;
+        justify-content: flex-end;
+        padding: 2px;
+    }
+
+    .profile-nav-list::-webkit-scrollbar {
+        display: none;
+    }
+
+    .profile-nav-btn {
+        padding: 10px 16px;
+        font-size: 14px;
+        white-space: nowrap;
+        border-radius: 10px;
+        min-height: 40px;
+    }
+
+    .profile-nav-btn.logout {
+        margin-top: 0;
+        background: rgba(255, 71, 87, 0.05);
+    }
+
+    .order-history-title {
+        font-size: 22px;
+        margin-bottom: 20px;
+    }
+
+    .order-filter-tabs {
+        gap: 10px;
+        margin-bottom: 16px;
+        padding-bottom: 8px;
+    }
+
+    .order-filter-btn {
+        padding: 10px 16px;
+        font-size: 13px;
+    }
+
+    .order-card {
+        padding: 20px;
+        border-radius: 16px;
+    }
+
+    .order-card-header {
+        gap: 12px;
+        margin-bottom: 16px;
+        padding-bottom: 16px;
+    }
+
+    .order-status-badge {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+
+    .profile-card {
+        padding: 24px;
+        border-radius: 16px;
+    }
+
+    .profile-address-form-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+}
+
+/* Mobile Breakpoint (max-width: 768px) */
+@media (max-width: 768px) {
+    .profile-page-container {
+        margin-top: 85px;
+        margin-bottom: 80px;
+        padding-left: 16px;
+        padding-right: 16px;
+        padding-bottom: 20px;
+    }
+
+    .profile-sidebar {
+        top: 75px;
+        padding: 10px 12px;
+        gap: 10px;
+        border-radius: 14px;
+    }
+
+    .profile-avatar-circle {
+        width: 38px;
+        height: 38px;
+    }
+
+    .profile-avatar-circle svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .profile-user-name {
+        font-size: 14px;
+        max-width: 100px;
+    }
+
+    .profile-nav-btn {
+        padding: 8px 14px;
+        font-size: 13px;
+        min-height: 38px;
+    }
+
+    .profile-nav-btn span {
+        display: inline;
+    }
+
+    .order-card {
+        padding: 16px;
+        border-radius: 14px;
+        margin-bottom: 12px;
+    }
+
+    .order-card-header {
+        flex-direction: row;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 14px;
+        padding-bottom: 12px;
+    }
+
+    .order-info {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .order-id {
+        font-size: 14px;
+    }
+
+    .order-date {
+        font-size: 12px;
+    }
+
+    .order-status-badge {
+        padding: 5px 10px;
+        font-size: 11px;
+    }
+
+    .order-items-preview {
+        gap: 10px;
+        margin-bottom: 14px;
+    }
+
+    .order-item-thumbnail {
+        width: 48px;
+        height: 48px;
+    }
+
+    .order-items-more {
+        width: 48px;
+        height: 48px;
+    }
+
+    .order-total-label {
+        font-size: 12px;
+    }
+
+    .order-total-amount {
+        font-size: 16px;
+    }
+
+    .profile-card {
+        padding: 20px;
+        border-radius: 14px;
+    }
+
+    .profile-address-form-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .order-history-title {
+        font-size: 20px;
+        margin-bottom: 16px;
+    }
+
+    .order-filter-tabs {
+        gap: 8px;
+        padding-bottom: 8px;
+        margin-bottom: 12px;
+    }
+
+    .order-filter-btn {
+        padding: 8px 14px;
+        font-size: 12px;
+    }
+
+    .order-sorting-row {
+        gap: 8px;
+        margin-bottom: 16px;
+    }
+
+    .sort-label {
+        font-size: 12px;
+    }
+
+    .sort-badge-btn {
+        padding: 5px 12px;
+        font-size: 12px;
+    }
+}
+
+/* Small Mobile Breakpoint (max-width: 600px) */
+@media (max-width: 600px) {
+    .profile-page-container {
+        margin-top: 80px;
+        margin-bottom: 100px;
+        padding-left: 12px;
+        padding-right: 12px;
+        padding-bottom: 20px;
+    }
+
+    /* Hide breadcrumbs on mobile */
+    .breadcrumbs {
+        display: none;
+    }
+
+    .profile-sidebar {
+        display: block;
+
+        position: relative;
+        top: 0;
+        padding: 0;
+
+        border-radius: 16px;
+        gap: 0;
+        margin-bottom: 24px;
+        overflow: hidden;
+
+        background: var(--bg-card);
+        border: 1px solid var(--border-subtle);
+    }
+
+    .profile-avatar-container {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+        padding: 16px;
+        border-right: none;
+        border-bottom: 1px solid var(--border-subtle);
+        background: rgba(var(--primary-rgb, 147, 51, 234), 0.03);
+    }
+
+    .profile-nav-list {
+        display: flex;
+        flex-direction: column;
+        
+        gap: 6px;
+        padding: 10px 12px;
+        width: 100%;
+        overflow-x: visible;
+        margin-top: 0;
+    }
+
+    .profile-nav-btn {
+        padding: 6px 12px;
+        /* Très compact */
+        font-size: 13px;
+        min-height: 32px;
+        /* Hauteur réduite */
+        border-radius: 8px;
+        /* Moins arrondi pour empiler */
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: transparent;
+        /* Fond transparent par défaut pour légèreté */
+        border: none;
+        /* Pas de bordure pour alléger */
+        color: var(--text-gray);
+        white-space: nowrap;
+        width: 100%;
+    }
+
+    .profile-nav-btn.active {
+        background: rgba(var(--primary-rgb, 147, 51, 234), 0.1);
+        color: var(--primary);
+        font-weight: 700;
+    }
+
+    .profile-nav-btn:not(.active):hover {
+        background: rgba(0, 0, 0, 0.03);
+    }
+
+    .profile-nav-btn svg {
+        width: 16px;
+        height: 16px;
+        opacity: 0.8;
+    }
+
+    .profile-avatar-circle {
+        width: 32px;
+        height: 32px;
+    }
+
+    .profile-avatar-circle svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .profile-user-name {
+        font-size: 13px;
+        max-width: 80px;
+    }
+
+    .profile-grid {
+        gap: 14px;
+    }
+
+    .order-card {
+        padding: 14px;
+        border-radius: 12px;
+        margin-bottom: 10px;
+    }
+
+    .order-card-header {
+        margin-bottom: 12px;
+        padding-bottom: 10px;
+        gap: 8px;
+    }
+
+    .order-id {
+        font-size: 13px;
+    }
+
+    .order-date {
+        font-size: 11px;
+    }
+
+    .order-status-badge {
+        padding: 4px 8px;
+        font-size: 10px;
+    }
+
+    .order-status-badge svg {
+        width: 12px;
+        height: 12px;
+    }
+
+    .order-items-preview {
+        gap: 8px;
+        margin-bottom: 12px;
+    }
+
+    .order-item-thumbnail {
+        width: 44px;
+        height: 44px;
+        border-radius: 6px;
+    }
+
+    .order-item-thumbnail img {
+        border-radius: 6px;
+    }
+
+    .order-items-more {
+        width: 44px;
+        height: 44px;
+        border-radius: 6px;
+        font-size: 11px;
+    }
+
+    .order-item-qty {
+        width: 16px;
+        height: 16px;
+        font-size: 8px;
+        bottom: -4px;
+        right: -4px;
+    }
+
+    .order-total-label {
+        font-size: 11px;
+    }
+
+    .order-total-amount {
+        font-size: 15px;
+    }
+
+    .profile-card {
+        padding: 16px;
+        border-radius: 12px;
+    }
+
+    .profile-card-header {
+        margin-bottom: 14px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .profile-card-header h3 {
+        font-size: 16px;
+    }
+
+    .profile-input-group {
+        margin-bottom: 12px;
+    }
+
+    .profile-label {
+        font-size: 13px;
+    }
+
+    .profile-input {
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+
+    .profile-address-form-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .profile-auth-card {
+        padding: 32px 20px;
+        margin: 16px auto;
+        border-radius: 16px;
+    }
+
+    .profile-auth-icon {
+        margin-bottom: 20px;
+    }
+
+    .profile-auth-icon svg {
+        width: 48px;
+        height: 48px;
+    }
+
+    .profile-auth-title {
+        font-size: 20px;
+        margin-bottom: 12px;
+    }
+
+    .profile-auth-text {
+        font-size: 14px;
+        margin-bottom: 24px;
+    }
+
+    .order-history-title {
+        font-size: 18px;
+        margin-bottom: 14px;
+    }
+
+    .order-filter-tabs {
+        margin-bottom: 14px;
+        gap: 8px;
+        padding-left: 0;
+        padding-right: 0;
+        padding-bottom: 0;
+        flex-wrap: wrap;
+        /* Permet aux boutons de passer à la ligne */
+        overflow-x: visible;
+        /* Désactive le scroll */
+        justify-content: flex-start;
+        /* Aligne au début */
+    }
+
+    .order-filter-btn {
+        padding: 8px 12px;
+        font-size: 12px;
+        border-radius: 16px;
+    }
+
+    .order-filter-btn svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    .order-sorting-row {
+        gap: 6px;
+        margin-bottom: 14px;
+        flex-wrap: wrap;
+    }
+
+    .sort-label {
+        font-size: 11px;
+    }
+
+    .sort-badge-btn {
+        padding: 5px 10px;
+        font-size: 11px;
+    }
+
+    .order-load-more-btn {
+        padding: 14px;
+        font-size: 13px;
+        border-radius: 12px;
+    }
+
+    .profile-setting-toast {
+        top: 80px;
+        right: 12px;
+        left: 12px;
+        padding: 12px 16px;
+        font-size: 13px;
+    }
+}
+
+/* Extra Small Mobile (max-width: 400px) */
+@media (max-width: 400px) {
+    .profile-page-container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .profile-sidebar {
+        position: relative;
+        /* On enlève le sticky qui peut gêner sur mobile selon les préférences */
+        top: 0;
+        padding: 12px 16px;
+        border-radius: 16px;
+        gap: 12px;
+        margin-bottom: 20px;
+        flex-direction: column;
+        /* On remet en colonne si c'est ce qui était préféré, ou row avec wrap */
+        align-items: flex-start;
+    }
+
+    .profile-avatar-container {
+        gap: 16px;
+        width: 100%;
+        border-bottom: 1px solid var(--border-subtle);
+        padding-bottom: 12px;
+        margin-bottom: 4px;
+    }
+
+    .profile-nav-list {
+        width: 100%;
+        justify-content: flex-start;
+        overflow-x: auto;
+        padding-bottom: 4px;
+        /* Pour le scrollbar éventuel */
+    }
+
+    .profile-nav-btn {
+        padding: 10px 16px;
+        font-size: 14px;
+        min-height: 44px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex: 0 0 auto;
+        /* Empêche le rétrécissement */
+        background: var(--bg-app);
+        /* Fond léger pour mieux distinguer */
+    }
+
+    .profile-nav-btn span {
+        display: inline !important;
+        /* On force l'affichage du texte */
+    }
+
+    .profile-nav-btn svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .profile-avatar-circle {
+        width: 48px;
+        height: 48px;
+    }
+
+    .profile-avatar-circle svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    .profile-user-name {
+        font-size: 16px;
+        max-width: 100%;
+    }
+
+    .order-card {
+        padding: 12px;
+    }
+
+    .profile-card {
+        padding: 14px;
+    }
+
+    .order-history-title {
+        font-size: 16px;
+    }
+
+    .order-filter-btn {
+        padding: 6px 10px;
+        font-size: 11px;
+    }
+
+    .order-id {
+        font-size: 12px;
+    }
+
+    .order-item-thumbnail {
+        width: 40px;
+        height: 40px;
+    }
+
+    .order-items-more {
+        width: 40px;
+        height: 40px;
+    }
+}

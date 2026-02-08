@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, ShoppingBag, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { toggleWishlist } from '../../store/slices/wishlistSlice';
 import { addToCart } from '../../store/slices/cartSlice';
 import SmartImage from '../../components/layout/SmartImage/SmartImage';
@@ -10,6 +11,7 @@ import SEO from '../../components/layout/SEO/SEO';
 import './Wishlist.css';
 
 const Wishlist = () => {
+    const { t } = useTranslation();
     const wishlistItems = useSelector(state => state.wishlist.items);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -20,12 +22,12 @@ const Wishlist = () => {
 
     return (
         <div className="wishlist-page">
-            <SEO title="Mes Favoris - Sberdila" />
+            <SEO title={t('seo.wishlist_title')} />
             <div className="container">
                 <header className="wishlist-header">
                     <Heart size={32} className="wishlist-icon" />
-                    <h1 className="wishlist-title">Mes Favoris</h1>
-                    <p className="wishlist-subtitle">Retrouvez toutes les paires qui vous ont fait craquer.</p>
+                    <h1 className="wishlist-title">{t('wishlist_page.title')}</h1>
+                    <p className="wishlist-subtitle">{t('wishlist_page.subtitle')}</p>
                 </header>
 
                 {wishlistItems.length === 0 ? (
@@ -37,10 +39,10 @@ const Wishlist = () => {
                         <div className="empty-icon-wrapper">
                             <Heart size={64} strokeWidth={1} />
                         </div>
-                        <h2>Votre liste est vide</h2>
-                        <p>Explorez notre collection et ajoutez vos coups de cœur ici !</p>
+                        <h2>{t('wishlist_page.empty')}</h2>
+                        <p>{t('wishlist_page.empty_desc')}</p>
                         <button onClick={() => navigate('/')} className="explore-btn">
-                            Explorer la collection
+                            {t('wishlist_page.explore')}
                         </button>
                     </motion.div>
                 ) : (
@@ -63,7 +65,7 @@ const Wishlist = () => {
                                                 e.stopPropagation();
                                                 dispatch(toggleWishlist(item));
                                             }}
-                                            aria-label="Retirer des favoris"
+                                            aria-label={t('wishlist_page.remove')}
                                         >
                                             <Trash2 size={18} />
                                         </button>
@@ -77,7 +79,7 @@ const Wishlist = () => {
                                                 className="wishlist-add-cart-btn"
                                                 onClick={() => handleAddToCart(item)}
                                             >
-                                                <ShoppingBag size={18} /> Ajouter
+                                                <ShoppingBag size={18} /> {t('common.add')}
                                             </button>
                                         </div>
                                     </div>

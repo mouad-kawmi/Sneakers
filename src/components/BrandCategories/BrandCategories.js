@@ -1,11 +1,13 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { setFilters, clearFilters } from '../../store/slices/productSlice';
 import './BrandCategories.css';
 
 const BrandCategories = ({ category = 'All' }) => {
+    const { t } = useTranslation();
     const dispatch = useDispatch();
     const brands = useSelector((state) => state.content.brands);
     const products = useSelector(state => state.products?.items || []);
@@ -29,19 +31,55 @@ const BrandCategories = ({ category = 'All' }) => {
         }).length;
     };
 
+    const scrollContainerRef = React.useRef(null);
+
+    const scroll = (direction) => {
+        if (scrollContainerRef.current) {
+            const scrollAmount = 300;
+            const newScrollLeft = direction === 'left'
+                ? scrollContainerRef.current.scrollLeft - scrollAmount
+                : scrollContainerRef.current.scrollLeft + scrollAmount;
+
+            scrollContainerRef.current.scrollTo({
+                left: newScrollLeft,
+                behavior: 'smooth'
+            });
+        }
+    };
+
     return (
         <div className="container brand-categories-container">
             <div className="brand-categories-header">
-                <h2 className="brand-categories-title">Parcourir par Marque</h2>
-                <button
-                    onClick={() => dispatch(clearFilters())}
-                    className="brand-view-all-btn"
-                >
-                    Voir Tout <ArrowUpRight size={18} />
-                </button>
+                <h2 className="brand-categories-title">{t('brands.browse')}</h2>
+                <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                    <button
+                        onClick={() => scroll('left')}
+                        className="brand-nav-btn"
+                        aria-label="Previous brands"
+                    >
+                        <ChevronLeft size={24} />
+                    </button>
+                    <button
+                        onClick={() => scroll('right')}
+                        className="brand-nav-btn"
+                        aria-label="Next brands"
+                    >
+                        <ChevronRight size={24} />
+                    </button>
+                    <button
+                        onClick={() => dispatch(clearFilters())}
+                        className="brand-view-all-btn"
+                        style={{ marginLeft: '12px' }}
+                    >
+                        {t('brands.view_all')} <ArrowUpRight size={18} />
+                    </button>
+                </div>
             </div>
 
-            <div className="brand-grid">
+            <div
+                className="brand-slider"
+                ref={scrollContainerRef}
+            >
                 {brands.map((brand) => {
                     const isActive = currentFilters.brand === brand.name;
                     return (
@@ -78,12 +116,12 @@ const BrandCategories = ({ category = 'All' }) => {
                                 </div>
 
                                 <div className="brand-product-count">
-                                    {getProductCount(brand.name)} Produits
+                                    {t('brands.products_count', { count: getProductCount(brand.name) })}
                                 </div>
                             </div>
 
                             <div className="brand-voir-collection">
-                                Voir <ArrowUpRight size={12} />
+                                {t('brands.view')} <ArrowUpRight size={12} />
                             </div>
 
                             <div className="brand-card-overlay" />

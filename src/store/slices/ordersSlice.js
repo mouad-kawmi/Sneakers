@@ -2,7 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 import { mockOrders } from '../../data/Product';
 
 const initialState = {
-    items: [], 
+    items: [],
+    unreadOrdersCount: 0
 };
 
 const ordersSlice = createSlice({
@@ -10,7 +11,11 @@ const ordersSlice = createSlice({
     initialState,
     reducers: {
         addOrder(state, action) {
-            state.items.unshift(action.payload); 
+            state.items.unshift(action.payload);
+            state.unreadOrdersCount += 1;
+        },
+        markOrdersAsRead(state) {
+            state.unreadOrdersCount = 0;
         },
         updateOrderStatus(state, action) {
             const { id, status } = action.payload;
@@ -36,5 +41,5 @@ const ordersSlice = createSlice({
     }
 });
 
-export const { addOrder, updateOrderStatus, initializeDemoOrders, setOrders } = ordersSlice.actions;
+export const { addOrder, updateOrderStatus, initializeDemoOrders, setOrders, markOrdersAsRead } = ordersSlice.actions;
 export default ordersSlice.reducer;

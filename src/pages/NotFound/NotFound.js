@@ -2,9 +2,11 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Home, ArrowLeft, Search } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import './NotFound.css';
 
 const NotFound = () => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
 
     return (
@@ -21,10 +23,9 @@ const NotFound = () => {
                         <div className="not-found-circle"></div>
                     </div>
 
-                    <h1 className="not-found-title">Oops! Page introuvable</h1>
+                    <h1 className="not-found-title">{t('not_found.title')}</h1>
                     <p className="not-found-text">
-                        La page que vous recherchez semble avoir pris la fuite.
-                        Elle est peut-être déjà en train de courir avec une nouvelle paire de sneakers !
+                        {t('not_found.text')}
                     </p>
 
                     <div className="not-found-actions">
@@ -32,22 +33,22 @@ const NotFound = () => {
                             onClick={() => navigate('/')}
                             className="not-found-btn primary"
                         >
-                            <Home size={18} /> Retour à l'accueil
+                            <Home size={18} /> {t('not_found.back_home')}
                         </button>
                         <button
                             onClick={() => navigate(-1)}
                             className="not-found-btn secondary"
                         >
-                            <ArrowLeft size={18} /> Page précédente
+                            <ArrowLeft size={18} /> {t('not_found.back_prev')}
                         </button>
                     </div>
 
                     <div className="not-found-footer">
-                        <p>D'autres liens utiles :</p>
+                        <p>{t('not_found.other_links')}</p>
                         <div className="suggestion-tags">
-                            <button onClick={() => navigate('/category/Men')}>Hommes</button>
-                            <button onClick={() => navigate('/category/Women')}>Femmes</button>
-                            <button onClick={() => navigate('/category/Kids')}>Enfants</button>
+                            <button onClick={() => navigate('/category/Men')}>{t('not_found.men')}</button>
+                            <button onClick={() => navigate('/category/Women')}>{t('not_found.women')}</button>
+                            <button onClick={() => navigate('/category/Kids')}>{t('not_found.kids')}</button>
                         </div>
                     </div>
                 </motion.div>

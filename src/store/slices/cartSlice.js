@@ -17,24 +17,33 @@ const cartSlice = createSlice({
 
             if (!product || !product.id) return;
 
+            // Use originalPrice if available (to prevent double discounting), otherwise use price
+            const basePrice = product.originalPrice || product.price;
+
+            // Calculate final price with discount if applicable and not expired
+            const hasDiscount = product.discount > 0 && (!product.discountEndTime || new Date(product.discountEndTime) > new Date());
+            const finalPrice = hasDiscount ? Math.floor(basePrice * (1 - product.discount / 100)) : basePrice;
+
             const existingItem = state.items.find((item) => item.id === product.id && item.size === size);
 
             state.totalQuantity++;
-            state.totalAmount += Number(product.price);
+            state.totalAmount += Number(finalPrice);
 
             if (!existingItem) {
                 state.items.push({
                     id: product.id,
                     size: size,
                     name: product.name,
-                    price: Number(product.price),
+                    price: Number(finalPrice),
+                    originalPrice: Number(basePrice),
+                    discount: hasDiscount ? product.discount : 0,
                     image: product.image,
                     quantity: 1,
-                    totalPrice: Number(product.price),
+                    totalPrice: Number(finalPrice),
                 });
             } else {
                 existingItem.quantity++;
-                existingItem.totalPrice += Number(product.price);
+                existingItem.totalPrice += Number(finalPrice);
             }
         },
         removeFromCart(state, action) {

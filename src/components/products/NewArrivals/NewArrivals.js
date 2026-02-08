@@ -1,5 +1,6 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { addToCart } from '../../../store/slices/cartSlice';
 import RevealOnScroll from '../../RevealOnScroll/RevealOnScroll';
 import './NewArrivals.css';
@@ -8,6 +9,7 @@ const ProductCard = lazy(() => import('../ProductCard/ProductCard'));
 const ProductCardSkeleton = lazy(() => import('../ProductCard/ProductCardSkeleton'));
 
 const NewArrivals = () => {
+    const { t } = useTranslation();
     const products = useSelector((state) => state.products?.items || []);
     const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(true);
@@ -26,7 +28,7 @@ const NewArrivals = () => {
     return (
         <div className="new-arrivals-section">
             <div className="new-arrivals-header">
-                <h2 className="new-arrivals-title">Nouveautés</h2>
+                <h2 className="new-arrivals-title">{t('footer.new_arrivals')}</h2>
                 <div className="new-arrivals-divider"></div>
             </div>
 

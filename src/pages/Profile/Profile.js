@@ -1,27 +1,33 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import { User } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { openLoginModal } from '../../store/slices/uiSlice';
 import ProfileSidebar from './components/ProfileSidebar';
 import OrderHistory from './components/OrderHistory';
 import ProfileSettings from './components/ProfileSettings';
 
+import './Profile.css';
+
 const Profile = () => {
+    const { t } = useTranslation();
+    const dispatch = useDispatch();
     const { user, isAuthenticated } = useSelector(state => state.auth);
     const [activeTab, setActiveTab] = useState('orders');
 
     if (!isAuthenticated) {
         return (
-            <div className="container" style={{ marginTop: '120px', marginBottom: '100px', textAlign: 'center' }}>
-                <div style={{ background: 'var(--bg-card)', padding: '60px', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-subtle)', maxWidth: '500px', margin: '0 auto' }}>
-                    <User size={64} style={{ color: 'var(--text-gray)', marginBottom: '24px', opacity: 0.3 }} />
-                    <h2 style={{ fontSize: '24px', fontWeight: '800', marginBottom: '16px' }}>Connexion Requise</h2>
-                    <p style={{ color: 'var(--text-gray)', marginBottom: '32px' }}>Veuillez vous connecter pour voir votre profil et vos commandes.</p>
+            <div className="container profile-page-container">
+                <div className="profile-auth-card">
+                    <User size={64} className="profile-auth-icon" />
+                    <h2 className="profile-auth-title">{t('auth.login_required')}</h2>
+                    <p className="profile-auth-text">{t('auth.login_required_desc')}</p>
                     <button
-                        onClick={() => window.location.reload()} /* Simple way to trigger login modal via Navbar or just refresh */
-                        style={{ background: 'var(--primary)', color: 'white', border: 'none', padding: '14px 32px', borderRadius: 'var(--radius-full)', fontWeight: '700', cursor: 'pointer' }}
+                        onClick={() => dispatch(openLoginModal())}
+                        className="btn-primary profile-auth-btn"
                     >
-                        Se connecter
+                        {t('auth.login')}
                     </button>
                 </div>
             </div>
@@ -29,15 +35,15 @@ const Profile = () => {
     }
 
     return (
-        <div className="container" style={{ marginTop: '100px', marginBottom: '60px' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '250px 1fr', gap: '40px' }}>
+        <div className="container profile-page-container">
+            <div className="profile-grid">
                 <ProfileSidebar
                     user={user}
                     activeTab={activeTab}
                     setActiveTab={setActiveTab}
                 />
 
-                <div style={{ minHeight: '500px' }}>
+                <div className="profile-content-area">
                     {activeTab === 'orders' && <OrderHistory user={user} />}
                     {activeTab === 'settings' && <ProfileSettings user={user} />}
                 </div>

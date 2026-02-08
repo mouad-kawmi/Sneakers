@@ -16,9 +16,9 @@ import uiReducer from './slices/uiSlice';
 
 // Configuration for persist
 const persistConfig = {
-    key: 'root_v5', // Force clean slate for user
+    key: 'root_v6', // Reset to force clear slate for user and load fresh mock data
     storage,
-    whitelist: ['auth', 'cart', 'reviews', 'wishlist', 'orders', 'messages', 'products'] // Added 'products' to persist stock changes
+    whitelist: ['auth', 'cart', 'reviews', 'wishlist', 'orders', 'messages', 'products', 'content'] // Added 'content' to persist admin changes
 };
 
 const rootReducer = combineReducers({

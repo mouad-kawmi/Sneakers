@@ -1,0 +1,86 @@
+/* Drawer Language & Theme Grid */
+.navbar-drawer-lang-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.navbar-drawer-lang-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid var(--border-subtle);
+    background-color: var(--bg-app);
+    color: var(--text-gray);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.navbar-drawer-lang-btn:hover {
+    background-color: var(--bg-card);
+    border-color: var(--primary);
+    color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.navbar-drawer-lang-btn.active {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: white;
+    box-shadow: 0 4px 12px rgba(147, 51, 234, 0.3);
+}
+
+/* Enhanced Drawer Links */
+.navbar-drawer-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* Push arrow/icon to right if needed, or keep left aligned */
+    gap: 16px;
+    padding: 16px;
+    margin-bottom: 8px;
+    border-radius: 16px;
+    background-color: var(--bg-app);
+    border: 1px solid transparent;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-main);
+    text-decoration: none;
+    transition: all 0.2s;
+    border-bottom: none;
+    /* Override previous */
+}
+
+.navbar-drawer-link:hover {
+    background-color: white;
+    border-color: var(--border-subtle);
+    transform: translateX(5px);
+    box-shadow: var(--shadow-clean);
+}
+
+.navbar-drawer-link.active {
+    background-color: rgba(147, 51, 234, 0.05);
+    color: var(--primary);
+    border-color: rgba(147, 51, 234, 0.2);
+}
+
+.navbar-drawer-link.logout {
+    color: #FF4757;
+    background-color: rgba(255, 71, 87, 0.05);
+}
+
+[data-theme='dark'] .navbar-drawer-link:hover {
+    background-color: var(--bg-card);
+}
+
+.admin-drawer-link {
+    background-color: rgba(147, 51, 234, 0.08) !important;
+    color: var(--primary) !important;
+    border: 1px dashed var(--primary) !important;
+}

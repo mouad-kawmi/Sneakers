@@ -354,18 +354,77 @@
     margin-top: 8px;
 }
 
+/* Tablet & Mobile Optimizations */
 @media (max-width: 991px) {
     .checkout-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr !important;
+        gap: 24px !important;
+    }
+
+    .checkout-sidebar {
+        position: relative !important;
+        top: 0 !important;
+        order: -1 !important;
+        /* Move summary to top so user sees Total immediately */
+        margin-bottom: 24px;
+    }
+
+    .checkout-summary-card {
+        padding: 24px !important;
     }
 }
 
-@media (max-width: 600px) {
-    .checkout-form-grid {
-        grid-template-columns: 1fr;
+@media (max-width: 768px) {
+    .checkout-page {
+        padding-top: 10px !important;
+        padding-bottom: 120px !important;
+        /* Ensure space for fixed button */
     }
 
-    .checkout-success-card {
-        padding: 40px 20px;
+    .checkout-section {
+        padding: 20px !important;
+        margin-bottom: 16px;
+    }
+
+    /* Force Single Column for Inputs */
+    .checkout-form-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 16px !important;
+    }
+
+    .checkout-input-group {
+        width: 100% !important;
+        margin-bottom: 0 !important;
+    }
+
+    .checkout-input {
+        height: 48px;
+        /* Larger touch target */
+    }
+
+    /* Floating Submit Button */
+    .checkout-final-submit-btn {
+        position: fixed !important;
+        bottom: 85px !important;
+        /* Clear the BottomNav */
+        left: 16px !important;
+        right: 16px !important;
+        width: auto !important;
+        height: 56px !important;
+        z-index: 9999 !important;
+        /* Maximum visibility */
+        margin: 0 !important;
+        border-radius: 100px !important;
+        box-shadow: 0 8px 32px rgba(var(--primary-rgb), 0.4) !important;
+        font-size: 16px !important;
+        letter-spacing: 0.5px;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .checkout-main-content {
+        gap: 20px !important;
     }
 }

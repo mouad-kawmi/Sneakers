@@ -1,18 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { ShoppingBag, Moon, Sun, Menu, X, User, LogOut, Search, Heart, Trash2 } from 'lucide-react';
+import { ShoppingBag, Moon, Sun, Menu, X, User, LogOut, Search, Heart, Trash2, LayoutDashboard } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleTheme } from '../../../store/slices/themeSlice';
 import { logout } from '../../../store/slices/authSlice';
 import { setFilters, clearFilters } from '../../../store/slices/productSlice';
 import { toggleWishlist } from '../../../store/slices/wishlistSlice';
 import { motion, AnimatePresence } from 'framer-motion';
-import LoginModal from '../../auth/LoginModal/LoginModal';
+import { openLoginModal } from '../../../store/slices/uiSlice';
+import { useTranslation } from 'react-i18next';
 import SmartImage from '../SmartImage/SmartImage';
 import { ROUTES, getCategoryPath, getProductPath } from '../../../constants/routes';
 import './Navbar.css';
+import './NavbarDrawer.css';
 
 const Navbar = ({ onCartOpen }) => {
+    const { t, i18n } = useTranslation();
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const themeMode = useSelector((state) => state.theme.mode);
@@ -21,13 +24,32 @@ const Navbar = ({ onCartOpen }) => {
     const products = useSelector((state) => state.products.items);
     const { isAuthenticated, user } = useSelector((state) => state.auth);
     const unreadMessagesCount = useSelector((state) => state.messages?.unreadCount || 0);
+    const unreadOrdersCount = useSelector((state) => state.orders?.unreadOrdersCount || 0);
 
     const location = useLocation();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [isWishlistOpen, setIsWishlistOpen] = useState(false);
+    const [isScrolled, setIsScrolled] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.scrollY > 20) {
+                setIsScrolled(true);
+            } else {
+                setIsScrolled(false);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    const toggleLanguage = () => {
+        const newLang = i18n.language === 'fr' ? 'en' : 'fr';
+        i18n.changeLanguage(newLang);
+    };
 
     const filteredProducts = searchQuery.trim() === ''
         ? []
@@ -48,15 +70,15 @@ const Navbar = ({ onCartOpen }) => {
     };
 
     const navLinks = [
-        { id: 'home', name: 'Accueil', path: ROUTES.HOME },
-        { id: 'Men', name: 'Hommes', path: getCategoryPath('Men') },
-        { id: 'Women', name: 'Femmes', path: getCategoryPath('Women') },
-        { id: 'Kids', name: 'Enfants', path: getCategoryPath('Kids') },
-        { id: 'contact', name: 'Contact', path: ROUTES.CONTACT },
+        { id: 'home', name: t('nav.home'), path: ROUTES.HOME },
+        { id: 'Men', name: t('nav.men'), path: getCategoryPath('Men') },
+        { id: 'Women', name: t('nav.women'), path: getCategoryPath('Women') },
+        { id: 'Kids', name: t('nav.kids'), path: getCategoryPath('Kids') },
+        { id: 'contact', name: t('nav.contact'), path: ROUTES.CONTACT },
     ];
 
     return (
-        <nav className="navbar">
+        <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
             <div className="navbar-container">
                 <Link
                     to={ROUTES.HOME}
@@ -94,20 +116,32 @@ const Navbar = ({ onCartOpen }) => {
                                 position: 'relative'
                             }}
                         >
-                            Tableau de Bord
-                            {unreadMessagesCount > 0 && (
-                                <span className="navbar-admin-notif-dot"></span>
+                            {t('nav.dashboard')}
+                            {(unreadMessagesCount + unreadOrdersCount) > 0 && (
+                                <span className="navbar-admin-notif-badge">
+                                    {unreadMessagesCount + unreadOrdersCount}
+                                </span>
                             )}
                         </Link>
                     )}
                 </div>
 
                 <div className="navbar-actions">
+                    <button
+                        onClick={toggleLanguage}
+                        className="navbar-icon-btn btn-animate nav-btn-lang"
+                        style={{ fontWeight: '800', fontSize: '13px' }}
+                        title={t('nav.lang_switch_title')}
+                        aria-label={t('nav.lang_switch_title')}
+                    >
+                        {i18n.language === 'fr' ? 'EN' : 'FR'}
+                    </button>
+
                     <div style={{ position: 'relative' }}>
                         <button
                             onClick={() => setIsSearchOpen(!isSearchOpen)}
-                            className="navbar-icon-btn btn-animate"
-                            aria-label={isSearchOpen ? "Fermer la recherche" : "Ouvrir la recherche"}
+                            className="navbar-icon-btn btn-animate nav-btn-search"
+                            aria-label={isSearchOpen ? t('common.close') : t('common.search')}
                             aria-expanded={isSearchOpen}
                         >
                             {isSearchOpen ? <X size={20} /> : <Search size={20} />}
@@ -137,10 +171,10 @@ const Navbar = ({ onCartOpen }) => {
                                             id="navbar-search-desktop"
                                             autoFocus
                                             type="text"
-                                            placeholder="Chercher une paire..."
+                                            placeholder={t('common.search_placeholder')}
                                             value={searchQuery}
                                             onChange={(e) => setSearchQuery(e.target.value)}
-                                            aria-label="Rechercher des produits"
+                                            aria-label={t('nav.search_aria')}
                                             onKeyDown={(e) => {
                                                 if (e.key === 'Enter') {
                                                     navigate(`/search?q=${searchQuery}`);
@@ -176,7 +210,7 @@ const Navbar = ({ onCartOpen }) => {
                                                 </div>
                                             ) : (
                                                 <div className="navbar-no-results">
-                                                    Aucun résultat pour "{searchQuery}"
+                                                    {t('common.no_results', { query: searchQuery })}
                                                 </div>
                                             )}
                                         </div>
@@ -197,11 +231,11 @@ const Navbar = ({ onCartOpen }) => {
                                         <button
                                             onClick={() => setIsSearchOpen(false)}
                                             className="navbar-overlay-close"
-                                            aria-label="Fermer la recherche"
+                                            aria-label={t('nav.close_search')}
                                         >
                                             <X size={24} />
                                         </button>
-                                        <span className="navbar-overlay-title">Recherche</span>
+                                        <span className="navbar-overlay-title">{t('common.search')}</span>
                                         <div style={{ width: 24 }}></div>
                                     </div>
 
@@ -212,10 +246,10 @@ const Navbar = ({ onCartOpen }) => {
                                                 id="navbar-search-mobile"
                                                 autoFocus
                                                 type="text"
-                                                placeholder="Quelle paire cherchez-vous ?"
+                                                placeholder={t('common.search_placeholder')}
                                                 value={searchQuery}
                                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                                aria-label="Rechercher des produits"
+                                                aria-label={t('nav.search_aria')}
                                                 className="navbar-mobile-search-input"
                                             />
                                         </div>
@@ -247,8 +281,8 @@ const Navbar = ({ onCartOpen }) => {
 
                     <button
                         onClick={() => dispatch(toggleTheme())}
-                        className="navbar-icon-btn btn-animate"
-                        aria-label={themeMode === 'dark' ? "Passer au mode clair" : "Passer au mode sombre"}
+                        className="navbar-icon-btn btn-animate nav-btn-theme"
+                        aria-label={themeMode === 'dark' ? t('common.light_mode') : t('common.dark_mode')}
                     >
                         {themeMode === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
                     </button>
@@ -256,8 +290,8 @@ const Navbar = ({ onCartOpen }) => {
                     <div style={{ position: 'relative' }}>
                         <button
                             onClick={() => setIsWishlistOpen(!isWishlistOpen)}
-                            className="navbar-icon-btn btn-animate"
-                            aria-label="Voir mes favoris"
+                            className="navbar-icon-btn btn-animate nav-btn-wishlist"
+                            aria-label={t('nav.wishlist_aria')}
                             aria-expanded={isWishlistOpen}
                         >
                             <Heart size={20} />
@@ -271,9 +305,9 @@ const Navbar = ({ onCartOpen }) => {
                                     exit={{ opacity: 0, y: 10, scale: 0.95 }}
                                     className="navbar-wishlist-dropdown"
                                 >
-                                    <h3 className="navbar-dropdown-title">Mes Favoris</h3>
+                                    <h3 className="navbar-dropdown-title">{t('common.wishlist')}</h3>
                                     {wishlistItems.length === 0 ? (
-                                        <p className="navbar-empty-text">Votre liste est vide.</p>
+                                        <p className="navbar-empty-text">{t('nav.wishlist_empty')}</p>
                                     ) : (
                                         <div className="navbar-dropdown-list">
                                             {wishlistItems.map(item => (
@@ -286,7 +320,7 @@ const Navbar = ({ onCartOpen }) => {
                                                     <button
                                                         onClick={() => dispatch(toggleWishlist(item))}
                                                         className="navbar-remove-btn btn-animate"
-                                                        aria-label={`Supprimer ${item.name} des favoris`}
+                                                        aria-label={`${t('cart.remove')} ${item.name}`}
                                                     >
                                                         <Trash2 size={16} />
                                                     </button>
@@ -296,7 +330,7 @@ const Navbar = ({ onCartOpen }) => {
                                                 className="navbar-dropdown-footer-btn"
                                                 onClick={() => { navigate(ROUTES.WISHLIST); setIsWishlistOpen(false); }}
                                             >
-                                                Voir tout mes favoris
+                                                {t('nav.view_wishlist')}
                                             </button>
                                         </div>
                                     )}
@@ -311,26 +345,25 @@ const Navbar = ({ onCartOpen }) => {
                                 className="navbar-user-name"
                                 onClick={() => navigate(ROUTES.PROFILE)}
                                 style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}
-                                title="Voir mon profil"
                             >
                                 <User size={18} />
-                                Salut, {user?.name?.split(' ')[0] || 'Utilisateur'}
+                                <span className="navbar-user-text">{t('auth.welcome')}, {user?.name?.split(' ')[0] || 'User'}</span>
                             </span>
                             <button
                                 onClick={() => dispatch(logout())}
-                                className="navbar-icon-btn btn-animate"
-                                title="Se déconnecter"
-                                aria-label="Se déconnecter"
+                                className="navbar-icon-btn btn-animate nav-btn-logout"
+                                title={t('auth.logout')}
+                                aria-label={t('auth.logout')}
                             >
                                 <LogOut size={20} />
                             </button>
                         </div>
                     ) : (
                         <button
-                            onClick={() => setIsLoginModalOpen(true)}
-                            className="navbar-icon-btn btn-animate"
-                            title="Se connecter"
-                            aria-label="Se connecter"
+                            onClick={() => dispatch(openLoginModal())}
+                            className="navbar-icon-btn btn-animate nav-btn-auth"
+                            title={t('auth.login')}
+                            aria-label={t('auth.login')}
                         >
                             <User size={20} />
                         </button>
@@ -338,8 +371,8 @@ const Navbar = ({ onCartOpen }) => {
 
                     <button
                         onClick={onCartOpen}
-                        className="navbar-icon-btn btn-animate"
-                        aria-label="Voir le panier"
+                        className="navbar-icon-btn btn-animate nav-btn-cart"
+                        aria-label={t('cart.title')}
                     >
                         <ShoppingBag size={20} />
                         {totalQuantity > 0 && (
@@ -350,7 +383,7 @@ const Navbar = ({ onCartOpen }) => {
                     <button
                         className="navbar-mobile-toggle"
                         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                        aria-label={isMobileMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
+                        aria-label={isMobileMenuOpen ? t('nav.menu_close') : t('nav.menu_open')}
                         aria-expanded={isMobileMenuOpen}
                     >
                         {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -384,7 +417,7 @@ const Navbar = ({ onCartOpen }) => {
 
                             <div className="navbar-drawer-content">
                                 <div className="navbar-drawer-section">
-                                    <h4 className="navbar-drawer-label">Navigation</h4>
+                                    <h4 className="navbar-drawer-label">{t('nav.navigation')}</h4>
                                     {navLinks.map((link) => (
                                         <Link
                                             key={link.name}
@@ -405,36 +438,73 @@ const Navbar = ({ onCartOpen }) => {
                                 </div>
 
                                 <div className="navbar-drawer-section">
-                                    <h4 className="navbar-drawer-label">Mon Compte</h4>
+                                    <h4 className="navbar-drawer-label">{t('nav.my_account')}</h4>
                                     {isAuthenticated ? (
                                         <>
+                                            {user?.role === 'admin' && (
+                                                <Link to={ROUTES.ADMIN} className="navbar-drawer-link admin-drawer-link" onClick={() => setIsMobileMenuOpen(false)}>
+                                                    <LayoutDashboard size={18} /> {t('nav.dashboard')}
+                                                </Link>
+                                            )}
                                             <Link to={ROUTES.PROFILE} className="navbar-drawer-link" onClick={() => setIsMobileMenuOpen(false)}>
-                                                <User size={18} /> Mon Profil
+                                                <User size={18} /> {t('nav.user_profile')}
                                             </Link>
                                             <button onClick={() => { dispatch(logout()); setIsMobileMenuOpen(false); }} className="navbar-drawer-link logout">
-                                                <LogOut size={18} /> Se déconnecter
+                                                <LogOut size={18} /> {t('auth.logout')}
                                             </button>
                                         </>
                                     ) : (
-                                        <button onClick={() => { setIsLoginModalOpen(true); setIsMobileMenuOpen(false); }} className="navbar-drawer-link">
-                                            <User size={18} /> Se connecter
+                                        <button onClick={() => { dispatch(openLoginModal()); setIsMobileMenuOpen(false); }} className="navbar-drawer-link">
+                                            <User size={18} /> {t('auth.login')}
                                         </button>
                                     )}
                                 </div>
+
+                                <div className="navbar-drawer-section">
+                                    <h4 className="navbar-drawer-label">{t('nav.language')}</h4>
+                                    <div className="navbar-drawer-lang-grid">
+                                        <button
+                                            onClick={() => { i18n.changeLanguage('fr'); setIsMobileMenuOpen(false); }}
+                                            className={`navbar-drawer-lang-btn ${i18n.language === 'fr' ? 'active' : ''}`}
+                                        >
+                                            🇫🇷 {t('common.fr')}
+                                        </button>
+                                        <button
+                                            onClick={() => { i18n.changeLanguage('en'); setIsMobileMenuOpen(false); }}
+                                            className={`navbar-drawer-lang-btn ${i18n.language === 'en' ? 'active' : ''}`}
+                                        >
+                                            🇺🇸 {t('common.en')}
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div className="navbar-drawer-section">
+                                    <h4 className="navbar-drawer-label">{t('common.theme')}</h4>
+                                    <div className="navbar-drawer-lang-grid">
+                                        <button
+                                            onClick={() => { dispatch(toggleTheme()); setIsMobileMenuOpen(false); }}
+                                            className={`navbar-drawer-lang-btn ${themeMode === 'light' ? 'active' : ''}`}
+                                        >
+                                            <Sun size={18} style={{ marginRight: '8px' }} /> {t('common.light_mode')}
+                                        </button>
+                                        <button
+                                            onClick={() => { dispatch(toggleTheme()); setIsMobileMenuOpen(false); }}
+                                            className={`navbar-drawer-lang-btn ${themeMode === 'dark' ? 'active' : ''}`}
+                                        >
+                                            <Moon size={18} style={{ marginRight: '8px' }} /> {t('common.dark_mode')}
+                                        </button>
+                                    </div>
+                                </div>
+
                             </div>
 
                             <div className="navbar-drawer-footer">
-                                <p>© 2026 Sberdila. Tous droits réservés.</p>
+                                <p>{t('nav.copyright_simple')}</p>
                             </div>
                         </motion.div>
                     </>
                 )}
             </AnimatePresence>
-
-            <LoginModal
-                isOpen={isLoginModalOpen}
-                onClose={() => setIsLoginModalOpen(false)}
-            />
         </nav>
     );
 };

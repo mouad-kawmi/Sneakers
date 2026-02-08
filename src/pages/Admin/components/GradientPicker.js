@@ -1,6 +1,8 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 const GradientPicker = ({ value, onChange }) => {
+    const { t } = useTranslation();
     const defaultColor1 = '#FF6B00';
     const defaultColor2 = '#FF8800';
     const defaultDeg = '135';
@@ -24,32 +26,32 @@ const GradientPicker = ({ value, onChange }) => {
 
     return (
         <div style={{ background: 'var(--bg-app)', padding: '16px', borderRadius: '12px', border: '1px solid var(--border-subtle)' }}>
-            <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '12px' }}>
-                <div style={{ flex: 1 }}>
-                    <label style={{ fontSize: '12px', display: 'block', marginBottom: '4px' }}>Loun 1</label>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', alignItems: 'center', marginBottom: '12px' }}>
+                <div style={{ flex: '1 1 100px' }}>
+                    <label style={{ fontSize: '12px', display: 'block', marginBottom: '4px' }}>{t('admin.color_1')}</label>
                     <input
                         type="color"
                         value={color1}
                         onChange={(e) => updateGradient(e.target.value, color2, deg)}
-                        style={{ width: '100%', height: '30px', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                        style={{ width: '100%', height: '30px', border: 'none', borderRadius: '4px', cursor: 'pointer', background: 'transparent' }}
                     />
                 </div>
-                <div style={{ flex: 1 }}>
-                    <label style={{ fontSize: '12px', display: 'block', marginBottom: '4px' }}>Loun 2</label>
+                <div style={{ flex: '1 1 100px' }}>
+                    <label style={{ fontSize: '12px', display: 'block', marginBottom: '4px' }}>{t('admin.color_2')}</label>
                     <input
                         type="color"
                         value={color2}
                         onChange={(e) => updateGradient(color1, e.target.value, deg)}
-                        style={{ width: '100%', height: '30px', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                        style={{ width: '100%', height: '30px', border: 'none', borderRadius: '4px', cursor: 'pointer', background: 'transparent' }}
                     />
                 </div>
-                <div style={{ width: '80px' }}>
-                    <label style={{ fontSize: '12px', display: 'block', marginBottom: '4px' }}>Angle (°)</label>
+                <div style={{ flex: '1 1 80px' }}>
+                    <label style={{ fontSize: '12px', display: 'block', marginBottom: '4px' }}>{t('admin.angle')}</label>
                     <input
                         type="number"
                         value={deg}
                         onChange={(e) => updateGradient(color1, color2, e.target.value)}
-                        style={{ width: '100%', padding: '4px', borderRadius: '4px', border: '1px solid var(--border-subtle)', background: 'var(--bg-card)', color: 'var(--text-main)' }}
+                        style={{ width: '100%', padding: '4px', borderRadius: '4px', border: '1px solid var(--border-subtle)', background: 'var(--bg-card)', color: 'var(--text-main)', height: '30px' }}
                     />
                 </div>
             </div>
@@ -64,7 +66,7 @@ const GradientPicker = ({ value, onChange }) => {
                 color: 'white',
                 fontWeight: 700,
             }}>
-                Aperçu (Preview)
+                {t('admin.preview')}
             </div>
         </div>
     );

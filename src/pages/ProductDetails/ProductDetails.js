@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import {
     ShoppingBag,
@@ -26,13 +27,14 @@ import './ProductDetails.css';
 const ProductCard = React.lazy(() => import('../../components/products/ProductCard/ProductCard'));
 
 const ProductDetails = () => {
+    const { t } = useTranslation();
     const { id } = useParams();
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(true);
 
-    const products = useSelector((state) => state.products.items);
-    const product = products.find((p) => p.id === parseInt(id));
+    const products = useSelector((state) => state.products?.items || []);
+    const product = Array.isArray(products) ? products.find((p) => p.id === parseInt(id)) : null;
 
     const [selectedSize, setSelectedSize] = useState(null);
     const [selectedImage, setSelectedImage] = useState(
@@ -45,15 +47,15 @@ const ProductDetails = () => {
         }
     }, [product]);
 
-    const [activeTab, setActiveTab] = useState('description');
+    // Simplified: Only showing description now, no need for activeTab
     const [addedToCart, setAddedToCart] = useState(false);
 
     const { showToast } = useToast();
     const wishlistItems = useSelector(state => state.wishlist.items);
     const isLiked = product && wishlistItems.some(item => item.id === product.id);
 
-    const reviews = useSelector(state => state.reviews.items);
-    const productReviews = reviews.filter(r => r.productId === parseInt(id));
+    const reviews = useSelector(state => state.reviews?.items || []);
+    const productReviews = Array.isArray(reviews) ? reviews.filter(r => r.productId === parseInt(id)) : [];
     const averageRating = productReviews.length > 0
         ? (productReviews.reduce((sum, r) => sum + r.rating, 0) / productReviews.length).toFixed(1)
         : 0;
@@ -75,8 +77,8 @@ const ProductDetails = () => {
     if (!product) {
         return (
             <div className="container product-not-found">
-                <h2>Produit non trouvé</h2>
-                <button onClick={() => navigate('/')} className="back-home-btn">Retour à l'accueil</button>
+                <h2>{t('product.not_found')}</h2>
+                <button onClick={() => navigate('/')} className="back-home-btn">{t('product.back_home')}</button>
             </div>
         );
     }
@@ -90,7 +92,7 @@ const ProductDetails = () => {
         dispatch(addToCart({ product, size: selectedSize }));
         dispatch(openCart());
         setAddedToCart(true);
-        showToast("Produit ajouté au panier", "success", product.image);
+        showToast(t('common.added_to_cart'), "success", product.image, t('common.cart').toUpperCase());
         setTimeout(() => setAddedToCart(false), 2000);
     };
 
@@ -98,13 +100,7 @@ const ProductDetails = () => {
         .filter(p => p.brand === product.brand && p.id !== product.id)
         .slice(0, 4);
 
-    const description = "Cette paire iconique combine un style héritage avec une performance moderne. Conçue avec des matériaux de première qualité, elle offre un confort exceptionnel tout au long de la journée. Un incontournable pour toute collection de sneakers.";
-    const specs = [
-        { label: "Matière", value: "Cuir Premium / Mesh" },
-        { label: "Semelle", value: "Caoutchouc haute résistance" },
-        { label: "Amorti", value: "Technologie Air intégrée" },
-        { label: "Style", value: "Lifestyle / Streetwear" }
-    ];
+    const description = t('product.default_description');
 
     return (
         <div className="container product-details-page">
@@ -121,18 +117,19 @@ const ProductDetails = () => {
                         onClick={() => {
                             dispatch(toggleWishlist(product));
                             showToast(
-                                isLiked ? "Retiré des favoris" : "Ajouté aux favoris",
+                                isLiked ? t('product.removed_wishlist') : t('product.added_wishlist'),
                                 "notification",
-                                product.image
+                                product.image,
+                                t('common.wishlist').toUpperCase()
                             );
                         }}
                         className="product-details-icon-btn"
                         style={{ color: isLiked ? '#FF4757' : 'var(--text-main)' }}
-                        aria-label={isLiked ? "Retirer des favoris" : "Ajouter aux favoris"}
+                        aria-label={isLiked ? t('nav.remove_wishlist') : t('nav.add_wishlist')}
                     >
                         <Heart size={20} fill={isLiked ? '#FF4757' : 'none'} />
                     </button>
-                    <button className="product-details-icon-btn" aria-label="Partager ce produit"><Share2 size={20} /></button>
+                    <button className="product-details-icon-btn" aria-label={t('common.share')}><Share2 size={20} /></button>
                 </div>
             </div>
 
@@ -171,26 +168,48 @@ const ProductDetails = () => {
                                 />
                             ))}
                         </div>
-                        <span className="product-details-review-count">({averageRating || "5.0"}/5 • {productReviews.length || 0} Avis)</span>
+                        <span className="product-details-review-count">({averageRating || "5.0"}/5 • {productReviews.length || 0} {t('product.reviews')})</span>
                         <button
                             onClick={() => document.getElementById('reviews-section')?.scrollIntoView({ behavior: 'smooth' })}
                             className="product-details-inline-review-btn"
                         >
-                            Donner un avis
+                            {t('product.give_review')}
                         </button>
                     </div>
 
                     <div className="product-details-price-section">
-                        <span className="product-details-price">{product.price} DH</span>
+                        {product.discount > 0 && (!product.discountEndTime || new Date(product.discountEndTime) > new Date()) ? (
+                            <>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+                                    <span className="product-details-price">{Math.floor(product.price * (1 - product.discount / 100))} DH</span>
+                                    <span style={{
+                                        fontSize: '18px',
+                                        color: 'var(--text-gray)',
+                                        textDecoration: 'line-through',
+                                        fontWeight: '500'
+                                    }}>{product.price} DH</span>
+                                    <span style={{
+                                        background: '#FF4757',
+                                        color: '#fff',
+                                        padding: '4px 12px',
+                                        borderRadius: '20px',
+                                        fontSize: '13px',
+                                        fontWeight: '800'
+                                    }}>-{product.discount}%</span>
+                                </div>
+                            </>
+                        ) : (
+                            <span className="product-details-price">{product.price} DH</span>
+                        )}
                         <span className={`product-details-stock-status ${isOutOfStock ? 'out-of-stock' : 'in-stock'}`}>
-                            {isOutOfStock ? 'Rupture de Stock' : 'En Stock'}
+                            {isOutOfStock ? t('product.out_of_stock') : t('product.in_stock')}
                         </span>
                     </div>
 
                     <div className="product-details-selector">
                         <div className="product-details-selector-header">
-                            <span className="product-details-selector-title">Choisir la taille</span>
-                            <button className="product-details-guide-btn">Guide des tailles</button>
+                            <span className="product-details-selector-title">{t('product.choose_size')}</span>
+                            <button className="product-details-guide-btn">{t('product.size_guide')}</button>
                         </div>
                         <div className="product-details-size-grid">
                             {sizes.map((item) => (
@@ -212,25 +231,19 @@ const ProductDetails = () => {
                             disabled={!selectedSize || isOutOfStock}
                             className={`product-details-add-to-cart ${!selectedSize ? 'no-size' : (isOutOfStock ? 'out-of-stock' : (addedToCart ? 'added' : 'ready'))}`}
                         >
-                            {!selectedSize ? "Veuillez choisir une taille" : (isOutOfStock ? "Rupture de stock" : (addedToCart ? <><Check size={20} /> Ajouté au Panier</> : <><ShoppingBag size={20} /> Ajouter au Panier</>))}
+                            {!selectedSize ? t('product.please_choose_size') : (isOutOfStock ? t('product.out_of_stock') : (addedToCart ? <><Check size={20} /> {t('product.added')}</> : <><ShoppingBag size={20} /> {t('cart.add')}</>))}
                         </button>
                     </div>
 
                     <div className="product-details-benefits">
-                        <div className="product-details-benefit-item"><Truck size={18} color="var(--primary)" /><span>Livraison Gratuite</span></div>
-                        <div className="product-details-benefit-item"><ShieldCheck size={18} color="var(--primary)" /><span>Garantie 100% Original</span></div>
-                        <div className="product-details-benefit-item"><RotateCcw size={18} color="var(--primary)" /><span>Retour sous 7 jours</span></div>
+                        <div className="product-details-benefit-item"><Truck size={18} color="var(--primary)" /><span>{t('product.free_shipping')}</span></div>
+                        <div className="product-details-benefit-item"><ShieldCheck size={18} color="var(--primary)" /><span>{t('product.original_guarantee')}</span></div>
+                        <div className="product-details-benefit-item"><RotateCcw size={18} color="var(--primary)" /><span>{t('product.return_policy')}</span></div>
                     </div>
 
-                    <div className="product-details-tabs">
-                        <div className="product-details-tab-header">
-                            <button onClick={() => setActiveTab('description')} className={`product-details-tab-btn ${activeTab === 'description' ? 'active' : ''}`}>Description</button>
-                            <button onClick={() => setActiveTab('specs')} className={`product-details-tab-btn ${activeTab === 'specs' ? 'active' : ''}`}>Caractéristiques</button>
-                        </div>
-                        <div className="product-details-tab-content">
-                            {activeTab === 'description' ? <p className="product-details-description">{description}</p> :
-                                <div className="product-details-specs">{specs.map((spec, i) => <div key={i} className="product-details-spec-item"><span className="product-details-spec-label">{spec.label}</span><span className="product-details-spec-value">{spec.value}</span></div>)}</div>}
-                        </div>
+                    <div className="product-details-content-section">
+                        <h3 className="product-details-content-title">{t('product.description')}</h3>
+                        <p className="product-details-description">{product.description || description}</p>
                     </div>
                 </motion.div>
             </div>
@@ -241,7 +254,7 @@ const ProductDetails = () => {
 
             {relatedProducts.length > 0 && (
                 <div className="product-details-related">
-                    <h2 className="product-details-section-title">Produits Similaires</h2>
+                    <h2 className="product-details-section-title">{t('product.related_products')}</h2>
                     <div className="related-grid">
                         <React.Suspense fallback={null}>
                             {relatedProducts.map(p => <ProductCard key={p.id} product={p} />)}

@@ -1,0 +1,123 @@
+.mobile-select-container {
+    width: 100%;
+}
+
+.mobile-select-trigger {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+.mobile-select-trigger.placeholder {
+    color: var(--text-gray);
+    opacity: 0.7;
+}
+
+/* Backdrop */
+.mobile-select-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 10000;
+    backdrop-filter: blur(4px);
+}
+
+/* Bottom Sheet */
+.mobile-select-sheet {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg-card);
+    border-radius: 24px 24px 0 0;
+    padding: 24px;
+    z-index: 10001;
+    max-height: 75vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.25);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mobile-select-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.mobile-select-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--text-main);
+}
+
+.close-btn {
+    background: rgba(0, 0, 0, 0.05);
+    border: none;
+    cursor: pointer;
+    color: var(--text-gray);
+    padding: 8px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+
+.close-btn:active {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.mobile-select-options {
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+    padding-right: 4px;
+    /* Custom scrollbar for options if needed, usually native on mobile is fine */
+}
+
+.mobile-select-option {
+    padding: 16px;
+    background: var(--bg-app);
+    border: 1px solid transparent;
+    border-radius: 14px;
+    text-align: left;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-main);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    touch-action: manipulation;
+    /* Improves touch response */
+}
+
+.mobile-select-option:active {
+    transform: scale(0.98);
+}
+
+.mobile-select-option.selected {
+    background: rgba(147, 51, 234, 0.1);
+    color: var(--primary);
+    border-color: var(--primary);
+    font-weight: 700;
+}
+
+.check-icon {
+    color: var(--primary);
+}
+
+/* Ensure no scroll chaining */
+.mobile-select-sheet {
+    overscroll-behavior: contain;
+}

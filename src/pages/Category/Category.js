@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setFilters } from '../../store/slices/productSlice';
@@ -9,6 +10,7 @@ import SEO from '../../components/layout/SEO/SEO';
 import './Category.css';
 
 const Category = () => {
+    const { t } = useTranslation();
     const { name } = useParams();
     const dispatch = useDispatch();
 
@@ -28,18 +30,15 @@ const Category = () => {
     const isCategoryPage = categories.includes(name);
 
     const getDisplayName = () => {
-        if (name === 'Men') return 'Hommes';
-        if (name === 'Women') return 'Femmes';
-        if (name === 'Kids') return 'Enfants';
-        if (name === 'All') return 'Nouveautés';
-        return name;
+        const categoryKey = name.toLowerCase();
+        return t(`category.${categoryKey}`);
     };
 
     return (
         <div className="category-page">
             <SEO
                 title={getDisplayName()}
-                description={`Découvrez notre sélection de sneakers pour ${getDisplayName().toLowerCase()}.`}
+                description={t('category.seo_description', { name: getDisplayName().toLowerCase() })}
             />
             <div className="container category-header">
                 <motion.div
@@ -50,14 +49,14 @@ const Category = () => {
                     <div className="category-header-top">
                         <div className="category-header-line" />
                         <span className="category-header-badge">
-                            Collection Exclusive
+                            {t('category.exclusive_collection')}
                         </span>
                     </div>
                     <h1 className="category-title">
                         {getDisplayName()}
                     </h1>
                     <p className="category-description">
-                        Découvrez notre sélection exclusive de sneakers pour {getDisplayName().toLowerCase()}, alliant style, confort et performance. Chaque paire est choisie pour son design unique.
+                        {t('category.description', { name: getDisplayName().toLowerCase() })}
                     </p>
                 </motion.div>
             </div>

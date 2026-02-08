@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { X, ShoppingBag, Plus, Minus, Trash2, ArrowRight } from 'lucide-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addToCart, removeFromCart, removeItemCompletely } from '../../../store/slices/cartSlice';
@@ -9,10 +10,12 @@ import SmartImage from '../SmartImage/SmartImage';
 import './CartSidebar.css';
 
 const CartSidebar = ({ isOpen, onClose }) => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const cartItems = useSelector((state) => state.cart.items);
-    const totalAmount = useSelector((state) => state.cart.totalAmount);
+    // Calculate total dynamically from items to avoid corrupted state
+    const totalAmount = cartItems.reduce((sum, item) => sum + (item.totalPrice || 0), 0);
 
     return (
         <AnimatePresence>
@@ -40,17 +43,17 @@ const CartSidebar = ({ isOpen, onClose }) => {
                         <div className="cart-sidebar-header">
                             <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                                 <div className="cart-sidebar-icon-container" aria-hidden="true"><ShoppingBag size={20} /></div>
-                                <div><h2 id="cart-title" className="cart-sidebar-title">Mon Panier</h2><span className="cart-sidebar-item-count">{cartItems.length} Articles</span></div>
+                                <div><h2 id="cart-title" className="cart-sidebar-title">{t('cart.title')}</h2><span className="cart-sidebar-item-count">{t('cart.items_count', { count: cartItems.length })}</span></div>
                             </div>
-                            <button onClick={onClose} className="cart-sidebar-close-btn" aria-label="Fermer le panier"><X size={24} /></button>
+                            <button onClick={onClose} className="cart-sidebar-close-btn" aria-label={t('cart.close')}><X size={24} /></button>
                         </div>
                         <div className="cart-sidebar-content">
                             {cartItems.length === 0 ? (
                                 <EmptyState
                                     icon={ShoppingBag}
-                                    title="Votre panier est vide"
-                                    description="Il semble que vous n'ayez pas encore ajouté de produits. Découvrez nos dernières nouveautés !"
-                                    ctaText="Continuer mes achats"
+                                    title={t('cart.empty')}
+                                    description={t('cart.empty_desc')}
+                                    ctaText={t('cart.continue_shopping')}
                                     onCtaClick={onClose}
                                 />
                             ) : (
@@ -61,11 +64,11 @@ const CartSidebar = ({ isOpen, onClose }) => {
                                                 <div className="cart-sidebar-item-img-wrapper"><SmartImage src={item.image} alt={item.name} className="cart-sidebar-item-image" /></div>
                                                 <div className="cart-sidebar-item-info">
                                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                                                        <div><h4 className="cart-sidebar-item-name">{item.name}</h4><span className="cart-sidebar-item-size-badge">Taille: {item.size}</span></div>
+                                                        <div><h4 className="cart-sidebar-item-name">{item.name}</h4><span className="cart-sidebar-item-size-badge">{t('cart.size')}: {item.size}</span></div>
                                                         <button
                                                             onClick={() => dispatch(removeItemCompletely({ id: item.id, size: item.size }))}
                                                             className="cart-sidebar-delete-btn"
-                                                            aria-label={`Supprimer ${item.name} du panier`}
+                                                            aria-label={`${t('cart.remove')} ${item.name}`}
                                                         >
                                                             <Trash2 size={16} />
                                                         </button>
@@ -75,15 +78,24 @@ const CartSidebar = ({ isOpen, onClose }) => {
                                                             <button
                                                                 onClick={() => dispatch(removeFromCart({ id: item.id, size: item.size }))}
                                                                 className="cart-sidebar-qty-btn"
-                                                                aria-label={`Diminuer la quantité de ${item.name}`}
+                                                                aria-label={t('cart.decrease', { name: item.name })}
                                                             >
                                                                 <Minus size={14} />
                                                             </button>
-                                                            <span className="cart-sidebar-qty-value" aria-label={`Quantité: ${item.quantity}`}>{item.quantity}</span>
+                                                            <span className="cart-sidebar-qty-value" aria-label={`${t('cart.qty')}: ${item.quantity}`}>{item.quantity}</span>
                                                             <button
-                                                                onClick={() => dispatch(addToCart({ product: item, size: item.size }))}
+                                                                onClick={() => {
+                                                                    // Pass item with originalPrice to prevent double discounting
+                                                                    const productData = {
+                                                                        ...item,
+                                                                        price: item.originalPrice || item.price,
+                                                                        originalPrice: item.originalPrice || item.price,
+                                                                        discount: item.discount || 0
+                                                                    };
+                                                                    dispatch(addToCart({ product: productData, size: item.size }));
+                                                                }}
                                                                 className="cart-sidebar-qty-btn"
-                                                                aria-label={`Augmenter la quantité de ${item.name}`}
+                                                                aria-label={t('cart.increase', { name: item.name })}
                                                             >
                                                                 <Plus size={14} />
                                                             </button>
@@ -99,11 +111,11 @@ const CartSidebar = ({ isOpen, onClose }) => {
                         </div>
                         <div className="cart-sidebar-footer">
                             <div className="cart-sidebar-summary-box">
-                                <div className="cart-sidebar-summary-row"><span className="cart-sidebar-summary-label">Sous-total</span><span className="cart-sidebar-summary-value">{totalAmount.toFixed(2)} DH</span></div>
-                                <div className="cart-sidebar-summary-row"><span className="cart-sidebar-summary-label">Livraison</span><span className="cart-sidebar-summary-value">Gratuite</span></div>
-                                <div className="cart-sidebar-summary-row" style={{ marginTop: '12px', paddingTop: '12px', borderTop: '1px solid var(--border-subtle)' }}><span className="cart-sidebar-total-label">Total</span><span className="cart-sidebar-total-value">{totalAmount.toFixed(2)} DH</span></div>
+                                <div className="cart-sidebar-summary-row"><span className="cart-sidebar-summary-label">{t('cart.subtotal')}</span><span className="cart-sidebar-summary-value">{totalAmount.toFixed(2)} DH</span></div>
+                                <div className="cart-sidebar-summary-row"><span className="cart-sidebar-summary-label">{t('cart.shipping')}</span><span className="cart-sidebar-summary-value">{t('cart.free')}</span></div>
+                                <div className="cart-sidebar-summary-row" style={{ marginTop: '12px', paddingTop: '12px', borderTop: '1px solid var(--border-subtle)' }}><span className="cart-sidebar-total-label">{t('cart.total')}</span><span className="cart-sidebar-total-value">{totalAmount.toFixed(2)} DH</span></div>
                             </div>
-                            <button onClick={() => { onClose(); navigate('/checkout'); }} className="cart-sidebar-checkout-btn" disabled={cartItems.length === 0}><ShoppingBag size={20} /> Proceder au Paiement</button>
+                            <button onClick={() => { onClose(); navigate('/checkout'); }} className="cart-sidebar-checkout-btn" disabled={cartItems.length === 0}><ShoppingBag size={20} /> {t('cart.checkout_btn')}</button>
                         </div>
                     </motion.div>
                 </>

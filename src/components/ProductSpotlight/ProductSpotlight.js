@@ -3,11 +3,13 @@ import { motion } from 'framer-motion';
 import { Check, ShoppingCart } from 'lucide-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { addToCart } from '../../store/slices/cartSlice';
 import { useToast } from '../../context/ToastContext';
 import './ProductSpotlight.css';
 
 const ProductSpotlight = () => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { showToast } = useToast();
@@ -22,14 +24,14 @@ const ProductSpotlight = () => {
         <div className="container product-spotlight-container">
             <div className="product-spotlight-grid">
                 <div style={{ zIndex: 2 }}>
-                    <span className="product-spotlight-badge">Produit Vedette</span>
-                    <h2 onClick={() => navigate(`/product/${spotlightItem.id}`)} className="product-spotlight-title">{spotlightData.title || spotlightItem.name}</h2>
-                    <p className="product-spotlight-description">{spotlightData.description}</p>
+                    <span className="product-spotlight-badge">{t('products_section.featured')}</span>
+                    <h2 onClick={() => navigate(`/product/${spotlightItem.id}`)} className="product-spotlight-title">{t('spotlight.title')}</h2>
+                    <p className="product-spotlight-description">{t('spotlight.description')}</p>
                     <div className="product-spotlight-highlights">
-                        {(spotlightData.highlights || []).map((item, i) => (
+                        {['comfort', 'design', 'limited'].map((key, i) => (
                             <div key={i} className="product-spotlight-highlight-item">
                                 <div className="product-spotlight-highlight-icon"><Check size={18} strokeWidth={3} /></div>
-                                <span className="product-spotlight-highlight-text">{item}</span>
+                                <span className="product-spotlight-highlight-text">{t(`spotlight.highlights.${key}`)}</span>
                             </div>
                         ))}
                     </div>
@@ -41,8 +43,8 @@ const ProductSpotlight = () => {
                         <button onClick={() => {
                             const finalPrice = spotlightItem.discount > 0 ? Math.floor(spotlightItem.price * (1 - spotlightItem.discount / 100)) : spotlightItem.price;
                             dispatch(addToCart({ product: { ...spotlightItem, price: finalPrice }, size: spotlightItem.sizes?.[0]?.size || 42 }));
-                            showToast("Produit ajouté au panier", "success", spotlightItem.image);
-                        }} className="btn-primary product-spotlight-buy-btn">Ajouter au Panier <ShoppingCart size={22} /></button>
+                            showToast(t('common.added_to_cart'), "success", spotlightItem.image);
+                        }} className="btn-primary product-spotlight-buy-btn">{t('cart.add')} <ShoppingCart size={22} /></button>
                     </div>
                 </div>
                 <div className="product-spotlight-visual">

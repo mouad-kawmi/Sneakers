@@ -13,8 +13,9 @@ import Breadcrumbs from './components/layout/Breadcrumbs/Breadcrumbs';
 import ScrollToTop from './components/layout/ScrollToTop/ScrollToTop';
 import { ToastProvider } from './context/ToastContext';
 import ErrorBoundary from './components/common/ErrorBoundary/ErrorBoundary';
-import { openCart, closeCart } from './store/slices/uiSlice';
+import { openCart, closeCart, openLoginModal, closeLoginModal } from './store/slices/uiSlice';
 import { ROUTES } from './constants/routes';
+import LoginModal from './components/auth/LoginModal/LoginModal';
 
 // Initialize GA4 - Replace with your measurement ID
 ReactGA.initialize('G-XXXXXXXXXX');
@@ -59,6 +60,7 @@ const ThemeWatcher = () => {
 const AppContent = () => {
   const dispatch = useDispatch();
   const isCartOpen = useSelector((state) => state.ui.isCartOpen);
+  const isLoginModalOpen = useSelector((state) => state.ui.isLoginModalOpen);
 
   return (
     <ToastProvider>
@@ -101,6 +103,10 @@ const AppContent = () => {
           </main>
           <Footer />
           <BottomNav onCartOpen={() => dispatch(openCart())} />
+          <LoginModal
+            isOpen={isLoginModalOpen}
+            onClose={() => dispatch(closeLoginModal())}
+          />
         </div>
       </Router>
     </ToastProvider>

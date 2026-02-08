@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useSelector } from 'react-redux';
 import { Search, Package, Truck, CheckCircle, Clock } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import './OrderTracking.css';
 
 const OrderTracking = () => {
+    const { t } = useTranslation();
     const orders = useSelector(state => state.orders.items);
     const [orderId, setOrderId] = useState('');
     const [trackingResult, setTrackingResult] = useState(null);
@@ -18,10 +20,10 @@ const OrderTracking = () => {
         setTimeout(() => {
             if (foundOrder) {
                 const steps = [
-                    { label: 'Commande confirmée', status: 'Processing', icon: Package },
-                    { label: 'En préparation', status: 'Processing', icon: Clock },
-                    { label: 'Expédié', status: 'Shipped', icon: Truck },
-                    { label: 'Livré', status: 'Delivered', icon: CheckCircle }
+                    { label: t('tracking.step_confirmed'), status: 'Processing', icon: Package },
+                    { label: t('tracking.step_prep'), status: 'Processing', icon: Clock },
+                    { label: t('tracking.step_shipped'), status: 'Shipped', icon: Truck },
+                    { label: t('tracking.step_delivered'), status: 'Delivered', icon: CheckCircle }
                 ];
                 const statusLevels = { 'Processing': 1, 'Shipped': 2, 'Delivered': 3, 'Cancelled': -1 };
                 const currentLevel = statusLevels[foundOrder.status] || 0;
@@ -34,10 +36,10 @@ const OrderTracking = () => {
                         completed: isCompleted
                     };
                 });
-                setTrackingResult({ ...foundOrder, estimatedDelivery: '3-5 Jours Ouvrables', steps: processedSteps });
+                setTrackingResult({ ...foundOrder, estimatedDelivery: t('tracking.days_range'), steps: processedSteps });
             } else {
                 setTrackingResult(null);
-                alert("Commande non trouvée");
+                alert(t('tracking.not_found'));
             }
             setIsLoading(false);
         }, 800);
@@ -46,19 +48,19 @@ const OrderTracking = () => {
     return (
         <div className="container order-tracking-page">
             <header className="order-tracking-header">
-                <h1 className="order-tracking-title">Suivi de Commande</h1>
-                <p className="order-tracking-subtitle">Entrez votre numéro de commande pour suivre son statut en temps réel.</p>
+                <h1 className="order-tracking-title">{t('tracking.title')}</h1>
+                <p className="order-tracking-subtitle">{t('tracking.subtitle')}</p>
             </header>
             <div className="order-tracking-search-box">
                 <form onSubmit={handleTrack} className="order-tracking-form">
-                    <input type="text" placeholder="Ex: SN-12345" value={orderId} onChange={(e) => setOrderId(e.target.value)} className="order-tracking-input" />
-                    <button type="submit" className="order-tracking-button" disabled={isLoading}>{isLoading ? 'Recherche...' : <><Search size={20} /> Suivre</>}</button>
+                    <input type="text" placeholder={t('tracking.placeholder')} value={orderId} onChange={(e) => setOrderId(e.target.value)} className="order-tracking-input" />
+                    <button type="submit" className="order-tracking-button" disabled={isLoading}>{isLoading ? t('tracking.searching') : <><Search size={20} /> {t('tracking.track_btn')}</>}</button>
                 </form>
             </div>
             {trackingResult && (
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="order-tracking-result-card">
                     <div className="order-tracking-result-header">
-                        <div><h2 className="order-tracking-order-label">Commande #{trackingResult.id}</h2><span className="order-tracking-date-label">Placée le {trackingResult.date}</span></div>
+                        <div><h2 className="order-tracking-order-label">{t('orders.order')} #{trackingResult.id}</h2><span className="order-tracking-date-label">{t('tracking.order_placed', { date: trackingResult.date })}</span></div>
                         <div className="order-tracking-status-badge" style={{ color: trackingResult.status === 'Cancelled' ? '#FF4757' : '#2ED573', background: trackingResult.status === 'Cancelled' ? 'rgba(255, 71, 87, 0.1)' : 'rgba(46, 213, 115, 0.1)', borderColor: trackingResult.status === 'Cancelled' ? 'rgba(255, 71, 87, 0.2)' : 'rgba(46, 213, 115, 0.2)' }}>{trackingResult.status}</div>
                     </div>
                     <div className="order-tracking-timeline">
@@ -75,7 +77,7 @@ const OrderTracking = () => {
                             </div>
                         ))}
                     </div>
-                    <div className="order-tracking-delivery-info"><h4 className="order-tracking-info-title">Livraison estimée</h4><p className="order-tracking-info-date">{trackingResult.estimatedDelivery}</p></div>
+                    <div className="order-tracking-delivery-info"><h4 className="order-tracking-info-title">{t('tracking.estimated')}</h4><p className="order-tracking-info-date">{trackingResult.estimatedDelivery}</p></div>
                 </motion.div>
             )}
         </div>

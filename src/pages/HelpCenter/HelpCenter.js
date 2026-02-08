@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -12,6 +13,7 @@ import {
 import './HelpCenter.css';
 
 const HelpCenter = () => {
+    const { t } = useTranslation();
     const location = useLocation();
     const navigate = useNavigate();
     const queryParams = new URLSearchParams(location.search);
@@ -21,9 +23,9 @@ const HelpCenter = () => {
     useEffect(() => { window.scrollTo(0, 0); }, [activeTab]);
 
     const tabs = [
-        { id: 'delivery', label: 'Livraison & Retours', icon: Truck },
-        { id: 'size-guide', label: 'Guide des Tailles', icon: Ruler },
-        { id: 'faq-link', label: 'FAQ (Aide)', icon: HelpCircle },
+        { id: 'delivery', label: t('help_center.tab_delivery'), icon: Truck },
+        { id: 'size-guide', label: t('help_center.tab_size_guide'), icon: Ruler },
+        { id: 'faq-link', label: t('help_center.tab_faq'), icon: HelpCircle },
     ];
 
     const handleTabClick = (id) => {
@@ -38,9 +40,9 @@ const HelpCenter = () => {
         <div className="container help-center-page">
             <header className="help-center-header">
                 <motion.h1 initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="help-center-title">
-                    Centre d'a<span className="text-gradient">ide</span>
+                    {t('help_center.title')}<span className="text-gradient">{t('help_center.title_span')}</span>
                 </motion.h1>
-                <p className="help-center-subtitle">Tout ce que vous devez savoir pour une expérience SBERDILA exceptionnelle.</p>
+                <p className="help-center-subtitle">{t('help_center.subtitle')}</p>
             </header>
 
             <div className="help-center-tabs">
@@ -59,9 +61,9 @@ const HelpCenter = () => {
             <main className="help-center-content">
                 <AnimatePresence mode="wait">
                     <motion.div key={activeTab} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} transition={{ duration: 0.3 }}>
-                        {activeTab === 'delivery' && <DeliverySection />}
-                        {activeTab === 'size-guide' && <SizeGuideSection />}
-                        {activeTab === 'faq' && <FAQSection />}
+                        {activeTab === 'delivery' && <DeliverySection t={t} />}
+                        {activeTab === 'size-guide' && <SizeGuideSection t={t} />}
+                        {activeTab === 'faq' && <FAQSection t={t} />}
                     </motion.div>
                 </AnimatePresence>
             </main>
@@ -69,43 +71,43 @@ const HelpCenter = () => {
     );
 };
 
-const DeliverySection = () => (
+const DeliverySection = ({ t }) => (
     <div className="help-center-section">
         <div className="help-center-grid">
             <div className="help-center-card">
                 <div className="help-center-card-icon"><Truck size={24} color="var(--primary)" /></div>
-                <h3 className="help-center-card-title">Livraison Express</h3>
-                <p className="help-center-card-text">Nous livrons partout au Maroc sous 24h à 48h. Toutes nos commandes sont suivies en temps réel.</p>
+                <h3 className="help-center-card-title">{t('help_center.delivery_title')}</h3>
+                <p className="help-center-card-text">{t('help_center.delivery_desc')}</p>
                 <ul className="help-center-list">
-                    <li className="help-center-list-item"><CheckCircle2 size={16} color="#2ED573" /> Casablanca : 24h</li>
-                    <li className="help-center-list-item"><CheckCircle2 size={16} color="#2ED573" /> Autres villes : 48h</li>
-                    <li className="help-center-list-item"><CheckCircle2 size={16} color="#2ED573" /> Frais de port : Gratuits dès 1000 DH</li>
+                    <li className="help-center-list-item"><CheckCircle2 size={16} color="#2ED573" /> {t('help_center.city_casa')}</li>
+                    <li className="help-center-list-item"><CheckCircle2 size={16} color="#2ED573" /> {t('help_center.city_others')}</li>
+                    <li className="help-center-list-item"><CheckCircle2 size={16} color="#2ED573" /> {t('help_center.shipping_fees')}</li>
                 </ul>
             </div>
             <div className="help-center-card">
                 <div className="help-center-card-icon"><RotateCcw size={24} color="var(--primary)" /></div>
-                <h3 className="help-center-card-title">Retours Faciles</h3>
-                <p className="help-center-card-text">Vous disposez de 7 jours après réception pour demander un échange ou un retour.</p>
+                <h3 className="help-center-card-title">{t('help_center.returns_title')}</h3>
+                <p className="help-center-card-text">{t('help_center.returns_desc')}</p>
                 <ul className="help-center-list">
-                    <li className="help-center-list-item"><CheckCircle2 size={16} color="#2ED573" /> Produit non porté uniquement</li>
-                    <li className="help-center-list-item"><CheckCircle2 size={16} color="#2ED573" /> Emballage d'origine requis</li>
-                    <li className="help-center-list-item"><CheckCircle2 size={16} color="#2ED573" /> Échange gratuit</li>
+                    <li className="help-center-list-item"><CheckCircle2 size={16} color="#2ED573" /> {t('help_center.return_cond_1')}</li>
+                    <li className="help-center-list-item"><CheckCircle2 size={16} color="#2ED573" /> {t('help_center.return_cond_2')}</li>
+                    <li className="help-center-list-item"><CheckCircle2 size={16} color="#2ED573" /> {t('help_center.return_cond_3')}</li>
                 </ul>
             </div>
         </div>
         <div className="help-center-info-box" style={{ marginTop: '40px' }}>
-            <h4 className="help-center-info-title"><ShieldCheck size={20} /> Processus de Vérification</h4>
-            <p className="help-center-info-text">Chaque paire est inspectée manuellement par nos experts avant expédition.</p>
+            <h4 className="help-center-info-title"><ShieldCheck size={20} /> {t('help_center.verification_title')}</h4>
+            <p className="help-center-info-text">{t('help_center.verification_desc')}</p>
         </div>
     </div>
 );
 
-const SizeGuideSection = () => (
+const SizeGuideSection = ({ t }) => (
     <div className="help-center-section">
-        <h3 className="help-center-title-sm">Tableau de Conversion</h3>
+        <h3 className="help-center-title-sm">{t('help_center.size_table_title')}</h3>
         <div className="help-center-table-wrapper">
             <table className="help-center-table">
-                <thead><tr><th className="help-center-th">EU</th><th className="help-center-th">US Homme</th><th className="help-center-th">US Femme</th><th className="help-center-th">UK</th><th className="help-center-th">CM</th></tr></thead>
+                <thead><tr><th className="help-center-th">{t('help_center.th_eu')}</th><th className="help-center-th">{t('help_center.th_us_m')}</th><th className="help-center-th">{t('help_center.th_us_w')}</th><th className="help-center-th">{t('help_center.th_uk')}</th><th className="help-center-th">{t('help_center.th_cm')}</th></tr></thead>
                 <tbody>
                     {[
                         { eu: '40', usm: '7', usf: '8.5', uk: '6', cm: '25' },
@@ -129,12 +131,12 @@ const SizeGuideSection = () => (
     </div>
 );
 
-const FAQSection = () => {
+const FAQSection = ({ t }) => {
     const questions = [
-        { q: "Les sneakers sont-elles authentiques ?", a: "Oui, à 100%. Nous garantissons l'authenticité de chaque produit." },
-        { q: "Quel est le délai de livraison ?", a: "Pour Casablanca, 24h. Pour les autres villes, 24h à 48h." },
-        { q: "Quelles sont les méthodes de paiement ?", a: "Nous acceptons le Paiement à la Livraison partout au Maroc." },
-        { q: "Puis-je changer la taille ?", a: "Oui, vous pouvez demander un échange sous 7 jours." }
+        { q: t('help_center.faq_q1'), a: t('help_center.faq_a1') },
+        { q: t('help_center.faq_q2'), a: t('help_center.faq_a2') },
+        { q: t('help_center.faq_q3'), a: t('help_center.faq_a3') },
+        { q: t('help_center.faq_q4'), a: t('help_center.faq_a4') }
     ];
     return (
         <div className="help-center-section">

@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { Star, Quote, ChevronLeft, ChevronRight } from 'lucide-react';
 import './Testimonials.css';
 
 const Testimonials = () => {
-    const reviews = useSelector(state => state.reviews.items);
-    const featuredReviews = reviews.filter(r => r.isFeatured);
+    const { t } = useTranslation();
+    const reviews = useSelector(state => state.reviews?.items || []);
+    const featuredReviews = Array.isArray(reviews) ? reviews.filter(r => r.isFeatured) : [];
 
     const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -32,7 +34,7 @@ const Testimonials = () => {
                         viewport={{ once: true }}
                         className="testimonials-badge"
                     >
-                        Témoignages
+                        {t('testimonials.badge')}
                     </motion.span>
                     <motion.h2
                         initial={{ opacity: 0, y: 10 }}
@@ -41,7 +43,7 @@ const Testimonials = () => {
                         transition={{ delay: 0.1 }}
                         className="testimonials-title"
                     >
-                        Ce que disent nos <span className="text-gradient">Clients</span>
+                        {t('testimonials.title_main')}<span className="text-gradient">{t('testimonials.title_span')}</span>
                     </motion.h2>
                 </div>
 
@@ -84,7 +86,7 @@ const Testimonials = () => {
                                         </div>
                                         <div className="testimonial-user-info">
                                             <h4 className="testimonial-user-name">{review.userName}</h4>
-                                            <span className="testimonial-verified">Acheteur vérifié</span>
+                                            <span className="testimonial-verified">{t('testimonials.verified_buyer')}</span>
                                         </div>
                                     </div>
                                 </motion.div>

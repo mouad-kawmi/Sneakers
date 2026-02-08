@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { X, CheckCircle2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const ToastContext = createContext();
 
@@ -13,10 +14,10 @@ export const ToastProvider = ({ children }) => {
         setToasts(prev => prev.filter(t => t.id !== id));
     }, []);
 
-    const showToast = useCallback((message, type = 'success', image = null) => {
+    const showToast = useCallback((message, type = 'success', image = null, title = null) => {
         const id = Date.now();
-        setToasts(prev => [...prev, { id, message, type, image }]);
-        setTimeout(() => removeToast(id), 5000);
+        setToasts(prev => [...prev, { id, message, type, image, title }]);
+        setTimeout(() => removeToast(id), 2000);
     }, [removeToast]);
 
     return (
@@ -33,40 +34,50 @@ export const ToastProvider = ({ children }) => {
     );
 };
 
-const Toast = ({ message, type, image, onClose }) => (
-    <motion.div
-        initial={{ opacity: 0, scale: 0.8, x: 50 }}
-        animate={{ opacity: 1, scale: 1, x: 0 }}
-        exit={{ opacity: 0, scale: 0.8, x: 20, transition: { duration: 0.2 } }}
-        layout
-        style={styles.toast}
-        className="btn-animate"
-        data-testid="success-toast"
-    >
-        {image ? (
-            <div style={styles.imgWrapper}>
-                <img src={image} alt="" style={styles.img} />
-            </div>
-        ) : (
-            <div style={styles.iconWrapper}>
-                <CheckCircle2 size={20} color="#2ED573" />
-            </div>
-        )}
-        <div style={styles.content}>
-            <h4 style={styles.title}>{type === 'success' ? 'Ajouté au panier' : 'Notification'}</h4>
-            <p style={styles.message}>{message}</p>
-        </div>
-        <button onClick={onClose} style={styles.closeBtn}><X size={16} /></button>
+const Toast = ({ message, type, image, title, onClose }) => {
+    const { t } = useTranslation();
+    const getDisplayText = () => {
+        if (title) return title;
+        if (type === 'success') return t('common.success');
+        if (type === 'error') return t('common.error');
+        return t('common.notification');
+    };
 
-        {/* Progress Bar Animation */}
+    return (
         <motion.div
-            initial={{ width: "100%" }}
-            animate={{ width: "0%" }}
-            transition={{ duration: 5, ease: "linear" }}
-            style={styles.progressBar}
-        />
-    </motion.div>
-);
+            initial={{ opacity: 0, scale: 0.8, x: 50 }}
+            animate={{ opacity: 1, scale: 1, x: 0 }}
+            exit={{ opacity: 0, scale: 0.8, x: 20, transition: { duration: 0.2 } }}
+            layout
+            style={styles.toast}
+            className="btn-animate"
+            data-testid="success-toast"
+        >
+            {image ? (
+                <div style={styles.imgWrapper}>
+                    <img src={image} alt="" style={styles.img} />
+                </div>
+            ) : (
+                <div style={styles.iconWrapper}>
+                    <CheckCircle2 size={20} color="#2ED573" />
+                </div>
+            )}
+            <div style={styles.content}>
+                <h4 style={styles.title}>{getDisplayText()}</h4>
+                <p style={styles.message}>{message}</p>
+            </div>
+            <button onClick={onClose} style={styles.closeBtn}><X size={16} /></button>
+
+            {/* Progress Bar Animation */}
+            <motion.div
+                initial={{ width: "100%" }}
+                animate={{ width: "0%" }}
+                transition={{ duration: 2, ease: "linear" }}
+                style={styles.progressBar}
+            />
+        </motion.div>
+    );
+};
 
 const styles = {
     toastContainer: {

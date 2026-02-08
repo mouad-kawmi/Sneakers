@@ -1,37 +1,39 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, ChevronDown, MessageCircle, HelpCircle } from 'lucide-react';
 import SEO from '../../components/layout/SEO/SEO';
 import './FAQ.css';
 
-const faqs = [
-    {
-        category: 'Commandes',
-        questions: [
-            { q: "Comment suivre ma commande ?", a: "Vous pouvez suivre votre commande dans la section 'Suivre ma commande' en utilisant votre numéro de commande reçu par email." },
-            { q: "Puis-je modifier ma commande ?", a: "Une fois validée, une commande ne peut plus être modifiée. Contactez-nous rapidement si vous avez fait une erreur." },
-            { q: "Quels sont les délais de livraison ?", a: "La livraison prend généralement 24h à 48h partout au Maroc." }
-        ]
-    },
-    {
-        category: 'Paiement',
-        questions: [
-            { q: "Quels modes de paiement acceptez-vous ?", a: "Nous acceptons le paiement à la livraison (Cash on Delivery), ainsi que les paiements par Carte Bancaire et PayPal via notre plateforme sécurisée." },
-            { q: "Le paiement est-il sécurisé ?", a: "Oui, nous utilisons un cryptage SSL de bout en bout pour garantir la sécurité de vos informations bancaires." }
-        ]
-    },
-    {
-        category: 'Retours',
-        questions: [
-            { q: "Quelle est votre politique de retour ?", a: "Vous disposez de 7 jours après réception pour demander un échange ou un retour si le produit ne vous convient pas ou présente un défaut." },
-            { q: "Les retours sont-ils gratuits ?", a: "Les retours sont gratuits en cas de défaut de fabrication. Pour les changements d'avis, les frais de retour sont à la charge du client." }
-        ]
-    }
-];
-
 const FAQ = () => {
+    const { t } = useTranslation();
     const [searchQuery, setSearchQuery] = useState('');
     const [openIndex, setOpenIndex] = useState(null);
+
+    const faqs = [
+        {
+            category: t('faq_page.cat_orders'),
+            questions: [
+                { q: t('faq_page.q_track'), a: t('faq_page.a_track') },
+                { q: t('faq_page.q_modify'), a: t('faq_page.a_modify') },
+                { q: t('faq_page.q_delivery'), a: t('faq_page.a_delivery') }
+            ]
+        },
+        {
+            category: t('faq_page.cat_payment'),
+            questions: [
+                { q: t('faq_page.q_methods'), a: t('faq_page.a_methods') },
+                { q: t('faq_page.q_secure'), a: t('faq_page.a_secure') }
+            ]
+        },
+        {
+            category: t('faq_page.cat_returns'),
+            questions: [
+                { q: t('faq_page.q_policy'), a: t('faq_page.a_policy') },
+                { q: t('faq_page.q_free_returns'), a: t('faq_page.a_free_returns') }
+            ]
+        }
+    ];
 
     const filteredFaqs = faqs.map(cat => ({
         ...cat,
@@ -43,19 +45,19 @@ const FAQ = () => {
 
     return (
         <div className="faq-page">
-            <SEO title="FAQ - Centre d'aide" />
+            <SEO title={t('faq_page.seo_title')} />
             <div className="faq-hero">
                 <div className="container">
                     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="faq-hero-content">
-                        <span className="faq-badge">Aide & Support</span>
-                        <h1 className="faq-title">Comment pouvons-nous vous aider ?</h1>
-                        <p className="faq-subtitle">Recherchez une réponse dans notre base de connaissances ou parcourez les catégories ci-dessous.</p>
+                        <span className="faq-badge">{t('faq_page.badge')}</span>
+                        <h1 className="faq-title">{t('faq_page.title')}</h1>
+                        <p className="faq-subtitle">{t('faq_page.subtitle')}</p>
 
                         <div className="faq-search-wrapper">
                             <Search className="faq-search-icon" size={20} />
                             <input
                                 type="text"
-                                placeholder="Rechercher une question..."
+                                placeholder={t('faq_page.search_placeholder')}
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 className="faq-search-input"
@@ -110,9 +112,9 @@ const FAQ = () => {
                     <aside className="faq-sidebar">
                         <div className="faq-contact-card">
                             <div className="contact-card-icon"><MessageCircle size={32} /></div>
-                            <h3>Besoin d'aide personnalisée ?</h3>
-                            <p>Notre équipe est disponible 7j/7 pour répondre à toutes vos questions via WhatsApp ou Email.</p>
-                            <button className="btn-primary w-full">Nous contacter</button>
+                            <h3>{t('faq_page.sidebar_title')}</h3>
+                            <p>{t('faq_page.sidebar_desc')}</p>
+                            <button className="btn-primary w-full">{t('faq_page.contact_btn')}</button>
                         </div>
                     </aside>
                 </div>

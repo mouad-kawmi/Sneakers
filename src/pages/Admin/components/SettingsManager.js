@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { Download, Upload, Trash2 } from 'lucide-react';
 import { setContent } from '../../../store/slices/contentSlice';
 import { setOrders } from '../../../store/slices/ordersSlice';
@@ -7,6 +8,7 @@ import { setProducts } from '../../../store/slices/productSlice';
 import { setReviews } from '../../../store/slices/reviewSlice';
 
 const SettingsManager = ({ products, content, reviews, orders }) => {
+    const { t } = useTranslation();
     const dispatch = useDispatch();
 
     const handleExportData = () => {
@@ -30,19 +32,19 @@ const SettingsManager = ({ products, content, reviews, orders }) => {
                 try {
                     const data = JSON.parse(event.target.result);
                     if (data.products && data.content) {
-                        if (window.confirm('Remplacer toutes les données ?')) {
+                        if (window.confirm(t('admin.replace_data_confirm'))) {
                             dispatch(setProducts(data.products || []));
                             dispatch(setContent(data.content || {}));
                             dispatch(setReviews(data.reviews || []));
                             dispatch(setOrders(data.orders || []));
-                            alert('Données restaurées ! 🎉');
+                            alert(t('admin.data_restored_success'));
                             window.location.reload();
                         }
                     } else {
-                        alert('Format invalide.');
+                        alert(t('admin.invalid_format_error'));
                     }
                 } catch (error) {
-                    alert('Erreur de lecture.');
+                    alert(t('admin.read_error'));
                 }
             };
             reader.readAsText(file);
@@ -51,16 +53,16 @@ const SettingsManager = ({ products, content, reviews, orders }) => {
 
     return (
         <div className="admin-section">
-            <h2 className="admin-section-title">Paramètres</h2>
+            <h2 className="admin-section-title">{t('profile.settings')}</h2>
             <div style={{ display: 'flex', gap: '20px' }}>
-                <button onClick={handleExportData} className="btn-primary" style={{ background: '#1976d2' }}><Download size={18} /> Export Data</button>
+                <button onClick={handleExportData} className="btn-primary" style={{ background: '#1976d2' }}><Download size={18} /> {t('admin.export_data')}</button>
                 <label className="btn-primary" style={{ background: '#2e7d32', cursor: 'pointer' }}>
-                    <Upload size={18} /> Import Data
+                    <Upload size={18} /> {t('admin.import_data')}
                     <input type="file" accept=".json" onChange={handleImportData} style={{ display: 'none' }} />
                 </label>
                 <button
                     onClick={() => {
-                        if (window.confirm('Voulez-vous réinitialiser TOUTES les données ? (Commandes, Messages, Panier...)')) {
+                        if (window.confirm(t('admin.reset_store_confirm'))) {
                             localStorage.clear();
                             window.location.reload();
                         }
@@ -68,7 +70,7 @@ const SettingsManager = ({ products, content, reviews, orders }) => {
                     className="btn-primary"
                     style={{ background: '#ff4757' }}
                 >
-                    <Trash2 size={18} /> Réinitialiser le Store
+                    <Trash2 size={18} /> {t('admin.reset_store')}
                 </button>
             </div>
         </div>

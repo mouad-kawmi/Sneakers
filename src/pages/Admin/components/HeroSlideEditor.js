@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Save } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { updateHeroSlide } from '../../../store/slices/contentSlice';
 import ImageInput from './ImageInput';
 
 const HeroSlideEditor = ({ slide }) => {
+    const { t } = useTranslation();
     const dispatch = useDispatch();
     const [localSlide, setLocalSlide] = useState(slide);
     const [hasChanges, setHasChanges] = useState(false);
@@ -17,15 +19,15 @@ const HeroSlideEditor = ({ slide }) => {
     const handleSave = () => {
         dispatch(updateHeroSlide(localSlide));
         setHasChanges(false);
-        alert('C\'est enregistré !');
+        alert(t('admin.saved_success'));
     };
 
     return (
         <div className="admin-card">
-            <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
-                <div style={{ flex: 1, display: 'grid', gap: '16px' }}>
+            <div className="hero-editor-container">
+                <div className="hero-editor-grid">
                     <div>
-                        <label className="admin-label">Titre (Tagline)</label>
+                        <label className="admin-label">{t('admin.tagline')}</label>
                         <input
                             className="admin-input"
                             value={localSlide.tagline}
@@ -33,7 +35,7 @@ const HeroSlideEditor = ({ slide }) => {
                         />
                     </div>
                     <div>
-                        <label className="admin-label">Description</label>
+                        <label className="admin-label">{t('product.description')}</label>
                         <textarea
                             className="admin-input"
                             style={{ minHeight: '80px', fontFamily: 'inherit' }}
@@ -42,13 +44,13 @@ const HeroSlideEditor = ({ slide }) => {
                         />
                     </div>
                     <ImageInput
-                        label="Image Hero"
+                        label={t('admin.hero_image')}
                         value={localSlide.image}
                         onChange={(val) => handleChange('image', val)}
                     />
                     {hasChanges && (
                         <button onClick={handleSave} className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}>
-                            <Save size={20} /> Enregistrer
+                            <Save size={20} /> {t('common.save')}
                         </button>
                     )}
                 </div>

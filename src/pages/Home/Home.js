@@ -10,9 +10,11 @@ import AllProducts from '../../components/products/AllProducts/AllProducts';
 import ProductSpotlight from '../../components/ProductSpotlight/ProductSpotlight';
 import RevealOnScroll from '../../components/RevealOnScroll/RevealOnScroll';
 import SEO from '../../components/layout/SEO/SEO';
+import { useTranslation } from 'react-i18next';
 import './Home.css';
 
 const Home = () => {
+    const { t } = useTranslation();
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -21,7 +23,7 @@ const Home = () => {
 
     return (
         <div className="home-page">
-            <SEO title="Accueil - Meilleure Boutique de Sneakers au Maroc" />
+            <SEO title={t('seo.home_title')} />
             <RevealOnScroll>
                 <HeroSection />
             </RevealOnScroll>

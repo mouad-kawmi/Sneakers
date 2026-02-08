@@ -1,5 +1,6 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { addToCart } from '../../../store/slices/cartSlice';
 import { clearFilters } from '../../../store/slices/productSlice';
 import { Search, SlidersHorizontal, ChevronDown } from 'lucide-react';
@@ -11,6 +12,7 @@ const ProductCard = lazy(() => import('../ProductCard/ProductCard'));
 const ProductCardSkeleton = lazy(() => import('../ProductCard/ProductCardSkeleton'));
 
 const AllProducts = () => {
+    const { t } = useTranslation();
     const { items: products = [], filters = { brand: 'All', category: 'All', search: '', minPrice: 0, maxPrice: 10000, sizes: [] }, sorting = 'newest' } = useSelector((state) => state.products || {});
     const dispatch = useDispatch();
 
@@ -69,10 +71,17 @@ const AllProducts = () => {
     };
 
     const getTitle = () => {
-        if (filters.search) return `Résultats pour "${filters.search}"`;
-        if (filters.brand !== 'All') return `Produits ${filters.brand}`;
-        if (filters.category !== 'All') return `Collection ${filters.category}`;
-        return "Tous nos produits";
+        if (filters.search) return t('products_list.results_for', { query: filters.search });
+        if (filters.brand !== 'All') return t('products_list.products_brand', { brand: filters.brand });
+        if (filters.category !== 'All') {
+            const categoryName =
+                filters.category === 'Men' ? t('nav.men') :
+                    filters.category === 'Women' ? t('nav.women') :
+                        filters.category === 'Kids' ? t('nav.kids') :
+                            filters.category;
+            return t('products_list.collection', { category: categoryName });
+        }
+        return t('products_list.all_products');
     };
 
     return (
@@ -80,12 +89,12 @@ const AllProducts = () => {
             <div className="all-products-toolbar">
                 <div className="toolbar-left">
                     <h2 className="all-products-title">{getTitle()}</h2>
-                    <span className="product-count">{allItems.length} Produits</span>
+                    <span className="product-count">{t('brands.products_count', { count: allItems.length })}</span>
                 </div>
 
                 <div className="toolbar-right">
                     <button className="mobile-filter-btn btn-animate" onClick={() => setIsFilterOpen(true)}>
-                        <SlidersHorizontal size={18} /> Filtres
+                        <SlidersHorizontal size={18} /> {t('products_list.filters')}
                     </button>
 
                     <div className="sort-wrapper">
@@ -94,9 +103,9 @@ const AllProducts = () => {
                             value={sorting}
                             onChange={(e) => dispatch({ type: 'products/setSorting', payload: e.target.value })}
                         >
-                            <option value="newest">Nouveautés</option>
-                            <option value="price-low">Prix: Croissant</option>
-                            <option value="price-high">Prix: Décroissant</option>
+                            <option value="newest">{t('orders.all')}</option>
+                            <option value="price-low">{t('products_list.price_low')}</option>
+                            <option value="price-high">{t('products_list.price_high')}</option>
                         </select>
                         <ChevronDown size={16} className="sort-icon" />
                     </div>
@@ -118,9 +127,9 @@ const AllProducts = () => {
                     ) : allItems.length === 0 ? (
                         <EmptyState
                             icon={Search}
-                            title="Aucun produit trouvé"
-                            description={`Désolé, nous n'avons pas trouvé de produits correspondant à vos critères.`}
-                            ctaText="Effacer les filtres"
+                            title={t('products_list.no_products')}
+                            description={t('products_list.no_products_desc')}
+                            ctaText={t('products_list.clear_filters')}
                             onCtaClick={() => dispatch(clearFilters())}
                         />
                     ) : (

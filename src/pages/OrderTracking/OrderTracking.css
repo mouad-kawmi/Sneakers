@@ -172,7 +172,21 @@
     color: var(--primary);
 }
 
+@media (max-width: 768px) {
+    .order-tracking-title {
+        font-size: 28px;
+    }
+
+    .order-tracking-result-card {
+        border-radius: 20px;
+    }
+}
+
 @media (max-width: 600px) {
+    .order-tracking-page {
+        padding-top: 40px;
+    }
+
     .order-tracking-form {
         flex-direction: column;
     }
@@ -180,5 +194,24 @@
     .order-tracking-button {
         padding: 16px;
         justify-content: center;
+    }
+
+    .order-tracking-result-header {
+        padding: 20px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .order-tracking-timeline {
+        padding: 24px 20px;
+    }
+
+    .order-tracking-step {
+        gap: 16px;
+    }
+
+    .order-tracking-info-date {
+        font-size: 20px;
     }
 }

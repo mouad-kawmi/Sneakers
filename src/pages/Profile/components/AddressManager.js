@@ -3,8 +3,10 @@ import { useDispatch } from 'react-redux';
 import { motion } from 'framer-motion';
 import { Plus, X, MapPin, Phone, Home } from 'lucide-react';
 import { addAddress, updateAddress, deleteAddress, setDefaultAddress } from '../../../store/slices/authSlice';
+import { useTranslation } from 'react-i18next';
 
 const AddressManager = ({ user, setNotification }) => {
+    const { t } = useTranslation();
     const dispatch = useDispatch();
     const [showAddressForm, setShowAddressForm] = useState(false);
     const [editingAddressId, setEditingAddressId] = useState(null);
@@ -12,16 +14,16 @@ const AddressManager = ({ user, setNotification }) => {
 
     const handleAddressSubmit = () => {
         if (!addressForm.fullName || !addressForm.phone || !addressForm.address1 || !addressForm.city || !addressForm.postalCode) {
-            setNotification({ type: 'error', message: 'Veuillez remplir tous les champs obligatoires' });
+            setNotification({ type: 'error', message: t('profile.fill_required') });
             setTimeout(() => setNotification(null), 3000);
             return;
         }
         if (editingAddressId) {
             dispatch(updateAddress({ id: editingAddressId, ...addressForm }));
-            setNotification({ type: 'success', message: 'Adresse modifiée avec succès!' });
+            setNotification({ type: 'success', message: t('profile.address_updated') });
         } else {
             dispatch(addAddress(addressForm));
-            setNotification({ type: 'success', message: 'Adresse ajoutée avec succès!' });
+            setNotification({ type: 'success', message: t('profile.address_added') });
         }
         setTimeout(() => setNotification(null), 3000);
         setShowAddressForm(false);
@@ -30,15 +32,16 @@ const AddressManager = ({ user, setNotification }) => {
     };
 
     return (
-        <div style={{ background: 'var(--bg-card)', borderRadius: '16px', padding: '24px', boxShadow: 'var(--shadow-clean)', border: '1px solid var(--border-subtle)' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-                <h3 style={{ fontSize: '18px', fontWeight: '700', color: 'var(--text-main)', margin: 0 }}>Adresses de Livraison</h3>
+        <div className="profile-card">
+            <div className="profile-card-header">
+                <h3 style={{ fontSize: '18px', fontWeight: '700', color: 'var(--text-main)', margin: 0 }}>{t('profile.addresses')}</h3>
                 <button
                     onClick={() => {
                         setShowAddressForm(!showAddressForm);
                         setEditingAddressId(null);
                         setAddressForm({ fullName: '', phone: '', address1: '', address2: '', city: '', postalCode: '' });
                     }}
+                    className="btn-animate"
                     style={{
                         display: 'flex',
                         alignItems: 'center',
@@ -53,7 +56,7 @@ const AddressManager = ({ user, setNotification }) => {
                         fontSize: '14px'
                     }}
                 >
-                    {showAddressForm ? <><X size={16} /> Annuler</> : <><Plus size={16} /> Ajouter</>}
+                    {showAddressForm ? <><X size={16} /> {t('common.cancel')}</> : <><Plus size={16} /> {t('common.add')}</>}
                 </button>
             </div>
 
@@ -64,64 +67,65 @@ const AddressManager = ({ user, setNotification }) => {
                     animate={{ opacity: 1, height: 'auto' }}
                     style={{ background: 'var(--bg-app)', padding: '20px', borderRadius: '12px', marginBottom: '20px', border: '1px solid var(--border-subtle)' }}
                 >
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-                        <div>
-                            <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', color: 'var(--text-gray)', marginBottom: '8px' }}>Nom Complet</label>
+                    <div className="profile-address-form-grid">
+                        <div className="profile-input-group">
+                            <label className="profile-label">{t('profile.full_name')}</label>
                             <input
                                 type="text"
                                 value={addressForm.fullName}
                                 onChange={(e) => setAddressForm({ ...addressForm, fullName: e.target.value })}
-                                style={{ width: '100%', padding: '12px 16px', borderRadius: '8px', border: '1px solid var(--border-subtle)', fontSize: '14px', background: 'var(--bg-card)', color: 'var(--text-main)' }}
+                                className="profile-input"
                             />
                         </div>
-                        <div>
-                            <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', color: 'var(--text-gray)', marginBottom: '8px' }}>Téléphone</label>
+                        <div className="profile-input-group">
+                            <label className="profile-label">{t('profile.phone')}</label>
                             <input
                                 type="tel"
                                 value={addressForm.phone}
                                 onChange={(e) => setAddressForm({ ...addressForm, phone: e.target.value })}
-                                style={{ width: '100%', padding: '12px 16px', borderRadius: '8px', border: '1px solid var(--border-subtle)', fontSize: '14px', background: 'var(--bg-card)', color: 'var(--text-main)' }}
+                                className="profile-input"
                             />
                         </div>
-                        <div style={{ gridColumn: '1 / -1' }}>
-                            <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', color: 'var(--text-gray)', marginBottom: '8px' }}>Adresse</label>
+                        <div className="profile-input-group" style={{ gridColumn: '1 / -1' }}>
+                            <label className="profile-label">{t('profile.address')}</label>
                             <input
                                 type="text"
                                 value={addressForm.address1}
                                 onChange={(e) => setAddressForm({ ...addressForm, address1: e.target.value })}
-                                style={{ width: '100%', padding: '12px 16px', borderRadius: '8px', border: '1px solid var(--border-subtle)', fontSize: '14px', background: 'var(--bg-card)', color: 'var(--text-main)' }}
+                                className="profile-input"
                             />
                         </div>
-                        <div style={{ gridColumn: '1 / -1' }}>
-                            <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', color: 'var(--text-gray)', marginBottom: '8px' }}>Complément d'adresse (optionnel)</label>
+                        <div className="profile-input-group" style={{ gridColumn: '1 / -1' }}>
+                            <label className="profile-label">{t('profile.address_complement')}</label>
                             <input
                                 type="text"
                                 value={addressForm.address2}
                                 onChange={(e) => setAddressForm({ ...addressForm, address2: e.target.value })}
-                                style={{ width: '100%', padding: '12px 16px', borderRadius: '8px', border: '1px solid var(--border-subtle)', fontSize: '14px', background: 'var(--bg-card)', color: 'var(--text-main)' }}
+                                className="profile-input"
                             />
                         </div>
-                        <div>
-                            <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', color: 'var(--text-gray)', marginBottom: '8px' }}>Ville</label>
+                        <div className="profile-input-group">
+                            <label className="profile-label">{t('profile.city')}</label>
                             <input
                                 type="text"
                                 value={addressForm.city}
                                 onChange={(e) => setAddressForm({ ...addressForm, city: e.target.value })}
-                                style={{ width: '100%', padding: '12px 16px', borderRadius: '8px', border: '1px solid var(--border-subtle)', fontSize: '14px', background: 'var(--bg-card)', color: 'var(--text-main)' }}
+                                className="profile-input"
                             />
                         </div>
-                        <div>
-                            <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', color: 'var(--text-gray)', marginBottom: '8px' }}>Code Postal</label>
+                        <div className="profile-input-group">
+                            <label className="profile-label">{t('profile.postal_code')}</label>
                             <input
                                 type="text"
                                 value={addressForm.postalCode}
                                 onChange={(e) => setAddressForm({ ...addressForm, postalCode: e.target.value })}
-                                style={{ width: '100%', padding: '12px 16px', borderRadius: '8px', border: '1px solid var(--border-subtle)', fontSize: '14px', background: 'var(--bg-card)', color: 'var(--text-main)' }}
+                                className="profile-input"
                             />
                         </div>
                     </div>
                     <button
                         onClick={handleAddressSubmit}
+                        className="btn-animate"
                         style={{
                             marginTop: '16px',
                             padding: '12px 24px',
@@ -134,7 +138,7 @@ const AddressManager = ({ user, setNotification }) => {
                             fontSize: '14px'
                         }}
                     >
-                        {editingAddressId ? 'Modifier l\'adresse' : 'Ajouter l\'adresse'}
+                        {editingAddressId ? t('profile.update_address') : t('profile.add_address')}
                     </button>
                 </motion.div>
             )}
@@ -145,27 +149,11 @@ const AddressManager = ({ user, setNotification }) => {
                     {user.addresses.map(address => (
                         <div
                             key={address.id}
-                            style={{
-                                padding: '16px',
-                                borderRadius: '12px',
-                                border: address.isDefault ? '2px solid var(--primary)' : '1px solid var(--border-subtle)',
-                                background: address.isDefault ? 'rgba(147, 51, 234, 0.05)' : 'var(--bg-card)',
-                                position: 'relative'
-                            }}
+                            className={`profile-address-card ${address.isDefault ? 'default' : ''}`}
                         >
                             {address.isDefault && (
-                                <span style={{
-                                    position: 'absolute',
-                                    top: '12px',
-                                    right: '12px',
-                                    background: 'var(--primary)',
-                                    color: 'white',
-                                    padding: '4px 12px',
-                                    borderRadius: '6px',
-                                    fontSize: '11px',
-                                    fontWeight: '700'
-                                }}>
-                                    PAR DÉFAUT
+                                <span className="profile-address-badge">
+                                    {t('profile.default')}
                                 </span>
                             )}
                             <div style={{ display: 'flex', gap: '12px', marginBottom: '12px' }}>
@@ -180,18 +168,19 @@ const AddressManager = ({ user, setNotification }) => {
                                     </p>
                                 </div>
                             </div>
-                            <div style={{ display: 'flex', gap: '8px', marginTop: '12px' }}>
+                            <div style={{ display: 'flex', gap: '8px', marginTop: '12px', flexWrap: 'wrap' }}>
                                 {!address.isDefault && (
                                     <button
                                         onClick={() => {
                                             dispatch(setDefaultAddress(address.id));
-                                            setNotification({ type: 'success', message: 'Adresse par défaut mise à jour!' });
+                                            setNotification({ type: 'success', message: t('profile.address_default_updated') });
                                             setTimeout(() => setNotification(null), 3000);
                                         }}
+                                        className="btn-animate"
                                         style={{
                                             padding: '6px 12px',
                                             borderRadius: '6px',
-                                            background: 'rgba(255, 107, 0, 0.1)',
+                                            background: 'rgba(var(--primary-rgb), 0.1)',
                                             color: 'var(--primary)',
                                             border: 'none',
                                             cursor: 'pointer',
@@ -199,7 +188,7 @@ const AddressManager = ({ user, setNotification }) => {
                                             fontWeight: '600'
                                         }}
                                     >
-                                        Définir par défaut
+                                        {t('profile.set_default')}
                                     </button>
                                 )}
                                 <button
@@ -208,6 +197,7 @@ const AddressManager = ({ user, setNotification }) => {
                                         setAddressForm(address);
                                         setShowAddressForm(true);
                                     }}
+                                    className="btn-animate"
                                     style={{
                                         padding: '6px 12px',
                                         borderRadius: '6px',
@@ -219,14 +209,15 @@ const AddressManager = ({ user, setNotification }) => {
                                         fontWeight: '600'
                                     }}
                                 >
-                                    Modifier
+                                    {t('common.modify')}
                                 </button>
                                 <button
                                     onClick={() => {
                                         dispatch(deleteAddress(address.id));
-                                        setNotification({ type: 'success', message: 'Adresse supprimée!' });
+                                        setNotification({ type: 'success', message: t('profile.address_deleted') });
                                         setTimeout(() => setNotification(null), 3000);
                                     }}
+                                    className="btn-animate"
                                     style={{
                                         padding: '6px 12px',
                                         borderRadius: '6px',
@@ -238,7 +229,7 @@ const AddressManager = ({ user, setNotification }) => {
                                         fontWeight: '600'
                                     }}
                                 >
-                                    Supprimer
+                                    {t('common.delete')}
                                 </button>
                             </div>
                         </div>
@@ -247,7 +238,7 @@ const AddressManager = ({ user, setNotification }) => {
             ) : (
                 <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text-gray)' }}>
                     <Home size={48} style={{ opacity: 0.2, marginBottom: '12px' }} />
-                    <p>Aucune adresse enregistrée</p>
+                    <p>{t('profile.no_addresses')}</p>
                 </div>
             )}
         </div>

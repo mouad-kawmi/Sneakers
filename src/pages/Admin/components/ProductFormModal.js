@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { X, Plus } from 'lucide-react';
 import { addProduct, updateProduct } from '../../../store/slices/productSlice';
 import MultiImageInput from './MultiImageInput';
+import MobileSheetSelect from '../../../components/common/MobileSelect/MobileSheetSelect';
 
 const ProductFormModal = ({ isOpen, onClose, editingProduct }) => {
+    const { t } = useTranslation();
     const dispatch = useDispatch();
     const content = useSelector((state) => state.content || {});
 
     const [productFormData, setProductFormData] = useState({
-        name: '', brand: '', category: 'Men', price: '', discount: 0, isNew: false, sizes: [], images: []
+        name: '', brand: '', category: 'Men', price: '', discount: 0, discountEndTime: '', isNew: false, sizes: [], images: []
     });
     const [newSizeInput, setNewSizeInput] = useState({ size: '', stock: '' });
 
@@ -18,7 +21,8 @@ const ProductFormModal = ({ isOpen, onClose, editingProduct }) => {
             setProductFormData({
                 ...editingProduct,
                 sizes: editingProduct.sizes || [],
-                images: editingProduct.images || (editingProduct.image ? [editingProduct.image] : [])
+                images: editingProduct.images || (editingProduct.image ? [editingProduct.image] : []),
+                discountEndTime: editingProduct.discountEndTime || ''
             });
         } else {
             setProductFormData({
@@ -28,6 +32,7 @@ const ProductFormModal = ({ isOpen, onClose, editingProduct }) => {
                 price: '',
                 images: [],
                 discount: 0,
+                discountEndTime: '',
                 isNew: true,
                 sizes: []
             });
@@ -40,13 +45,13 @@ const ProductFormModal = ({ isOpen, onClose, editingProduct }) => {
         e.preventDefault();
 
         if (!productFormData.brand) {
-            alert("Veuillez sélectionner une marque !");
+            alert(t('admin.select_brand_error'));
             return;
         }
 
         const priceNum = Number(String(productFormData.price).replace(',', '.'));
         if (isNaN(priceNum) || priceNum <= 0) {
-            alert("Le prix doit être un nombre valide !");
+            alert(t('admin.invalid_price_error'));
             return;
         }
 
@@ -55,9 +60,9 @@ const ProductFormModal = ({ isOpen, onClose, editingProduct }) => {
             const s = Number(newSizeInput.size);
             const st = Number(newSizeInput.stock);
 
-            // Size Validation
-            if (s < 35 || s > 48) {
-                alert("La taille doit être entre 35 et 48 !");
+            // Size Validation removed as per user request to allow kids sizes
+            if (s <= 0) {
+                alert(t('admin.invalid_size_error') || 'Invalid size');
                 return;
             }
 
@@ -76,6 +81,7 @@ const ProductFormModal = ({ isOpen, onClose, editingProduct }) => {
             id: editingProduct ? editingProduct.id : Date.now(),
             price: priceNum,
             discount: Number(discountStr) || 0,
+            discountEndTime: productFormData.discountEndTime || '',
             image: mainImage,
             images: finalImages,
             sizes: finalSizes,
@@ -84,10 +90,10 @@ const ProductFormModal = ({ isOpen, onClose, editingProduct }) => {
 
         if (editingProduct) {
             dispatch(updateProduct(payload));
-            alert("Produit mis à jour avec succès !");
+            alert(t('admin.product_updated_success'));
         } else {
             dispatch(addProduct(payload));
-            alert("Produit ajouté avec succès !");
+            alert(t('admin.product_added_success'));
         }
         setNewSizeInput({ size: '', stock: '' });
         onClose();
@@ -98,14 +104,14 @@ const ProductFormModal = ({ isOpen, onClose, editingProduct }) => {
         const sizeNum = Number(newSizeInput.size);
         const stockNum = Number(newSizeInput.stock);
 
-        // Size Validation
-        if (sizeNum < 35 || sizeNum > 48) {
-            alert("La taille doit être entre 35 et 48 !");
+        // Size Validation removed to allow kids sizes
+        if (sizeNum <= 0) {
+            alert(t('admin.invalid_size_error') || 'Invalid size');
             return;
         }
 
         if (productFormData.sizes.some(s => s.size === sizeNum)) {
-            alert("Cette taille existe déjà.");
+            alert(t('admin.size_already_exists'));
             return;
         }
 
@@ -123,77 +129,93 @@ const ProductFormModal = ({ isOpen, onClose, editingProduct }) => {
         });
     };
 
+    const brandOptions = content.brands?.map(b => ({ value: b.name, label: b.name })) || [];
+    const categoryOptions = [
+        { value: "Men", label: t('nav.men') },
+        { value: "Women", label: t('nav.women') },
+        { value: "Kids", label: t('nav.kids') }
+    ];
+
     return (
         <div className="admin-modal-overlay">
             <div className="admin-modal-backdrop" onClick={onClose} />
             <div className="admin-modal-content">
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '24px' }}>
-                    <h2>{editingProduct ? 'Modifier' : 'Nouveau'}</h2>
+                    <h2>{editingProduct ? t('common.edit') : t('admin.new')}</h2>
                     <button onClick={onClose} style={{ background: 'none', border: 'none' }}><X size={24} /></button>
                 </div>
                 <form onSubmit={handleProductSubmit} className="admin-form">
-                    <div style={{ gridColumn: 'span 2' }}>
-                        <label className="admin-label">Nom</label>
+                    <div className="admin-grid-full">
+                        <label className="admin-label">{t('admin.name')}</label>
                         <input className="admin-input" value={productFormData.name} onChange={e => setProductFormData({ ...productFormData, name: e.target.value })} required />
                     </div>
                     <div>
-                        <label className="admin-label">Marque</label>
-                        {(content.brands && content.brands.length > 0) ? (
-                            <select
-                                className="admin-input"
-                                value={productFormData.brand}
-                                onChange={e => setProductFormData({ ...productFormData, brand: e.target.value })}
-                                required
-                            >
-                                <option value="">-- Sélectionner --</option>
-                                {content.brands.map(b => <option key={b.name} value={b.name}>{b.name}</option>)}
-                            </select>
-                        ) : (
-                            <input
-                                className="admin-input"
-                                placeholder="Nom de la marque (ex: Nike)"
-                                value={productFormData.brand}
-                                onChange={e => setProductFormData({ ...productFormData, brand: e.target.value })}
-                                required
-                            />
-                        )}
+                        <MobileSheetSelect
+                            label={t('admin.brand')}
+                            value={productFormData.brand}
+                            onChange={(e) => setProductFormData({ ...productFormData, brand: e.target.value })}
+                            options={brandOptions}
+                            placeholder={`-- ${t('admin.select')} --`}
+                            required
+                        />
                     </div>
                     <div>
-                        <label className="admin-label">Prix</label>
+                        <label className="admin-label">{t('admin.price')}</label>
                         <input type="number" className="admin-input" value={productFormData.price} onChange={e => setProductFormData({ ...productFormData, price: e.target.value })} required />
                     </div>
                     <div>
-                        <label className="admin-label">Catégorie</label>
-                        <select
-                            className="admin-input"
+                        <MobileSheetSelect
+                            label={t('admin.category')}
                             value={productFormData.category}
-                            onChange={e => setProductFormData({ ...productFormData, category: e.target.value })}
+                            onChange={(e) => setProductFormData({ ...productFormData, category: e.target.value })}
+                            options={categoryOptions}
                             required
-                        >
-                            <option value="Men">Hommes (Men)</option>
-                            <option value="Women">Femmes (Women)</option>
-                            <option value="Kids">Enfants (Kids)</option>
-                        </select>
+                        />
                     </div>
-                    <div style={{ gridColumn: 'span 2' }}>
+                    <div>
+                        <label className="admin-label">{t('admin.discount_percentage')}</label>
+                        <input
+                            type="number"
+                            min="0"
+                            max="100"
+                            className="admin-input"
+                            value={productFormData.discount}
+                            onChange={e => setProductFormData({ ...productFormData, discount: e.target.value })}
+                            placeholder="0"
+                        />
+                    </div>
+                    <div>
+                        <label className="admin-label">{t('admin.discount_end_time')}</label>
+                        <input
+                            type="datetime-local"
+                            className="admin-input"
+                            value={productFormData.discountEndTime ? new Date(productFormData.discountEndTime).toISOString().slice(0, 16) : ''}
+                            onChange={e => {
+                                if (e.target.value) {
+                                    setProductFormData({ ...productFormData, discountEndTime: new Date(e.target.value).toISOString() });
+                                } else {
+                                    setProductFormData({ ...productFormData, discountEndTime: '' });
+                                }
+                            }}
+                        />
+                    </div>
+                    <div className="admin-grid-full">
                         <MultiImageInput
                             images={productFormData.images}
                             onChange={newImages => setProductFormData({ ...productFormData, images: newImages })}
                         />
                     </div>
-                    <div style={{ gridColumn: 'span 2' }}>
+                    <div className="admin-grid-full">
                         <h4 className="admin-label" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                            Tailles & Stock (35-48)
-                            <span style={{ fontSize: '11px', fontWeight: 'normal', opacity: '0.6' }}>{productFormData.sizes.length} Tailles ajoutées</span>
+                            {t('admin.sizes_stock')}
+                            <span style={{ fontSize: '11px', fontWeight: 'normal', opacity: '0.6' }}>{productFormData.sizes.length} {t('admin.sizes_added')}</span>
                         </h4>
 
                         <div className="admin-add-size-row">
                             <div className="admin-size-input-group">
                                 <input
                                     type="number"
-                                    placeholder="Taille (35-48)"
-                                    min="35"
-                                    max="48"
+                                    placeholder={t('admin.size_placeholder')}
                                     className="admin-input"
                                     value={newSizeInput.size}
                                     onChange={e => setNewSizeInput({ ...newSizeInput, size: e.target.value })}
@@ -202,7 +224,7 @@ const ProductFormModal = ({ isOpen, onClose, editingProduct }) => {
                             <div className="admin-size-input-group">
                                 <input
                                     type="number"
-                                    placeholder="Stock"
+                                    placeholder={t('admin.stock_placeholder')}
                                     className="admin-input"
                                     value={newSizeInput.stock}
                                     onChange={e => setNewSizeInput({ ...newSizeInput, stock: e.target.value })}
@@ -245,7 +267,7 @@ const ProductFormModal = ({ isOpen, onClose, editingProduct }) => {
                             ))}
                         </div>
                     </div>
-                    <button type="submit" className="btn-primary" style={{ gridColumn: 'span 2' }}>Enregistrer</button>
+                    <button type="submit" className="btn-primary admin-grid-full">{t('common.save')}</button>
                 </form>
             </div>
         </div>

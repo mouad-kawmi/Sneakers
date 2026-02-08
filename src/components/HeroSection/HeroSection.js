@@ -5,10 +5,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { addToCart } from '../../store/slices/cartSlice';
 import { openCart } from '../../store/slices/uiSlice';
+import { useTranslation } from 'react-i18next';
 import { useToast } from '../../context/ToastContext';
 import './HeroSection.css';
 
 const HeroSection = () => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { showToast } = useToast();
@@ -46,7 +48,7 @@ const HeroSection = () => {
                                     WebkitBackgroundClip: 'text',
                                 }}
                             >
-                                Nouvelle Collection 2024
+                                {t('hero.badge')}
                             </motion.span>
 
                             <h1 className="hero-title">
@@ -68,13 +70,13 @@ const HeroSection = () => {
                                         const prod = products.find(p => p.name === activeSneaker.name) || products[0];
                                         dispatch(addToCart({ product: prod, size: prod.sizes?.[0]?.size || 42 }));
                                         dispatch(openCart());
-                                        showToast("Produit ajouté au panier", "success", prod.image);
+                                        showToast(t('common.added_to_cart'), "success", prod.image);
                                     }}
                                     style={{
                                         background: `linear-gradient(135deg, ${activeSneaker.color}, ${activeSneaker.accent})`
                                     }}
                                 >
-                                    Acheter <ShoppingBag size={20} />
+                                    {t('common.buy')} <ShoppingBag size={20} />
                                 </button>
 
                                 <button
@@ -84,7 +86,7 @@ const HeroSection = () => {
                                         navigate(`/product/${prod.id}`);
                                     }}
                                 >
-                                    Détails <ArrowRight size={20} />
+                                    {t('common.details')} <ArrowRight size={20} />
                                 </button>
                             </div>
                         </motion.div>

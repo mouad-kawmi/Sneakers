@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Send, MessageSquare, Instagram, Twitter, Facebook } from 'lucide-react';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { addMessage } from '../../store/slices/messageSlice';
 import { useToast } from '../../context/ToastContext';
 import './Contact.css';
 
 const Contact = () => {
+    const { t } = useTranslation();
     const dispatch = useDispatch();
     const { showToast } = useToast();
     const [formState, setFormState] = useState({
@@ -22,16 +24,16 @@ const Contact = () => {
         let error = null;
         switch (name) {
             case 'name':
-                if (!value) error = "Le nom est requis";
+                if (!value) error = t('contact.error_name_req');
                 break;
             case 'email':
-                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) error = "Email invalide";
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) error = t('contact.error_email_inv');
                 break;
             case 'subject':
-                if (!value) error = "Le sujet est requis";
+                if (!value) error = t('contact.error_sub_req');
                 break;
             case 'message':
-                if (value.length < 10) error = "Le message doit faire au moins 10 caractères";
+                if (value.length < 10) error = t('contact.error_msg_len');
                 break;
             default:
                 break;
@@ -58,13 +60,13 @@ const Contact = () => {
 
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
-            showToast("Veuillez corriger les erreurs", "error");
+            showToast(t('contact.error_correct'), "error", null, t('common.error').toUpperCase());
             return;
         }
 
         dispatch(addMessage(formState));
         setIsSubmitted(true);
-        showToast("Message envoyé avec succès !", "success");
+        showToast(t('contact.msg_success'), "success", null, t('contact.title').toUpperCase());
         setTimeout(() => setIsSubmitted(false), 3000);
         setFormState({ name: '', email: '', subject: '', message: '' });
         setErrors({});
@@ -73,21 +75,21 @@ const Contact = () => {
     const contactInfo = [
         {
             icon: <Mail size={24} />,
-            title: "Email",
+            title: t('contact.info_email'),
             value: "contact@sberdila.com",
             link: "mailto:contact@sberdila.com",
             color: "#9333EA"
         },
         {
             icon: <Phone size={24} />,
-            title: "Téléphone",
+            title: t('contact.info_phone'),
             value: "+212 600 000 000",
             link: "tel:+212600000000",
             color: "#2ED573"
         },
         {
             icon: <MapPin size={24} />,
-            title: "Adresse",
+            title: t('contact.info_address'),
             value: "Casablanca, Maroc",
             link: "#",
             color: "#FF4757"
@@ -103,13 +105,12 @@ const Contact = () => {
                         animate={{ opacity: 1, y: 0 }}
                         className="contact-hero-content"
                     >
-                        <span className="contact-badge">Contact</span>
+                        <span className="contact-badge">{t('contact.title')}</span>
                         <h1 className="contact-hero-title">
-                            Parlons de votre <span className="text-gradient">Prochaine Paire</span>
+                            {t('contact.hero_title')} <span className="text-gradient">{t('contact.hero_title_span')}</span>
                         </h1>
                         <p className="contact-hero-sub">
-                            Une question sur une commande ou besoin d'un conseil style ?
-                            Notre équipe est là pour vous aider à tout moment.
+                            {t('contact.hero_subtitle')}
                         </p>
                     </motion.div>
                 </div>
@@ -142,13 +143,13 @@ const Contact = () => {
                             </div>
 
                             <div className="contact-social-box">
-                                <h3 className="contact-social-label">Suivez-nous</h3>
+                                <h3 className="contact-social-label">{t('contact.follow_us')}</h3>
                                 <div className="contact-social-icons">
                                     {[{ icon: <Instagram />, label: "Instagram" }, { icon: <Twitter />, label: "Twitter" }, { icon: <Facebook />, label: "Facebook" }].map((item, i) => (
                                         <motion.button
                                             key={i}
                                             className="contact-social-btn"
-                                            aria-label={`Suivez-nous sur ${item.label}`}
+                                            aria-label={t('contact.follow_us_social', { label: item.label })}
                                         >
                                             {React.cloneElement(item.icon, { size: 20 })}
                                         </motion.button>
@@ -165,18 +166,18 @@ const Contact = () => {
                             <div className="contact-form-container">
                                 <div className="contact-form-header">
                                     <MessageSquare size={24} color="var(--primary)" />
-                                    <h2 className="contact-form-title">Envoyez un message</h2>
+                                    <h2 className="contact-form-title">{t('contact.send_message')}</h2>
                                 </div>
 
                                 <form onSubmit={handleSubmit} className="contact-form">
                                     <div className="contact-form-row">
                                         <div className="contact-input-group">
-                                            <label htmlFor="contact-name" className="contact-label">Nom complet</label>
+                                            <label htmlFor="contact-name" className="contact-label">{t('contact.full_name')}</label>
                                             <input
                                                 id="contact-name"
                                                 name="name"
                                                 type="text"
-                                                placeholder="Votre nom"
+                                                placeholder={t('contact.placeholder_name')}
                                                 required
                                                 className={`contact-input ${errors.name ? 'error' : ''}`}
                                                 value={formState.name}
@@ -185,12 +186,12 @@ const Contact = () => {
                                             {errors.name && <span className="error-text">{errors.name}</span>}
                                         </div>
                                         <div className="contact-input-group">
-                                            <label htmlFor="contact-email" className="contact-label">Email</label>
+                                            <label htmlFor="contact-email" className="contact-label">{t('profile.email')}</label>
                                             <input
                                                 id="contact-email"
                                                 name="email"
                                                 type="email"
-                                                placeholder="votre@email.com"
+                                                placeholder={t('contact.placeholder_email')}
                                                 required
                                                 className={`contact-input ${errors.email ? 'error' : ''}`}
                                                 value={formState.email}
@@ -201,12 +202,12 @@ const Contact = () => {
                                     </div>
 
                                     <div className="contact-input-group">
-                                        <label htmlFor="contact-subject" className="contact-label">Sujet</label>
+                                        <label htmlFor="contact-subject" className="contact-label">{t('contact.subject')}</label>
                                         <input
                                             id="contact-subject"
                                             name="subject"
                                             type="text"
-                                            placeholder="Comment pouvons-nous vous aider ?"
+                                            placeholder={t('contact.placeholder_subject')}
                                             required
                                             className={`contact-input ${errors.subject ? 'error' : ''}`}
                                             value={formState.subject}
@@ -216,12 +217,12 @@ const Contact = () => {
                                     </div>
 
                                     <div className="contact-input-group">
-                                        <label htmlFor="contact-message" className="contact-label">Message</label>
+                                        <label htmlFor="contact-message" className="contact-label">{t('contact.message')}</label>
                                         <textarea
                                             id="contact-message"
                                             name="message"
                                             rows="5"
-                                            placeholder="Votre message ici..."
+                                            placeholder={t('contact.placeholder_message')}
                                             required
                                             className={`contact-input ${errors.message ? 'error' : ''}`}
                                             style={{ resize: 'none' }}
@@ -237,9 +238,9 @@ const Contact = () => {
                                         className="contact-submit-btn"
                                     >
                                         {isSubmitted ? (
-                                            <>C'est envoyé !</>
+                                            <>{t('contact.sent')}</>
                                         ) : (
-                                            <><Send size={18} /> Envoyer le message</>
+                                            <><Send size={18} /> {t('contact.send_btn')}</>
                                         )}
                                     </button>
                                 </form>

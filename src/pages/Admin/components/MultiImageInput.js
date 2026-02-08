@@ -1,8 +1,10 @@
 import React from 'react';
 import { Image as ImageIcon, X, Plus, Upload } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { handleImageUpload } from '../utils/imageUtils';
 
 const MultiImageInput = ({ images = [], onChange }) => {
+    const { t } = useTranslation();
 
     const handleAddImage = (newImage) => {
         onChange([...images, newImage]);
@@ -15,7 +17,7 @@ const MultiImageInput = ({ images = [], onChange }) => {
     };
 
     const handleFileUpload = (e) => {
-        
+
         handleImageUpload(e, (compressedInfo) => {
             handleAddImage(compressedInfo);
         });
@@ -23,9 +25,9 @@ const MultiImageInput = ({ images = [], onChange }) => {
 
     return (
         <div style={{ marginBottom: '16px' }}>
-            <label className="admin-label">Images du Produit ({images.length})</label>
+            <label className="admin-label">{t('admin.product_images')} ({images.length})</label>
             <p style={{ fontSize: '12px', color: 'var(--text-gray)', marginBottom: '12px' }}>
-                La première image sera l'image principale. Ajoutez jusqu'à 4 images.
+                {t('admin.images_help_text')}
             </p>
 
             <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
@@ -81,7 +83,7 @@ const MultiImageInput = ({ images = [], onChange }) => {
                                 fontSize: '9px',
                                 pointerEvents: 'none'
                             }}>
-                                Main
+                                {t('admin.main')}
                             </span>
                         )}
                     </div>
@@ -114,7 +116,7 @@ const MultiImageInput = ({ images = [], onChange }) => {
                         }}
                     />
                     <Plus size={24} color="var(--text-gray)" />
-                    <span style={{ fontSize: '10px', color: 'var(--text-gray)', marginTop: '4px' }}>Ajouter</span>
+                    <span style={{ fontSize: '10px', color: 'var(--text-gray)', marginTop: '4px' }}>{t('admin.add')}</span>
                 </div>
             </div>
 
@@ -122,7 +124,7 @@ const MultiImageInput = ({ images = [], onChange }) => {
             <div style={{ marginTop: '12px', display: 'flex', gap: '8px' }}>
                 <input
                     type="text"
-                    placeholder="Ou coller une URL d'image ici..."
+                    placeholder={t('admin.paste_url')}
                     className="admin-input"
                     onKeyDown={(e) => {
                         if (e.key === 'Enter') {

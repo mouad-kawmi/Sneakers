@@ -4,10 +4,12 @@ import { ArrowRight } from 'lucide-react';
 import { addToCart } from '../../store/slices/cartSlice';
 import { openCart } from '../../store/slices/uiSlice';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { useToast } from '../../context/ToastContext';
 import './PromoBanner.css';
 
 const PromoBanner = () => {
+    const { t } = useTranslation();
     const dispatch = useDispatch();
     const { showToast } = useToast();
     const promoData = useSelector(state => state.content.promoBanner);
@@ -43,13 +45,13 @@ const PromoBanner = () => {
     let promoProducts = [];
     if (promoData.selectedProductIds && promoData.selectedProductIds.length > 0) {
         promoProducts = promoData.selectedProductIds
-            .slice(0, 2)
+            .slice(0, Math.min(promoData.productsCount || 3, 3))
             .map(id => products.find(p => p.id === id))
             .filter(Boolean);
     } else {
         promoProducts = products
             .filter(p => p.discount > 0)
-            .slice(0, 2);
+            .slice(0, promoData.productsCount || 3);
     }
 
     return (
@@ -59,6 +61,7 @@ const PromoBanner = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 className="promo-banner-wrapper"
+                style={{ background: promoData.gradient || 'linear-gradient(135deg, #a855f7 0%, #7e22ce 100%)' }}
             >
                 <div className="promo-bg-circle-1"></div>
                 <div className="promo-bg-circle-2"></div>
@@ -83,14 +86,19 @@ const PromoBanner = () => {
                                     </div>
                                     <button
                                         onClick={() => {
-                                            const discountedProduct = { ...product, price: Math.floor(product.price * (1 - (promoData.discount / 100))) };
-                                            dispatch(addToCart({ product: discountedProduct, size: product.sizes?.[0]?.size || 42 }));
+                                            // Pass product with promo discount info
+                                            const productWithDiscount = {
+                                                ...product,
+                                                discount: promoData.discount,
+                                                discountEndTime: promoData.endTime
+                                            };
+                                            dispatch(addToCart({ product: productWithDiscount, size: product.sizes?.[0]?.size || 42 }));
                                             dispatch(openCart());
-                                            showToast("Produit ajouté au panier", "success", product.image);
+                                            showToast(t('common.added_to_cart'), "success", product.image);
                                         }}
                                         className="promo-add-btn"
                                     >
-                                        Acheter
+                                        {t('common.buy')}
                                     </button>
                                 </motion.div>
                             ))}
@@ -104,23 +112,23 @@ const PromoBanner = () => {
                             className="promo-info-content"
                         >
                             <h2 className="promo-main-title">
-                                {promoData.title || "Avancez d'un Pas, Obtenez -50%"}
+                                {t('promo.title', { discount: promoData.discount })}
                             </h2>
 
                             <div className="promo-timer-wrap">
                                 <div className="promo-timer-glass">
-                                    <TimeUnit value={timeLeft.days} label="JOURS" />
+                                    <TimeUnit value={timeLeft.days} label={t('promo.days')} />
                                     <span className="promo-separator">:</span>
-                                    <TimeUnit value={timeLeft.hours} label="HEURES" />
+                                    <TimeUnit value={timeLeft.hours} label={t('promo.hours')} />
                                     <span className="promo-separator">:</span>
-                                    <TimeUnit value={timeLeft.minutes} label="MINS" />
+                                    <TimeUnit value={timeLeft.minutes} label={t('promo.mins')} />
                                     <span className="promo-separator">:</span>
-                                    <TimeUnit value={timeLeft.seconds} label="SECS" />
+                                    <TimeUnit value={timeLeft.seconds} label={t('promo.secs')} />
                                 </div>
                             </div>
 
                             <button className="promo-cta">
-                                Voir tous les produits <ArrowRight size={20} />
+                                {t('promo.view_limited')} <ArrowRight size={20} />
                             </button>
                         </motion.div>
                     </div>
