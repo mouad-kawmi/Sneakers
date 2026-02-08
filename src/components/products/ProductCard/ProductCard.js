@@ -71,12 +71,6 @@ export const ProductCard = ({ product }) => {
                             <span className="product-old-price">{product.price} DH</span>
                         )}
                         <span className="product-price">{finalPrice} DH</span>
-                        <button
-                            className="product-details-link btn-animate"
-                            aria-label={t('product.view_details')}
-                        >
-                            <Eye size={14} /> {t('product.view_details')}
-                        </button>
                     </div>
 
                     <button
