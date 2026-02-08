@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Skeleton from '../Skeleton/Skeleton';
 import './SmartImage.css';
 
@@ -6,6 +6,12 @@ const SmartImage = ({ src, alt = "Sneaker Sberdila", className = '', fallbackSrc
     const [isLoaded, setIsLoaded] = useState(false);
     const [imgSrc, setImgSrc] = useState(src);
     const [hasError, setHasError] = useState(false);
+
+    useEffect(() => {
+        setImgSrc(src);
+        setHasError(false);
+        setIsLoaded(false);
+    }, [src]);
 
     const handleError = () => {
         if (!hasError) {
