@@ -20,7 +20,7 @@ const BottomNav = ({ onCartOpen }) => {
         { icon: Search, label: t('nav.search'), path: ROUTES.SEARCH, id: 'search' },
         { icon: ShoppingBag, label: t('common.cart'), onClick: onCartOpen, id: 'cart', badge: totalQuantity },
         { icon: Heart, label: t('common.wishlist'), path: ROUTES.WISHLIST, id: 'wishlist', badge: wishlistItems.length },
-        { icon: User, label: t('auth.welcome_title'), path: ROUTES.PROFILE, id: 'profile' },
+        { icon: User, label: 'Profil', path: ROUTES.PROFILE, id: 'profile' },
     ];
 
     // If admin, replace search or add admin link

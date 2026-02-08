@@ -389,6 +389,7 @@
 
     .cart-sidebar-footer {
         padding: 20px 16px;
+        padding-bottom: calc(20px + env(safe-area-inset-bottom));
     }
 
     .cart-sidebar-checkout-btn {
